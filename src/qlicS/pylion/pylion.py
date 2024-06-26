@@ -1,13 +1,14 @@
-import signal
-import jinja2 as j2
-import json
-from datetime import datetime
-from collections import defaultdict
-import sys
-import time
-import subprocess
 import os
-from pathlib import Path
+import signal
+import subprocess
+import sys
+from collections import defaultdict
+from datetime import datetime
+
+import jinja2 as j2
+
+from ..config_controller import configur
+
 
 __version__ = "0.5.3"
 
@@ -16,6 +17,7 @@ class SimulationError(Exception):
     """Custom error class for Simulation."""
 
     pass
+
 
 class Simulation(list):
     def __init__(self, name="pylion"):
@@ -28,17 +30,17 @@ class Simulation(list):
         name = name.replace(" ", "_").lower()
 
         self.attrs = {}
-        self.attrs['gpu'] = None
-        self.attrs['executable'] = 'lmp_serial'
-        self.attrs['thermo_styles'] = ['step', 'cpu']
-        self.attrs['timestep'] = 1e-6
-        self.attrs['domain'] = [1e-3, 1e-3, 1e-3]  # length, width, height
-        self.attrs['name'] = name
-        self.attrs['neighbour'] = {'skin': 1, 'list': 'nsq'}
-        self.attrs['coulombcutoff'] = 10
-        self.attrs['template'] = 'simulation.j2'
-        self.attrs['version'] = __version__
-        self.attrs['rigid'] = {'exists': False}
+        self.attrs["gpu"] = None
+        self.attrs["executable"] = "lmp_serial"
+        self.attrs["thermo_styles"] = ["step", "cpu"]
+        self.attrs["timestep"] = 1e-6
+        self.attrs["domain"] = [1e-3, 1e-3, 1e-3]  # length, width, height
+        self.attrs["name"] = name
+        self.attrs["neighbour"] = {"skin": 1, "list": "nsq"}
+        self.attrs["coulombcutoff"] = 10
+        self.attrs["template"] = "simulation.j2"
+        self.attrs["version"] = __version__
+        self.attrs["rigid"] = {"exists": False}
 
     def __contains__(self, this):
         """Check if an item exists in the simulation using its ``uid``."""
@@ -138,22 +140,25 @@ class Simulation(list):
         """ env = j2.Environment(
             loader=j2.PackageLoader("pylion", "templates"), trim_blocks=True
         ) """
-        #env = j2.Environment(
-        #    loader=j2.PackageLoader(package_name='simulation.j2', package_path='/Users/michaelmitchell/qlicS/src/qlicS/pylion/templates'), trim_blocks=True
-        #)
+        # env = j2.Environment(
+        #    loader=j2.PackageLoader(package_name='simulation.j2', \
+        #    package_path='/Users/michaelmitchell/qlicS/src/qlicS/pylion/templates'), \
+        #    trim_blocks=True
+        # )
 
-
-        cwd = os.getcwd()
-        two_up = str(Path(cwd).parents[1])
-        template_loader = j2.FileSystemLoader(searchpath=two_up+"/src/qlicS/pylion/templates")
+        template_loader = j2.FileSystemLoader(
+            searchpath=os.getcwd() + "/src/qlicS/pylion/templates"
+        )
         templateEnv = j2.Environment(loader=template_loader)
         TEMPLATE_FILE = "simulation.j2"
         template = templateEnv.get_template(TEMPLATE_FILE)
 
-        #template = env.get_template(self.attrs["template"])
+        # template = env.get_template(self.attrs["template"])
         rendered = template.render({**self.attrs, **odict})
 
-        with open(self.attrs["name"] + ".lammps", "w") as f:
+        with open(
+            configur.get("directory", "dump_dir") + self.attrs["name"] + ".lammps", "w"
+        ) as f:
             f.write(rendered)
 
         # get a few more attrs now that the lammps file is written
@@ -183,8 +188,10 @@ class Simulation(list):
         signal.signal(signal.SIGTERM, self.signal_handler)
 
         cmd = self.attrs["executable"].split() + [
-            "-log", self.attrs['name'] + ".lmp.log",
-            "-in", self.attrs["name"] + ".lammps",
+            "-log",
+            configur.get("directory", "dump_dir") + self.attrs["name"] + ".lmp.log",
+            "-in",
+            configur.get("directory", "dump_dir") + self.attrs["name"] + ".lammps",
         ]
         self.process = subprocess.Popen(
             cmd,
@@ -194,12 +201,13 @@ class Simulation(list):
             universal_newlines=True,
         )
         for line in self.process.stdout:
-            print(line, end='')
+            print(line, end="")
         self._hasexecuted = True
         return self.process.returncode
+
     # The user is responsible to attach this to their signal handlers,
     # recommended: https://stackoverflow.com/a/72592788/4935114
     def signal_handler(self, *args):
-        if hasattr(self, 'process') and getattr(self, '_hasexecuted', False):
+        if hasattr(self, "process") and getattr(self, "_hasexecuted", False):
             self.process.send_signal(sig=signal.SIGTERM)
             self._hasexecuted = True

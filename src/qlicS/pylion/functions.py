@@ -1,45 +1,21 @@
-from .lammps import lammps
 import numpy as np
 
-""" import re, yaml
-try:
-    from yaml import CSafeLoader as Loader
-except ImportError:
-    from yaml import SafeLoader as Loader
+from .lammps import lammps
 
-# Michael's temperature output attempt
-def temp_generate(steps_per_log):
-    set_thermo = f'thermo {steps_per_log}\n'
-    set_style = f'thermo_style yaml\n'
-    lines = [set_thermo + set_style]
-    return {'code': lines}
-def getTempData():
-    docs = ""
-    with open('log.lammps') as f:
-        for line in f:
-            m = re.search(r"^(keywords:.*$|data:$|---$|\.\.\.$|  - \[.*\]$)",line)
-            if m: docs += m.group(0) + '\n'
-    thermo = list(yaml.load_all(docs, Loader=Loader))
-    steps_list = []
-    temp_list = []
-    for run in thermo:
-        for step in run['data']:
-            steps_list.append(step[0])
-            temp_list.append(step[1])
-    return steps_list, temp_list """
 
 # Michael's oscillating efield attempt
 @lammps.fix
 def dyn_efield(uid, mag_x, f_x, mag_y, f_y, mag_z, f_z):
-    e_magx = f'variable E equal {mag_x}\n'
-    e_oscx = f'variable Ex equal $E*cos((2*3.14)*{f_x}*step)\n'
-    e_magy = f'variable B equal {mag_y}\n'
-    e_oscy = f'variable Ey equal $B*cos((2*3.14)*{f_y}*step)\n'
-    e_magz = f'variable C equal {mag_z}\n'
-    e_oscz = f'variable Ez equal $C*cos((2*3.14)*{f_z}*step)\n'
-    e_field = f'fix {uid} all efield v_Ex v_Ey v_Ez'
-    lines = [e_magx+e_oscx+e_magy+e_oscy+e_magz+e_oscz+e_field]
-    return {'code': lines}
+    e_magx = f"variable E equal {mag_x}\n"
+    e_oscx = f"variable Ex equal $E*cos((2*3.14)*{f_x}*step)\n"
+    e_magy = f"variable B equal {mag_y}\n"
+    e_oscy = f"variable Ey equal $B*cos((2*3.14)*{f_y}*step)\n"
+    e_magz = f"variable C equal {mag_z}\n"
+    e_oscz = f"variable Ez equal $C*cos((2*3.14)*{f_z}*step)\n"
+    e_field = f"fix {uid} all efield v_Ex v_Ey v_Ez"
+    lines = [e_magx + e_oscx + e_magy + e_oscy + e_magz + e_oscz + e_field]
+    return {"code": lines}
+
 
 @lammps.fix
 def efield(uid, ex, ey, ez):
@@ -53,10 +29,9 @@ def efield(uid, ex, ey, ez):
     :param ez: z component of electric field
     """
 
-    lines = ['\n# Static E-field',
-             f'fix {uid} all efield {ex:e} {ey:e} {ez:e}']
+    lines = ["\n# Static E-field", f"fix {uid} all efield {ex:e} {ey:e} {ez:e}"]
 
-    return {'code': lines}
+    return {"code": lines}
 
 
 @lammps.ions
@@ -73,7 +48,7 @@ def placeions(ions, positions):
     :param positions: list of (x, y , z) coodrinates of each ion
     """
 
-    ions.update({'positions': positions})
+    ions.update({"positions": positions})
 
     return ions
 
@@ -93,16 +68,16 @@ def createioncloud(ions, radius, number):
 
     positions = []
 
-    for ind in range(number):
+    for _ind in range(number):
         d = np.random.random() * radius
         a = np.pi * np.random.random()
-        b = 2*np.pi * np.random.random()
+        b = 2 * np.pi * np.random.random()
 
-        positions.append([d * np.sin(a) * np.cos(b),
-                          d * np.sin(a) * np.sin(b),
-                          d * np.cos(a)])
+        positions.append(
+            [d * np.sin(a) * np.cos(b), d * np.sin(a) * np.sin(b), d * np.cos(a)]
+        )
 
-    ions.update({'positions': positions})
+    ions.update({"positions": positions})
 
     return ions
 
@@ -120,10 +95,9 @@ def evolve(steps):
     :param steps: number of steps
     """
 
-    lines = ['\n# Run simulation',
-             f'run {int(steps):d}\n']
+    lines = ["\n# Run simulation", f"run {int(steps):d}\n"]
 
-    return {'code': lines}
+    return {"code": lines}
 
 
 @lammps.command
@@ -145,13 +119,15 @@ def thermalvelocities(temperature, zerototalmomentum=True):
     seed = np.random.randint(1, 1e5)
 
     if zerototalmomentum:
-        tot = 'yes'
+        tot = "yes"
     else:
-        tot = 'no'
+        tot = "no"
 
-    lines = [f'\nvelocity all create {temperature:e} {seed:d} mom {tot} rot yes dist gaussian\n']
+    lines = [
+        f"\nvelocity all create {temperature:e} {seed:d} mom {tot} rot yes dist gaussian\n"
+    ]
 
-    return {'code': lines}
+    return {"code": lines}
 
 
 @lammps.command
@@ -177,12 +153,14 @@ def minimise(etol, ftol, maxiter, maxeval, maxdist):
     :param maxdist: maximum distance atoms can move
     """
 
-    lines = ['\n# minimize',
-             'min_style quickmin',
-             f'min_modify dmax {maxdist:e}',
-             f'minimize {etol:e} {ftol:e} {maxiter:d} {maxeval:d}\n']
+    lines = [
+        "\n# minimize",
+        "min_style quickmin",
+        f"min_modify dmax {maxdist:e}",
+        f"minimize {etol:e} {ftol:e} {maxiter:d} {maxeval:d}\n",
+    ]
 
-    return {'code': lines}
+    return {"code": lines}
 
 
 @lammps.fix
@@ -197,17 +175,19 @@ def ionneutralheating(uid, ions, rate):
 
     rate = abs(rate)  # this is heating after all
     au = 1.66e-27
-    iid = ions['uid']
-    mass = ions['mass']
+    iid = ions["uid"]
+    mass = ions["mass"]
 
-    lines = ['\n# Define ion-neutral heating for a species...',
-             f'group {uid} type {iid}',
-             f'variable k{uid} equal "sqrt(dt * dt * dt * dt * 2 / {mass*au:e} * {rate:e})"',
-             f'variable k{uid} equal "sqrt(2 * {rate:e} * {mass*au:e} / 3 / dt)"',
-             f'variable f{uid}\t\tatom normal(0:d,v_k{uid},1337)',
-             f'fix {uid} {iid} addforce v_f{uid} v_f{uid} v_f{uid}\n']
+    lines = [
+        "\n# Define ion-neutral heating for a species...",
+        f"group {uid} type {iid}",
+        f'variable k{uid} equal "sqrt(dt * dt * dt * dt * 2 / {mass*au:e} * {rate:e})"',
+        f'variable k{uid} equal "sqrt(2 * {rate:e} * {mass*au:e} / 3 / dt)"',
+        f"variable f{uid}\t\tatom normal(0:d,v_k{uid},1337)",
+        f"fix {uid} {iid} addforce v_f{uid} v_f{uid} v_f{uid}\n",
+    ]
 
-    return {'code': lines}
+    return {"code": lines}
 
 
 @lammps.fix
@@ -226,10 +206,12 @@ def langevinbath(uid, temperature, dampingtime):
     :param dampingtime: effectively defines coupling strength to the bath
     """
 
-    lines = ['\n# Adding a langevin bath...',
-             f'fix {uid} all langevin {temperature:e} {temperature:e} {dampingtime:e} 1337\n']
+    lines = [
+        "\n# Adding a langevin bath...",
+        f"fix {uid} all langevin {temperature:e} {temperature:e} {dampingtime:e} 1337\n",
+    ]
 
-    return {'code': lines}
+    return {"code": lines}
 
 
 @lammps.fix
@@ -245,109 +227,125 @@ def lasercool(uid, ions, k):
     """
 
     kx, ky, kz = k
-    iid = ions['uid']
+    iid = ions["uid"]
 
-    lines = ['\n# Define laser cooling for a particular atom species.',
-             f'group {uid} type {iid}',
-             f'variable kx{uid}\t\tequal {kx:e}',
-             f'variable ky{uid}\t\tequal {ky:e}',
-             f'variable kz{uid}\t\tequal {kz:e}',
-             f'variable fX{uid} atom "-v_kx{uid} * vx"',
-             f'variable fY{uid} atom "-v_ky{uid} * vy"',
-             f'variable fZ{uid} atom "-v_kz{uid} * vz"',
-             f'fix {uid} {uid} addforce v_fX{uid} v_fY{uid} v_fZ{uid}\n']
+    lines = [
+        "\n# Define laser cooling for a particular atom species.",
+        f"group {uid} type {iid}",
+        f"variable kx{uid}\t\tequal {kx:e}",
+        f"variable ky{uid}\t\tequal {ky:e}",
+        f"variable kz{uid}\t\tequal {kz:e}",
+        f'variable fX{uid} atom "-v_kx{uid} * vx"',
+        f'variable fY{uid} atom "-v_ky{uid} * vy"',
+        f'variable fZ{uid} atom "-v_kz{uid} * vz"',
+        f"fix {uid} {uid} addforce v_fX{uid} v_fY{uid} v_fZ{uid}\n",
+    ]
 
-    return {'code': lines}
+    return {"code": lines}
 
 
 def _rftrap(uid, trap):
     odict = {}
-    ev = trap['endcapvoltage']
-    radius = trap['radius']
-    length = trap['length']
-    kappa = trap['kappa']
-    anisotropy = trap.get('anisotropy', 1)
-    offset = trap.get('offset', (0, 0))
+    ev = trap["endcapvoltage"]
+    radius = trap["radius"]
+    length = trap["length"]
+    kappa = trap["kappa"]
+    anisotropy = trap.get("anisotropy", 1)
+    offset = trap.get("offset", (0, 0))
 
-    #odict['timestep'] = 1 / np.max(trap['frequency']) / 20
-    odict['timestep'] = explicit_timestep
+    # odict['timestep'] = 1 / np.max(trap['frequency']) / 20
+    # odict['timestep'] = explicit_timestep
 
-    lines = [f'\n# Creating a Linear Paul Trap... (fixID={uid})',
-             f'variable endCapV{uid}\t\tequal {ev:e}',
-             f'variable radius{uid}\t\tequal {radius:e}',
-             f'variable zLength{uid}\t\tequal {length:e}',
-             f'variable geomC{uid}\t\tequal {kappa:e}',
-             '\n# Define frequency components.']
+    lines = [
+        f"\n# Creating a Linear Paul Trap... (fixID={uid})",
+        f"variable endCapV{uid}\t\tequal {ev:e}",
+        f"variable radius{uid}\t\tequal {radius:e}",
+        f"variable zLength{uid}\t\tequal {length:e}",
+        f"variable geomC{uid}\t\tequal {kappa:e}",
+        "\n# Define frequency components.",
+    ]
 
     voltages = []
     freqs = []
-    if hasattr(trap['voltage'], '__iter__'):
-        voltages.extend(trap['voltage'])
-        freqs.extend(trap['frequency'])
+    if hasattr(trap["voltage"], "__iter__"):
+        voltages.extend(trap["voltage"])
+        freqs.extend(trap["frequency"])
     else:
-        voltages.append(trap['voltage'])
-        freqs.append(trap['frequency'])
+        voltages.append(trap["voltage"])
+        freqs.append(trap["frequency"])
 
     for i, (v, f) in enumerate(zip(voltages, freqs)):
-        lines.append(f'variable oscVx{uid}{i:d}\t\tequal {v:e}')
-        lines.append(f'variable oscVy{uid}{i:d}\t\tequal {anisotropy*v:e}')
+        lines.append(f"variable oscVx{uid}{i:d}\t\tequal {v:e}")
+        lines.append(f"variable oscVy{uid}{i:d}\t\tequal {anisotropy*v:e}")
         lines.append(f'variable phase{uid}{i:d}\t\tequal "{2*np.pi*f:e} * step*dt"')
-        lines.append(f'variable oscConstx{uid}{i:d}\t\tequal "v_oscVx{uid}{i:d}/(v_radius{uid}*v_radius{uid})"')
-        lines.append(f'variable oscConsty{uid}{i:d}\t\tequal "v_oscVy{uid}{i:d}/(v_radius{uid}*v_radius{uid})"')
+        lines.append(
+            f'variable oscConstx{uid}{i:d}\t\tequal \
+            "v_oscVx{uid}{i:d}/(v_radius{uid}*v_radius{uid})"'
+        )
+        lines.append(
+            f'variable oscConsty{uid}{i:d}\t\tequal \
+            "v_oscVy{uid}{i:d}/(v_radius{uid}*v_radius{uid})"'
+        )
 
     lines.append(
-        f'variable statConst{uid}\t\tequal "v_geomC{uid} * v_endCapV{uid} / (v_zLength{uid} * v_zLength{uid})"\n')
+        f'variable statConst{uid}\t\tequal \
+        "v_geomC{uid} * v_endCapV{uid} / (v_zLength{uid} * v_zLength{uid})"\n'
+    )
 
     xc = []
     yc = []
 
-    xpos = f'(x-{offset[0]:e})'
-    ypos = f'(y-{offset[1]:e})'
+    xpos = f"(x-{offset[0]:e})"
+    ypos = f"(y-{offset[1]:e})"
 
     # Simplify this case for 0 displacement
     if offset[0] == 0:
-        xpos = 'x'
+        xpos = "x"
 
     if offset[1] == 0:
-        ypos = 'y'
+        ypos = "y"
 
     for i, _ in enumerate(voltages):
-        xc.append(f'v_oscConstx{uid}{i:d} * cos(v_phase{uid}{i:d}) * {xpos}')
-        yc.append(f'v_oscConsty{uid}{i:d} * cos(v_phase{uid}{i:d}) * -{ypos}')
+        xc.append(f"v_oscConstx{uid}{i:d} * cos(v_phase{uid}{i:d}) * {xpos}")
+        yc.append(f"v_oscConsty{uid}{i:d} * cos(v_phase{uid}{i:d}) * -{ypos}")
 
-    xc = ' + '.join(xc)
-    yc = ' + '.join(yc)
+    xc = " + ".join(xc)
+    yc = " + ".join(yc)
 
     lines.append(f'variable oscEX{uid} atom "{xc} + v_statConst{uid} * {xpos}"')
     lines.append(f'variable oscEY{uid} atom "{yc} + v_statConst{uid} * {ypos}"')
     lines.append(f'variable statEZ{uid} atom "v_statConst{uid} * 2 * -z"')
-    lines.append(f'fix {uid} all efield v_oscEX{uid} v_oscEY{uid} v_statEZ{uid}\n')
+    lines.append(f"fix {uid} all efield v_oscEX{uid} v_oscEY{uid} v_statEZ{uid}\n")
 
-    odict.update({'code': lines})
+    odict.update({"code": lines})
 
     return odict
 
 
-def _pseudotrap(uid, k, group='all'):
+def _pseudotrap(uid, k, group="all"):
 
-    lines = [f'\n# Pseudopotential approximation for Linear Paul trap... (fixID={uid})']
+    lines = [f"\n# Pseudopotential approximation for Linear Paul trap... (fixID={uid})"]
 
     # Add a cylindrical SHO for the pseudopotential
     kx, ky, kz = k
 
-    sho = ['\n# SHO',
-           f'variable k_x{uid}\t\tequal {kx:e}',
-           f'variable k_y{uid}\t\tequal {ky:e}',
-           f'variable k_z{uid}\t\tequal {kz:e}',
-           f'variable fX{uid} atom "-v_k_x{uid} * x"',
-           f'variable fY{uid} atom "-v_k_y{uid} * y"',
-           f'variable fZ{uid} atom "-v_k_z{uid} * z"',
-           f'variable E{uid} atom "v_k_x{uid} * x * x / 2 + v_k_y{uid} * y * y / 2 + v_k_z{uid} * z * z / 2"',
-           f'fix {uid} {group} addforce v_fX{uid} v_fY{uid} v_fZ{uid} energy v_E{uid}\n']
+    sho = [
+        "\n# SHO",
+        f"variable k_x{uid}\t\tequal {kx:e}",
+        f"variable k_y{uid}\t\tequal {ky:e}",
+        f"variable k_z{uid}\t\tequal {kz:e}",
+        f'variable fX{uid} atom "-v_k_x{uid} * x"',
+        f'variable fY{uid} atom "-v_k_y{uid} * y"',
+        f'variable fZ{uid} atom "-v_k_z{uid} * z"',
+        f'variable E{uid} atom "v_k_x{uid} * x * x / \
+        2 + v_k_y{uid} * y * y / 2 + v_k_z{uid} * z * z / 2"',
+        f"fix {uid} {group} addforce \
+        v_fX{uid} v_fY{uid} v_fZ{uid} energy v_E{uid}\n",
+    ]
 
     lines.extend(sho)
 
-    return {'code': lines}
+    return {"code": lines}
 
 
 @lammps.fix
@@ -386,39 +384,39 @@ def linearpaultrap(uid, trap, ions=None, all=True):
       all the ions in the simulation or just a single species
     """
 
-    if trap.get('pseudo'):
-        charge = ions['charge'] * 1.6e-19
-        mass = ions['mass'] * 1.66e-27
-        ev = trap['endcapvoltage']
-        radius = trap['radius']
-        length = trap['length']
-        kappa = trap['kappa']
-        freq = trap['frequency']
-        voltage = trap['voltage']
-        explicit_timestep = trap['timestep']
+    if trap.get("pseudo"):
+        charge = ions["charge"] * 1.6e-19
+        mass = ions["mass"] * 1.66e-27
+        ev = trap["endcapvoltage"]
+        radius = trap["radius"]
+        length = trap["length"]
+        kappa = trap["kappa"]
+        freq = trap["frequency"]
+        voltage = trap["voltage"]
+        # explicit_timestep = trap['timestep']
 
-        ar = -4 * charge * kappa * ev / (mass * length**2 * (2*np.pi * freq)**2)
-        az = -2*ar
+        ar = -4 * charge * kappa * ev / (mass * length**2 * (2 * np.pi * freq) ** 2)
+        az = -2 * ar
 
-        qr = 2 * charge * voltage / (mass * radius**2 * (2*np.pi * freq)**2)
+        qr = 2 * charge * voltage / (mass * radius**2 * (2 * np.pi * freq) ** 2)
 
-        wr = 2*np.pi * freq / 2 * np.sqrt(ar + qr**2 / 2)
-        wz = 2*np.pi * freq / 2 * np.sqrt(az)
+        wr = 2 * np.pi * freq / 2 * np.sqrt(ar + qr**2 / 2)
+        wz = 2 * np.pi * freq / 2 * np.sqrt(az)
 
-        print(f'Frequency of motion: fr = {wr/2/np.pi:e}, fz = {wz/2/np.pi:e}')
+        print(f"Frequency of motion: fr = {wr/2/np.pi:e}, fz = {wz/2/np.pi:e}")
 
         # Spring constants for force calculation.
         kr = wr**2 * mass
         kz = wz**2 * mass
 
         odict = {}
-        #odict['timestep'] = 1 / max(wz, wr) / 10
-        odict['timestep'] = explicit_timestep
+        # odict['timestep'] = 1 / max(wz, wr) / 10
+        # odict['timestep'] = explicit_timestep
 
         if all:
-            group = 'all'
+            group = "all"
         else:
-            group = ions['uid']
+            group = ions["uid"]
 
         sho = _pseudotrap(uid, (kr, kr, kz), group)
 
@@ -428,7 +426,7 @@ def linearpaultrap(uid, trap, ions=None, all=True):
         return _rftrap(uid, trap)
 
 
-@lammps.variable('fix')
+@lammps.variable("fix")
 def timeaverage(uid, steps, variables):
     """A variable in LAMMPS representing a time averaged quantity over a
     number of steps.
@@ -437,14 +435,14 @@ def timeaverage(uid, steps, variables):
     :param variables: list of variables to be averaged
     """
 
-    variables = ' '.join(variables)
+    variables = " ".join(variables)
 
-    lines = [f'fix {uid} all ave/atom 1 {steps:d} {steps:d} {variables}\n']
+    lines = [f"fix {uid} all ave/atom 1 {steps:d} {steps:d} {variables}\n"]
 
-    return {'code': lines}
+    return {"code": lines}
 
 
-@lammps.variable('var')
+@lammps.variable("var")
 def squaresum(uid, variables):
     """Creates a lammps variable that calculates the square sum of the
     input variables.
@@ -452,12 +450,12 @@ def squaresum(uid, variables):
     :param variables: list of variables
     """
 
-    vsq = [f'{v}^2' for v in variables]
-    sqs = '+'.join(vsq)
+    vsq = [f"{v}^2" for v in variables]
+    sqs = "+".join(vsq)
 
-    lines = [f'variable {uid} atom "{sqs}"\n']
+    lines = [f'variable {uid} atom "{sqs!r}"\n']
 
-    return {'code': lines}
+    return {"code": lines}
 
 
 @lammps.fix
@@ -472,14 +470,14 @@ def dump(uid, filename, variables, steps=10):
     lines = []
 
     try:
-        names = variables['output']
-        lines.extend(variables['code'])
-    except:
-        names = ' '.join(variables)
+        names = variables["output"]
+        lines.extend(variables["code"])
+    except Exception:
+        names = " ".join(variables)
 
-    lines.append(f'dump {uid} all custom {steps:d} {filename} id {names}\n')
+    lines.append(f"dump {uid} all custom {steps:d} {filename} id {names}\n")
 
-    return {'code': lines}
+    return {"code": lines}
 
 
 def trapaqtovoltage(ions, trap, a, q):
@@ -488,15 +486,15 @@ def trapaqtovoltage(ions, trap, a, q):
     :return: tuple of (voltage, endcapvoltage)
     """
 
-    mass = ions['mass'] * 1.66e-27
-    charge = ions['charge'] * 1.6e-19
-    radius = trap['radius']
-    length = trap['length']
-    kappa = trap['kappa']
-    freq = trap['frequency']
+    mass = ions["mass"] * 1.66e-27
+    charge = ions["charge"] * 1.6e-19
+    radius = trap["radius"]
+    length = trap["length"]
+    kappa = trap["kappa"]
+    freq = trap["frequency"]
 
-    endcapV = a * mass * length**2 * (2*np.pi * freq)**2 / (-kappa * 4*charge)
-    oscV = -q * mass * radius**2 * (2*np.pi * freq)**2 / (2*charge)
+    endcapV = a * mass * length**2 * (2 * np.pi * freq) ** 2 / (-kappa * 4 * charge)
+    oscV = -q * mass * radius**2 * (2 * np.pi * freq) ** 2 / (2 * charge)
 
     return oscV, endcapV
 
@@ -512,16 +510,15 @@ def readdump(filename):
 
     steps = []
     data = []
-    import time
 
-    with open(filename, 'r') as f:
+    with open(filename, "r") as f:
         for line in f:
-            if line[6:9] == 'TIM':
+            if line[6:9] == "TIM":
                 steps.append(next(f))
-            elif line[6:9] == 'NUM':
+            elif line[6:9] == "NUM":
                 ions = int(next(f))
-            elif line[6:9] == 'ATO':
-                if line[12:14] != 'id':
+            elif line[6:9] == "ATO":
+                if line[12:14] != "id":
                     raise TypeError
                 block = [next(f).split()[1:] for _ in range(ions)]
                 data.append(block)

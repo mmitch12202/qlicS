@@ -17,9 +17,18 @@ h5py = "2.10.0"
 jinja2 = "2.10.3"
 markupsafe = "2.0.1"
 termcolor = "^2.4.0"
+numpy = "1.23.0"
+[tool.poetry.group.dev.dependencies]
+pytest = "^8.2.2"
+
+pytest-mock = "^3.14.0"
+mock = "^5.1.0"
+coverage = {extras = ["toml"], version = "^7.5.4"}
+pytest-cov = "^5.0.0"
 [build-system]
 requires = ["poetry-core"]
 build-backend = "poetry.core.masonry.api"
 
 [tool.poetry.scripts]
 qlicS = "qlicS.cl_console:main"
+setup_test = "qlicS.config_controller:setup_sequence"

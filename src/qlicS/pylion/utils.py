@@ -1,10 +1,9 @@
+import functools
 import inspect
 import os
-import sys
-import warnings
-import functools
-from termcolor import colored
 import random
+
+from termcolor import colored
 
 
 def pretty_repr(_cls):
