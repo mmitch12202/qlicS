@@ -9,7 +9,6 @@ import jinja2 as j2
 
 from ..config_controller import configur
 
-
 __version__ = "0.5.3"
 
 

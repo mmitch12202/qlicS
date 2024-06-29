@@ -12,7 +12,6 @@ keywords = ["LAMMPS", "Ion Trap", "Linear Paul Trap"]
 python = "^3.8"
 click = "^8.1.7"
 
-
 h5py = "2.10.0"
 jinja2 = "2.10.3"
 markupsafe = "2.0.1"
@@ -25,6 +24,7 @@ pytest-mock = "^3.14.0"
 mock = "^5.1.0"
 coverage = {extras = ["toml"], version = "^7.5.4"}
 pytest-cov = "^5.0.0"
+isort = "^5.13.2"
 [build-system]
 requires = ["poetry-core"]
 build-backend = "poetry.core.masonry.api"

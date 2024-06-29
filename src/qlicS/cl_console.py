@@ -1,8 +1,6 @@
 import click
 
-from . import __version__
-from . import config_controller
-from . import exp_sequence_controller
+from . import __version__, config_controller, exp_sequence_controller
 
 
 @click.command()

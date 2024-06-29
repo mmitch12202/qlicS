@@ -12,13 +12,13 @@ from .trap import gen_trap_lammps
 def create_and_run_sim():
     s = pl.Simulation("test")
     s.append(pylion_dumping())
-    be_cloud = pylion_cloud("Be+")
+    be_cloud = pylion_cloud("be+")
     s.append(be_cloud)
 
-    gen_trap_lammps(be_cloud)
+    s.append(gen_trap_lammps(be_cloud))
 
     s.append(
-        create_cooling_laser(eval(configur.get("ions", "Be+"))[1], be_cloud["uid"])
+        create_cooling_laser(eval(configur.get("ions", "be+"))[1], be_cloud["uid"])
     )
     s.append(evolve())
 
@@ -27,7 +27,6 @@ def create_and_run_sim():
 
     s.execute()
 
-    # ANALYSIS
-    # TODO: scattering
+    # Analysis
 
     print(get_scattering())

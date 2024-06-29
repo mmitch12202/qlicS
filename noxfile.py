@@ -9,6 +9,7 @@ def black(session):
     args = session.posargs or locations
     session.install("black")
     session.run("black", *args)
+    session.run("isort", "--profile", "black", "src")
 
 
 @nox.session(python=["3.8.13"])

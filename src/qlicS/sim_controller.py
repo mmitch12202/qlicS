@@ -5,7 +5,7 @@ from .pylion import functions as pl_func
 def pylion_dumping():
     dump_dir = configur.get("directory", "dump_dir")
     return pl_func.dump(
-        dump_dir + "positions.txt",
+        f"{dump_dir}positions.txt",
         variables=[
             "x",
             "y",
@@ -13,6 +13,6 @@ def pylion_dumping():
             "vx",
             "vy",
             "vz",
-        ],  # TODO this should probably go in the config.ini
+        ],  # TODO this should probably go in config.ini
         steps=eval(configur.get("sim_parameters", "log_steps")),
     )

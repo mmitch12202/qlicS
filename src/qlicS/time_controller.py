@@ -14,9 +14,8 @@ def evolve():
     evolve = pl_func.evolve(Deltat)
     current_timeblock_num += 1
     configur.set("live_vars", "current_timesequence_pos", str(current_timeblock_num))
-    configfile = open(dump_dir(setup=False) + "config.ini", "w")
-    configur.write(configfile)
-    configfile.close()
+    with open(f"{dump_dir(setup=False)}config.ini", "w") as configfile:
+        configur.write(configfile)
     return {"code": set_timestep + evolve["code"]}
 
 
@@ -31,9 +30,10 @@ def get_dt_given_timestep(timestep):
     time_sequence = eval(configur.get("sim_parameters", "timesequence"))
     prev_Delt, nex_Delt = (0,) * 2
     for idx, time_chunk in enumerate(time_sequence):
-        if not idx == 0:
+        if idx != 0:
             prev_Delt += time_sequence[idx - 1][1]
         nex_Delt += time_chunk[1]
         if timestep < nex_Delt and timestep >= prev_Delt:
             return time_chunk[0]
+    # sourcery skip: raise-specific-error
     raise Exception(f"Timestep {timestep} is beyond simulation duration {nex_Delt}")

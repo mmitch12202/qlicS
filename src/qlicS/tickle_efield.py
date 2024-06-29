@@ -77,5 +77,4 @@ def create_tickle():
     e_magz = f"variable C equal {statics[2]}\n"
 
     lines = [e_magx + e_oscx + e_magy + e_oscy + e_magz + e_oscz + e_field]
-    field = {"uid": uid, "code": lines}
-    return field
+    return {"uid": uid, "code": lines}
