@@ -5,62 +5,25 @@ from configparser import ConfigParser
 
 import numpy as np
 
-# Configur Object
+# Main Configur Object
 configur = ConfigParser()
 
 
 def dump_dir(setup=True):
-    dump_dir = str(os.getcwd()) + "/data/" + time.strftime("%Y-%m-%d_%H-%M-%S") + "/"
+    dump_dir = f"{os.getcwd()}/data/" + time.strftime("%Y-%m-%d_%H-%M-%S") + "/"
     if setup:
         os.makedirs(dump_dir)
-    return dump_dir
+        return dump_dir
+    else:
+        return configur.get("directory", "dump_dir")
 
 
-def create_config(dump_dir):
-    # Write configuration
-    # Normally Un-changing Content
-    configur["directory"] = {"dump_dir": dump_dir}
+def create_universe():
     configur["constants"] = {
         "h": 6.626e-34,
         "c": 299792458,
         "amu": 1.6605402e-27,
         "ele_charge": 1.60217663e-19,
-    }
-    configur["live_vars"] = {"current_timesequence_pos": 0}
-    configur["sim_parameters"] = {
-        "log_steps": 10,
-        # [[dt1, Δt1], [dt2, Δt2] etc...], Δt (timesteps) is just the number of dt's
-        "timesequence": [[1e-8, 1e4], [1e-9, 1e4]],
-    }
-    configur["modulation"] = {
-        "uid": 569202603907006,
-        "amp": 3e-3,
-        "frequency": 717000,  # hz
-        "Ex0": 0.319039e3,
-        "Exx1": -0.320779e6,
-        "Exx2": 0.16384e9,
-        "Exy1": 0.00318837e6,
-        "Exy2": -0.158115e9,
-        "Exz1": -4.83258e-1,
-        "Exz2": 0.0000162061e9,
-        "Ey0": -0.00362944e3,
-        "Eyx1": 0.00352719e6,
-        "Eyx2": 0.000660075e9,
-        "Eyy1": 0.320888e6,
-        "Eyy2": -0.001252e9,
-        "Eyz1": 1.91814,
-        "Eyz2": 0.0000135735e9,
-        "Ez0": 1.11849e-3,
-        "Ezx1": -5.82074e-1,
-        "Ezx2": -7.895e2,
-        "Ezy1": 2.08274,
-        "Ezy2": 1.40833e3,
-        "Ezz1": -0.0000575482e6,
-        "Ezz2": 1.53512e2,
-        "x_shift": 0,
-        "y_shift": 0,
-        "z_shift": 0,
-        "static": [0, 0, 0],
     }
     # Beryllium as the coolant ion,
     # O2 is cooled sympathetically in our system
@@ -79,60 +42,189 @@ def create_config(dump_dir):
             {"natural linewidth": None, "absorption center": None, "saturation": None},
         ],
     }
-    configur["ion_cloud"] = {"radius": 1e-3, "count": 50}
-    configur["trap"] = {
-        "radius": 3.75e-3,
-        "length": 2.75e-3,
-        "kappa": 0.244,
-        "frequency": 3.85e6,
-        "voltage": 500,
-        "endcapvoltage": 15,
-        "pseudo": True,
-    }
-    # Note: - I am trying to use more useful variables here
-    # that can be scaled against the species,
-    # hence 'saturation_paramater' and 'detunning'
-    # as opposed to 'saturation' and 'frequency'.
-    # Detunning is assumed to be red.
-    configur["cooling_laser"] = {
-        "beam_radius": 0.1e-3,
-        "saturation_paramater": 100,
-        "detunning": 3e8,
-        "laser_direction": [
-            -1 / 2,
-            -1 / 2,
-            -1 / np.sqrt(2),
-        ],  # TODO as of now this needs to be normalized manually - fix
-        "laser_origin_position": [0, 0, 0],
-    }
-    configur["scattering_laser"] = {
-        "scattered_ion_indices": [
-            0,
-            50,
-        ],  # TODO I think we should eventually move this into the "ions" section
-        "target_species": "be+",
-        "laser_direction": [
-            -1 / 2,
-            -1 / 2,
-            -1 / np.sqrt(2),
-        ],  # TODO as of now this needs to be normalized manually - fix
-        "saturation_paramater": 100,
-        "frequency": 9.578e14,
+
+
+def create_sim_skeleton(
+    log_steps,
+    timesequence,
+    detection_timestep_seq,
+    detector_area,
+    detector_effeciency,
+    detector_distance,
+):
+    configur["sim_parameters"] = {
+        "log_steps": log_steps,
+        "timesequence": timesequence,
     }
     configur["detection"] = {
-        "detection_timestep_seq": [[15000, 16000], [17000, 19000]],
-        "detector_area": 0.0001,
-        "detector_effeciency": 0.01,
-        "detector_distance": 0.2,
+        "detection_timestep_seq": detection_timestep_seq,
+        "detector_area": detector_area,
+        "detector_effeciency": detector_effeciency,
+        "detector_distance": detector_distance,
     }
-    configfile = open(dump_dir + "config.ini", "w")
-    configur.write(configfile)
-    configfile.close()
+
+
+def configur_modulation(
+    type_pos,
+    uid,
+    amp,
+    frequency,
+    Ex0,
+    Exx1,
+    Exx2,
+    Exy1,
+    Exy2,
+    Exz1,
+    Exz2,
+    Ey0,
+    Eyx1,
+    Eyx2,
+    Eyy1,
+    Eyy2,
+    Eyz1,
+    Eyz2,
+    Ez0,
+    Ezx1,
+    Ezx2,
+    Ezy1,
+    Ezy2,
+    Ezz1,
+    Ezz2,
+    x_shift,
+    y_shift,
+    z_shift,
+    static,
+):
+    configur[f"modulation_{type_pos}"] = {
+        "uid": uid,
+        "amp": amp,
+        "frequency": frequency,
+        "Ex0": Ex0,
+        "Exx1": Exx1,
+        "Exx2": Exx2,
+        "Exy1": Exy1,
+        "Exy2": Exy2,
+        "Exz1": Exz1,
+        "Exz2": Exz2,
+        "Ey0": Ey0,
+        "Eyx1": Eyx1,
+        "Eyx2": Eyx2,
+        "Eyy1": Eyy1,
+        "Eyy2": Eyy2,
+        "Eyz1": Eyz1,
+        "Eyz2": Eyz2,
+        "Ez0": Ez0,
+        "Ezx1": Ezx1,
+        "Ezx2": Ezx2,
+        "Ezy1": Ezy1,
+        "Ezy2": Ezy2,
+        "Ezz1": Ezz1,
+        "Ezz2": Ezz2,
+        "x_shift": x_shift,
+        "y_shift": y_shift,
+        "z_shift": z_shift,
+        "static": static,
+    }
+
+
+def configur_ion_cloud(type_pos, species, radius, count):
+    configur[f"ion_cloud_{type_pos}"] = {
+        "species": species,
+        "radius": radius,
+        "count": count,
+    }
+
+
+def configur_trap(
+    type_pos,
+    target_ion_pos,
+    radius,
+    length,
+    kappa,
+    frequency,
+    voltage,
+    endcapvoltage,
+    pseudo,
+):
+    configur[f"trap_{type_pos}"] = {
+        "target_ion_pos": target_ion_pos,
+        "radius": radius,
+        "length": length,
+        "kappa": kappa,
+        "frequency": frequency,
+        "voltage": voltage,
+        "endcapvoltage": endcapvoltage,
+        "pseudo": pseudo,
+    }
+
+
+def configur_cooling_laser(
+    type_pos,
+    target_ion_pos,
+    target_ion_type,
+    beam_radius,
+    saturation_paramater,
+    detunning,
+    laser_direction,
+    laser_origin_position,
+):
+    configur[f"cooling_laser_{type_pos}"] = {
+        "target_ion_pos": target_ion_pos,
+        "target_ion_type": target_ion_type,
+        "beam_radius": beam_radius,
+        "saturation_paramater": saturation_paramater,
+        "detunning": detunning,
+        "laser_direction": laser_direction,
+        "laser_origin_position": laser_origin_position,
+    }
+
+
+def configur_scattering_laser(
+    scattered_ion_indices,
+    target_species,
+    laser_direction,
+    saturation_paramater,
+    frequency,
+):
+    configur["scattering_laser"] = {
+        "scattered_ion_indices": scattered_ion_indices,
+        "target_species": target_species,
+        "laser_direction": laser_direction,
+        "saturation_paramater": saturation_paramater,
+        "frequency": frequency,
+    }
+
+
+def create_exp_seq(exp_seq: str):
+    configur["exp_seq"] = {"com_list": exp_seq}
+
+
+def create_config(dump_dir):
+    # sourcery skip: ensure-file-closed, use-fstring-for-concatenation
+    # Write configuration
+    # Normally Un-changing Content
+    configur["directory"] = {"dump_dir": dump_dir}
+    configur["live_vars"] = {"current_timesequence_pos": 0}
+    create_universe()
+
+
+def commit_changes():
+    with open(f"{dir}config.ini", "w") as configfile:
+        configur.write(configfile)
 
 
 def setup_sequence():
-    # Using a global variable - there is a more pythonic way of doing this...
-    # I think the above is resolved, try removing
-    global dir
-    dir = dump_dir()
-    create_config(dir)
+    direc = dump_dir()
+    create_config(direc)
+    commit_changes()
+
+
+# getting
+
+
+def get_ions():
+    return list(dict(configur.items("ions")).keys())
+
+
+def get_sections():
+    return configur.sections()

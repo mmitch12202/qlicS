@@ -4,67 +4,67 @@ from .config_controller import configur
 from .time_controller import get_current_dt
 
 
-def create_tickle():
-    frequency = eval(configur.get("modulation", "frequency"))
-    uid = eval(configur.get("modulation", "uid"))
-    tickleamp = eval(configur.get("modulation", "amp"))
-    statics = eval(configur.get("modulation", "static"))
+def create_tickle(type_pos):
+    frequency = eval(configur.get(f"modulation_{type_pos}", "frequency"))
+    uid = eval(configur.get(f"modulation_{type_pos}", "uid"))
+    tickleamp = eval(configur.get(f"modulation_{type_pos}", "amp"))
+    statics = eval(configur.get(f"modulation_{type_pos}", "static"))
     freq = frequency * get_current_dt()
 
-    # Keep dimensional support?
+    # Keep dimensional support? TODO
     f_x = freq
     f_y = freq
     f_z = freq
 
     e_oscx = (
         f"variable Ex atom ({tickleamp}*"
-        f'({eval(configur.get("modulation", "Ex0"))}+'
-        f'{eval(configur.get("modulation", "Exx1"))}*'
-        f'(x-{eval(configur.get("modulation", "x_shift"))})+'
-        f'{eval(configur.get("modulation", "Exx2"))}*'
-        f'(x-{eval(configur.get("modulation", "x_shift"))})^2+'
-        f'{eval(configur.get("modulation", "Exy1"))}*'
-        f'(y-{eval(configur.get("modulation", "y_shift"))})+'
-        f'{eval(configur.get("modulation", "Exy2"))}*'
-        f'(y-{eval(configur.get("modulation", "y_shift"))})^2+'
-        f'{eval(configur.get("modulation", "Exz1"))}*'
-        f'(z-{eval(configur.get("modulation", "z_shift"))})+'
-        f'{eval(configur.get("modulation", "Exz2"))}*'
-        f'(z-{eval(configur.get("modulation", "z_shift"))})^2))*'
+        f'({eval(configur.get(f"modulation_{type_pos}", "Ex0"))}+'
+        f'{eval(configur.get(f"modulation_{type_pos}", "Exx1"))}*'
+        f'(x-{eval(configur.get(f"modulation_{type_pos}", "x_shift"))})+'
+        f'{eval(configur.get(f"modulation_{type_pos}", "Exx2"))}*'
+        f'(x-{eval(configur.get(f"modulation_{type_pos}", "x_shift"))})^2+'
+        f'{eval(configur.get(f"modulation_{type_pos}", "Exy1"))}*'
+        f'(y-{eval(configur.get(f"modulation_{type_pos}", "y_shift"))})+'
+        f'{eval(configur.get(f"modulation_{type_pos}", "Exy2"))}*'
+        f'(y-{eval(configur.get(f"modulation_{type_pos}", "y_shift"))})^2+'
+        f'{eval(configur.get(f"modulation_{type_pos}", "Exz1"))}*'
+        f'(z-{eval(configur.get(f"modulation_{type_pos}", "z_shift"))})+'
+        f'{eval(configur.get(f"modulation_{type_pos}", "Exz2"))}*'
+        f'(z-{eval(configur.get(f"modulation_{type_pos}", "z_shift"))})^2))*'
         f"cos((2*{pi})*{f_x}*step)\n"
     )
     e_oscy = (
         f"variable Ey atom ({tickleamp}*"
-        f'({eval(configur.get("modulation", "Ey0"))}+'
-        f'{eval(configur.get("modulation", "Eyx1"))}*'
-        f'(x-{eval(configur.get("modulation", "x_shift"))})+'
-        f'{eval(configur.get("modulation", "Eyx2"))}*'
-        f'(x-{eval(configur.get("modulation", "x_shift"))})^2+'
-        f'{eval(configur.get("modulation", "Eyy1"))}*'
-        f'(y-{eval(configur.get("modulation", "y_shift"))})+'
-        f'{eval(configur.get("modulation", "Eyy2"))}*'
-        f'(y-{eval(configur.get("modulation", "y_shift"))})^2+'
-        f'{eval(configur.get("modulation", "Eyz1"))}*'
-        f'(z-{eval(configur.get("modulation", "z_shift"))})+'
-        f'{eval(configur.get("modulation", "Eyz2"))}*'
-        f'(z-{eval(configur.get("modulation", "z_shift"))})^2))*'
+        f'({eval(configur.get(f"modulation_{type_pos}", "Ey0"))}+'
+        f'{eval(configur.get(f"modulation_{type_pos}", "Eyx1"))}*'
+        f'(x-{eval(configur.get(f"modulation_{type_pos}", "x_shift"))})+'
+        f'{eval(configur.get(f"modulation_{type_pos}", "Eyx2"))}*'
+        f'(x-{eval(configur.get(f"modulation_{type_pos}", "x_shift"))})^2+'
+        f'{eval(configur.get(f"modulation_{type_pos}", "Eyy1"))}*'
+        f'(y-{eval(configur.get(f"modulation_{type_pos}", "y_shift"))})+'
+        f'{eval(configur.get(f"modulation_{type_pos}", "Eyy2"))}*'
+        f'(y-{eval(configur.get(f"modulation_{type_pos}", "y_shift"))})^2+'
+        f'{eval(configur.get(f"modulation_{type_pos}", "Eyz1"))}*'
+        f'(z-{eval(configur.get(f"modulation_{type_pos}", "z_shift"))})+'
+        f'{eval(configur.get(f"modulation_{type_pos}", "Eyz2"))}*'
+        f'(z-{eval(configur.get(f"modulation_{type_pos}", "z_shift"))})^2))*'
         f"cos((2*{pi})*{f_y}*step)\n"
     )
     e_oscz = (
         f"variable Ez atom ({tickleamp}*"
-        f'({eval(configur.get("modulation", "Ez0"))}+'
-        f'{eval(configur.get("modulation", "Ezx1"))}*'
-        f'(x-{eval(configur.get("modulation", "x_shift"))})+'
-        f'{eval(configur.get("modulation", "Ezx2"))}*'
-        f'(x-{eval(configur.get("modulation", "x_shift"))})^2+'
-        f'{eval(configur.get("modulation", "Ezy1"))}*'
-        f'(y-{eval(configur.get("modulation", "y_shift"))})+'
-        f'{eval(configur.get("modulation", "Ezy2"))}*'
-        f'(y-{eval(configur.get("modulation", "y_shift"))})^2+'
-        f'{eval(configur.get("modulation", "Ezz1"))}*'
-        f'(z-{eval(configur.get("modulation", "z_shift"))})+'
-        f'{eval(configur.get("modulation", "Ezz2"))}*'
-        f'(z-{eval(configur.get("modulation", "z_shift"))})^2))*'
+        f'({eval(configur.get(f"modulation_{type_pos}", "Ez0"))}+'
+        f'{eval(configur.get(f"modulation_{type_pos}", "Ezx1"))}*'
+        f'(x-{eval(configur.get(f"modulation_{type_pos}", "x_shift"))})+'
+        f'{eval(configur.get(f"modulation_{type_pos}", "Ezx2"))}*'
+        f'(x-{eval(configur.get(f"modulation_{type_pos}", "x_shift"))})^2+'
+        f'{eval(configur.get(f"modulation_{type_pos}", "Ezy1"))}*'
+        f'(y-{eval(configur.get(f"modulation_{type_pos}", "y_shift"))})+'
+        f'{eval(configur.get(f"modulation_{type_pos}", "Ezy2"))}*'
+        f'(y-{eval(configur.get(f"modulation_{type_pos}", "y_shift"))})^2+'
+        f'{eval(configur.get(f"modulation_{type_pos}", "Ezz1"))}*'
+        f'(z-{eval(configur.get(f"modulation_{type_pos}", "z_shift"))})+'
+        f'{eval(configur.get(f"modulation_{type_pos}", "Ezz2"))}*'
+        f'(z-{eval(configur.get(f"modulation_{type_pos}", "z_shift"))})^2))*'
         f"cos((2*{pi})*{f_z}*step)\n"
     )
 

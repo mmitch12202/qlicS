@@ -13,6 +13,6 @@ def pylion_dumping():
             "vx",
             "vy",
             "vz",
-        ],  # TODO this should probably go in config.ini
+        ],
         steps=eval(configur.get("sim_parameters", "log_steps")),
     )

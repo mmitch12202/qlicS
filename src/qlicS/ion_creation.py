@@ -3,9 +3,9 @@ from .pylion import functions as pl_func
 
 
 # Spherical Cloud
-def pylion_cloud(species):
+def pylion_cloud(type_pos):
     return pl_func.createioncloud(
-        eval(configur.get("ions", species))[0],
-        eval(configur.get("ion_cloud", "radius")),
-        eval(configur.get("ion_cloud", "count")),
+        eval(configur.get("ions", configur.get(f"ion_cloud_{type_pos}", "species")))[0],
+        eval(configur.get(f"ion_cloud_{type_pos}", "radius")),
+        eval(configur.get(f"ion_cloud_{type_pos}", "count")),
     )
