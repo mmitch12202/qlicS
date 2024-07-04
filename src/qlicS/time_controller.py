@@ -31,8 +31,8 @@ def get_dt_given_timestep(timestep):
     prev_Delt, nex_Delt = (0,) * 2
     for idx, time_chunk in enumerate(time_sequence):
         if idx != 0:
-            prev_Delt += time_sequence[idx - 1][1]
-        nex_Delt += time_chunk[1]
+            prev_Delt += float(time_sequence[idx - 1][1])
+        nex_Delt += float(time_chunk[1])
         if timestep < nex_Delt and timestep >= prev_Delt:
             return time_chunk[0]
     # sourcery skip: raise-specific-error

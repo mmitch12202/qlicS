@@ -209,14 +209,16 @@ def create_config(dump_dir):
 
 
 def commit_changes():
-    with open(f"{dir}config.ini", "w") as configfile:
+    with open(f"{direc}gennedconfig.ini", "w") as configfile:
         configur.write(configfile)
 
 
 def setup_sequence():
+    global direc
     direc = dump_dir()
     create_config(direc)
-    commit_changes()
+    # TODO this commit changes is not behaving how I expected
+    #commit_changes()
 
 
 # getting
