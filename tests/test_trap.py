@@ -41,17 +41,17 @@ expected_pattern = (
 
 # Happy path tests with test values
 @pytest.mark.parametrize(
-    "ions, trap_config, expected_result",
+    "ions, trap_pos, trap_config, expected_result",
     [
-        ({"mass": 9, "charge": 1}, test_trap.items(), expected_pattern),
+        ({"mass": 9, "charge": 1}, 0, test_trap.items(), expected_pattern),
     ],
     ids=["single_ion"],
 )
-def test_gen_trap_lammps_happy_path(ions, trap_config, expected_result):
+def test_gen_trap_lammps_happy_path(ions, trap_pos, trap_config, expected_result):
     # Arrange
     with patch("qlicS.trap.configur.items", return_value=trap_config):
         # Act
-        result = gen_trap_lammps(ions)
+        result = gen_trap_lammps(ions, trap_pos)
         # print(''.join(result['code'][0]))
         # print(expected_result)
         # assert check_string_format(''.join(result['code'][0]), expected_result)

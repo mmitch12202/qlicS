@@ -8,12 +8,12 @@ from src.qlicS.tickle_efield import create_tickle
 
 
 @pytest.mark.parametrize(
-    "config_values, current_dt, expected_uid, expected_code",
+    "config_values, current_dt, test_pos, expected_uid, expected_code",
     [
         # Happy path test case
         (
             {
-                "modulation": {
+                "modulation_0": {
                     "frequency": "1.0",
                     "uid": "'test_uid'",
                     "amp": "0.5",
@@ -45,6 +45,7 @@ from src.qlicS.tickle_efield import create_tickle
                 }
             },
             2.0,
+            0,
             "test_uid",
             [
                 "variable E equal 0.1\n"
@@ -65,7 +66,7 @@ from src.qlicS.tickle_efield import create_tickle
         # Edge case: zero frequency
         (
             {
-                "modulation": {
+                "modulation_0": {
                     "frequency": "0.0",
                     "uid": "'zero_freq_uid'",
                     "amp": "0.5",
@@ -97,6 +98,7 @@ from src.qlicS.tickle_efield import create_tickle
                 }
             },
             2.0,
+            0,
             "zero_freq_uid",
             [
                 "variable E equal 0.1\n"
@@ -114,7 +116,7 @@ from src.qlicS.tickle_efield import create_tickle
     ],
     ids=["happy_path", "zero_frequency"],
 )
-def test_create_tickle(config_values, current_dt, expected_uid, expected_code):
+def test_create_tickle(config_values, current_dt, test_pos, expected_uid, expected_code):
     # Arrange
     mock_configur = MagicMock()
     mock_configur.get.side_effect = lambda section, key: config_values[section][key]
@@ -124,14 +126,14 @@ def test_create_tickle(config_values, current_dt, expected_uid, expected_code):
         "src.qlicS.tickle_efield.get_current_dt", return_value=current_dt
     ):
         if isinstance(expected_code, list):
-            result = create_tickle()
+            result = create_tickle(test_pos)
 
             # Assert
             assert result["uid"] == expected_uid
             assert result["code"] == expected_code
         else:
             with expected_code:
-                create_tickle()
+                create_tickle(test_pos)
 
 
 # TODO conservative field test - particle conserves energy as it travels in

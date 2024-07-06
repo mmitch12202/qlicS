@@ -53,7 +53,9 @@ def cycle_info() -> dict:
 def be_cloud() -> dict:
     return {"uid": 1}
 
-
+@pytest.fixture
+def type_pos():
+    return 0
 # Helpers
 
 
@@ -97,7 +99,7 @@ def test_beta_is_sensible():
         assert beta > 0
 
 
-def test_total_force_is_sensible(be_cloud: dict, default_laser_fixture: dict):
+def test_total_force_is_sensible(be_cloud: dict, default_laser_fixture: dict, type_pos):
     with mock.patch.multiple(
         "qlicS.laser_cooling_force.configur",
         get=configur_side_kick,
@@ -105,7 +107,7 @@ def test_total_force_is_sensible(be_cloud: dict, default_laser_fixture: dict):
     ):
         # Test implementation code here
         cooling_force = laser_cooling_force.create_cooling_laser(
-            eval(configur_side_kick("ions", "be+"))[1], be_cloud["uid"]
+            eval(configur_side_kick("ions", "be+"))[1], be_cloud["uid"], type_pos
         )
         assert type(cooling_force) is dict
         print("***")

@@ -18,9 +18,10 @@ def configur_side_kick(s: str, t: str) -> dict:
 
 # Happy path tests with various realistic test values
 @pytest.mark.parametrize(
-    "species, ion_data, radius, count, expected",
+    "type_pos, species, ion_data, radius, count, expected",
     [
         (
+            0,
             "h+",
             "[{'mass': 1, 'charge': 1}]",
             "0.5",
@@ -28,6 +29,7 @@ def configur_side_kick(s: str, t: str) -> dict:
             {"mass": 1, "charge": 1, "positions": [None] * 100},
         ),
         (
+            0,
             "he++",
             "[{'mass': 4, 'charge': 2}]",
             "1",
@@ -37,18 +39,18 @@ def configur_side_kick(s: str, t: str) -> dict:
     ],
     ids=["hydrogen_ion_cloud", "helium_ion_cloud"],
 )
-def test_pylion_cloud_happy_path(species, ion_data, radius, count, expected):
+def test_pylion_cloud_happy_path(type_pos, species, ion_data, radius, count, expected):
 
     # Arrange
     with patch("qlicS.ion_creation.configur.get") as mock_get:
-        mock_get.side_effect = [ion_data, radius, count]
+        mock_get.side_effect = [species, ion_data, radius, count]
 
         # Act
-        result = pylion_cloud(species)
+        result = pylion_cloud(type_pos)
         # Assert
         assert result["mass"] == expected["mass"]
         assert result["charge"] == expected["charge"]
         assert len(result["positions"]) == len(expected["positions"])
         mock_get.assert_any_call("ions", species)
-        mock_get.assert_any_call("ion_cloud", "radius")
-        mock_get.assert_any_call("ion_cloud", "count")
+        mock_get.assert_any_call(f"ion_cloud_{type_pos}", "radius")
+        mock_get.assert_any_call(f"ion_cloud_{type_pos}", "count")

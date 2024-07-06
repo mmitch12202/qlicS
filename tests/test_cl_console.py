@@ -87,8 +87,8 @@ def test_get_sim_skeleton_inputs(
         result_sim_params, result_detection_params = get_sim_skeleton_inputs()
 
         # Assert
-        assert result_sim_params == expected_sim_params
-        assert result_detection_params == expected_detection_params
+        assert result_sim_params == dict(expected_sim_params)
+        assert result_detection_params == dict(expected_detection_params)
 
 
 @pytest.mark.parametrize(

@@ -41,12 +41,11 @@ from qlicS.exp_sequence_controller import create_and_run_sim_gen
 )
 def test_create_and_run_sim_gen(input_sequence, expected_calls):
     with patch("qlicS.exp_sequence_controller.pl.Simulation"), patch(
-        "qlicS.exp_sequence_controller.configur.get",
-        return_value="['be+', 'some_value']",
-    ), patch(
+        "qlicS.exp_sequence_controller.configur.get"
+    ) as mock_get, patch(
         "qlicS.exp_sequence_controller.get_scattering"
     ) as mock_get_scattering, patch(
-        "qlicS.exp_sequence_controller.pylion_dumping"
+        "qlicS.sim_controller.pylion_dumping"
     ) as mock_pylion_dumping, patch(
         "qlicS.exp_sequence_controller.pylion_cloud"
     ) as mock_pylion_cloud, patch(
@@ -58,7 +57,7 @@ def test_create_and_run_sim_gen(input_sequence, expected_calls):
     ) as mock_evolve, patch(
         "qlicS.exp_sequence_controller.create_tickle"
     ) as mock_create_tickle:
-
+        mock_get.side_effect = [input_sequence,"['be+', 'some_value']"]
         mock_functions = {
             "pylion_dumping": mock_pylion_dumping,
             "pylion_cloud": mock_pylion_cloud,
@@ -67,11 +66,12 @@ def test_create_and_run_sim_gen(input_sequence, expected_calls):
             "evolve": mock_evolve,
             "create_tickle": mock_create_tickle,
         }
+
         if input_sequence == "invalid_command" or input_sequence == "":
             with pytest.raises(ValueError):
-                create_and_run_sim_gen(input_sequence)
+                create_and_run_sim_gen()
         else:
-            create_and_run_sim_gen(input_sequence)
+            create_and_run_sim_gen()
             mock_get_scattering.assert_called_once()
 
         print(expected_calls)
