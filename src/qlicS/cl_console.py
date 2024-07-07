@@ -5,11 +5,12 @@ import click
 import numpy as np
 from InquirerPy import inquirer
 from InquirerPy.base.control import Choice
-from InquirerPy.validator import EmptyInputValidator, PathValidator
+from InquirerPy.validator import EmptyInputValidator
 
 from . import __version__, config_controller, exp_sequence_controller
 from .command_mapping import command_mapping
 from .console_dialogue import followup_questions_creator
+from .resources import PathStringValidator
 
 loading_configur = ConfigParser()
 
@@ -236,7 +237,7 @@ def main():  # sourcery skip: use-named-expression
     elif mode == "Run Experiment From File":
         config_file = inquirer.filepath(
             message="Enter a configuration (*.ini) file:",
-            validate=PathValidator(
+            validate=PathStringValidator(
                 is_file=True,
                 message="Input is not a valid filpath.  Make sure input is not a string.",
             ),  # TODO validate that it is also a .ini file
@@ -340,7 +341,7 @@ def main():  # sourcery skip: use-named-expression
     elif mode == "Edit Existing Experiment":
         config_file = inquirer.filepath(
             message="Enter a configuration (*.ini) file:",
-            validate=PathValidator(
+            validate=PathStringValidator(
                 is_file=True,
                 message="Input is not a valid filpath.  Make sure input is not a string.",
             ),  # TODO validate that it is also a .ini file
