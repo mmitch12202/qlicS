@@ -1,0 +1,192 @@
+LAMMPS (23 Jun 2022)
+##################################################################
+# LAMMPS input file generated using pylion 0.5.3
+# simulation name: test
+#
+# pylion is written and maintained by Dimitris Trypogeorgos
+# and Elliot Bentine. Download it from
+# https://bitbucket.org/dtrypogeorgos/pylion
+#
+# If you find it useful please cite <paper>.
+##################################################################
+
+
+
+units si
+atom_style charge
+
+# Creating simulation box...
+boundary m m m
+region simulationDomain block -0.001  0.001 -0.001 0.001 -0.001 0.001 units box
+create_box 1 simulationDomain
+Created orthogonal box = (-0.001 -0.001 -0.001) to (0.001 0.001 0.001)
+  1 by 1 by 1 MPI processor grid
+
+# Configure neighbour list...
+neighbor 1 nsq
+neigh_modify once yes
+
+# Configure pairwise interactions for long range Coulombics only...
+pair_style coul/cut 10
+pair_coeff * *
+
+# Placing individual ions...
+
+
+create_atoms 1 single 3.105658530743762e-05 -7.994202061703221e-05 -4.103141480411102e-05 units box
+Created 1 atoms
+  using box units in orthogonal box = (-0.001 -0.001 -0.001) to (0.001 0.001 0.001)
+  create_atoms CPU = 0.000 seconds
+
+create_atoms 1 single -2.308293549242597e-05 5.048457554470311e-06 0.0001403867133527679 units box
+Created 1 atoms
+  using box units in orthogonal box = (-0.001 -0.001 -0.001) to (0.001 0.001 0.001)
+  create_atoms CPU = 0.000 seconds
+
+create_atoms 1 single 0.0002042181408416675 0.0001534651212275425 0.000843104878588842 units box
+Created 1 atoms
+  using box units in orthogonal box = (-0.001 -0.001 -0.001) to (0.001 0.001 0.001)
+  create_atoms CPU = 0.000 seconds
+
+create_atoms 1 single -1.3458106782960979e-05 9.492007302795588e-05 -0.0002121105046135409 units box
+Created 1 atoms
+  using box units in orthogonal box = (-0.001 -0.001 -0.001) to (0.001 0.001 0.001)
+  create_atoms CPU = 0.000 seconds
+
+create_atoms 1 single 0.0001890227046688966 -0.0001284769407468199 -9.18403464151907e-05 units box
+Created 1 atoms
+  using box units in orthogonal box = (-0.001 -0.001 -0.001) to (0.001 0.001 0.001)
+  create_atoms CPU = 0.000 seconds
+
+create_atoms 1 single -1.0060257330413519e-05 4.505673400857381e-05 -9.273421748510479e-05 units box
+Created 1 atoms
+  using box units in orthogonal box = (-0.001 -0.001 -0.001) to (0.001 0.001 0.001)
+  create_atoms CPU = 0.000 seconds
+
+create_atoms 1 single -5.8464411301073726e-05 -1.505376401270994e-05 -5.8443088195004125e-05 units box
+Created 1 atoms
+  using box units in orthogonal box = (-0.001 -0.001 -0.001) to (0.001 0.001 0.001)
+  create_atoms CPU = 0.000 seconds
+
+create_atoms 1 single 0.0004172340791784757 0.0004904597702392137 -0.0007399800668494405 units box
+Created 1 atoms
+  using box units in orthogonal box = (-0.001 -0.001 -0.001) to (0.001 0.001 0.001)
+  create_atoms CPU = 0.000 seconds
+
+create_atoms 1 single -0.0002320921856778681 -0.0002835201675499574 -0.0006976103486136872 units box
+Created 1 atoms
+  using box units in orthogonal box = (-0.001 -0.001 -0.001) to (0.001 0.001 0.001)
+  create_atoms CPU = 0.000 seconds
+
+create_atoms 1 single -0.00024101915592200155 -0.00046152894857744365 -0.00010986806635607448 units box
+Created 1 atoms
+  using box units in orthogonal box = (-0.001 -0.001 -0.001) to (0.001 0.001 0.001)
+  create_atoms CPU = 0.000 seconds
+
+
+# Species...
+mass 1 1.4944851e-26
+set type 1 charge 1.6021764599999998e-19
+Setting atom values ...
+  10 settings made for charge
+group 1 type 1
+10 atoms in group 1
+
+
+timestep 1e-06
+
+# Configuring additional output to flush buffer during simulation...
+thermo 10000
+thermo_style custom step cpu
+thermo_modify flush yes
+
+# Time integration...
+
+group nonRigidBody union all
+10 atoms in group nonRigidBody
+
+fix timeIntegrator nonRigidBody nve
+
+
+
+dump 8979387178 all custom 10 /Users/michaelmitchell/qlicS/data/2024-07-08_11-32-29/positions.txt id x y z vx vy vz
+
+
+
+
+
+# Pseudopotential approximation for Linear Paul trap... (fixID=8980866882)
+
+
+# SHO
+
+variable k_x8980866882		equal 1.773509e-12
+
+variable k_y8980866882		equal 1.773509e-12
+
+variable k_z8980866882		equal 1.548694e-13
+
+variable fX8980866882 atom "-v_k_x8980866882 * x"
+
+variable fY8980866882 atom "-v_k_y8980866882 * y"
+
+variable fZ8980866882 atom "-v_k_z8980866882 * z"
+
+variable E8980866882 atom "v_k_x8980866882 * x * x /         2 + v_k_y8980866882 * y * y / 2 + v_k_z8980866882 * z * z / 2"
+
+fix 8980866882 all addforce         v_fX8980866882 v_fY8980866882 v_fZ8980866882 energy v_E8980866882
+
+
+
+
+timestep 1e-08
+
+
+# Run simulation
+
+run 10000
+Generated 0 of 0 mixed pair_coeff terms from geometric mixing rule
+Neighbor list info ...
+  update every 1 steps, delay 10 steps, check yes
+  max neighbors/atom: 2000, page size: 100000
+  master list distance cutoff = 11
+  ghost atom cutoff = 11
+  1 neighbor lists, perpetual/occasional/extra = 1 0 0
+  (1) pair coul/cut, perpetual
+      attributes: half, newton on
+      pair build: half/nsq/newton
+      stencil: none
+      bin: none
+WARNING: Proc sub-domain size < neighbor skin, could lead to lost atoms (src/domain.cpp:970)
+Per MPI rank memory allocation (min/avg/max) = 4.78 | 4.78 | 4.78 Mbytes
+   Step          CPU      
+         0   0            
+     10000   0.27175156   
+Loop time of 0.27177 on 1 procs for 10000 steps with 10 atoms
+
+92.7% CPU use with 1 MPI tasks x no OpenMP threads
+
+MPI task timing breakdown:
+Section |  min time  |  avg time  |  max time  |%varavg| %total
+---------------------------------------------------------------
+Pair    | 0.007669   | 0.007669   | 0.007669   |   0.0 |  2.82
+Neigh   | 0          | 0          | 0          |   0.0 |  0.00
+Comm    | 0.0015255  | 0.0015255  | 0.0015255  |   0.0 |  0.56
+Output  | 0.037025   | 0.037025   | 0.037025   |   0.0 | 13.62
+Modify  | 0.22278    | 0.22278    | 0.22278    |   0.0 | 81.97
+Other   |            | 0.002774   |            |       |  1.02
+
+Nlocal:             10 ave          10 max          10 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+Nghost:              0 ave           0 max           0 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+Neighs:             45 ave          45 max          45 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+
+Total # of neighbors = 45
+Ave neighs/atom = 4.5
+Neighbor list builds = 0
+Dangerous builds = 0
+
+
+Total wall time: 0:00:00

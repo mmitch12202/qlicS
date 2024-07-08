@@ -14,7 +14,6 @@ def scattering_rate(velocity: list, laser_config: dict, species_info: dict) -> f
         + velocity[1] * abs(eval(laser_config["laser_direction"])[1])
         + velocity[2] * abs(eval(laser_config["laser_direction"])[2])
     )  # TODO Figure out what we are doing with these abs()
-    print(this_atom_velocities_dot/c) 
     return (
         0.5
         * eval(laser_config["saturation_paramater"])

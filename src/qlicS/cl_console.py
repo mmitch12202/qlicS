@@ -11,6 +11,7 @@ from . import __version__, config_controller, exp_sequence_controller
 from .command_mapping import command_mapping
 from .console_dialogue import followup_questions_creator
 from .resources import PathStringValidator
+from .analysis import create_analysis_dir
 
 loading_configur = ConfigParser()
 
@@ -29,6 +30,7 @@ def main():  # sourcery skip: use-named-expression
             "Create New Experiment",
             "Run Experiment From File",
             "Edit Existing Experiment",
+            "Analyze Completed Experiment",
             Choice(value=None, name="Quit"),
         ],
         default="Create New Experiment",
@@ -350,6 +352,32 @@ def main():  # sourcery skip: use-named-expression
         click.echo(
             "Editing existing experiments in the app will be supported at some later date."
         )
+    elif mode == "Analyze Completed Experiment":
+        data_file = inquirer.filepath(
+            message="Enter a data (*.txt) file:",
+            validate=PathStringValidator(
+                is_file=True,
+                message="Input is not a valid filpath.  Make sure input is not a string.",
+            ),  # TODO validate that it is also a .txt file
+        ).execute()
+
+        click.echo('### Analysis is Currently only supported for all Atoms### \n### be sure you know which species lines up with which atom index###\n\n')
+         # TODO we should eventually include scattering options here
+         # TODO we should also include averaging and by species output here
+         # TODO we should also include crystal state at given timestep
+        data_vars = inquirer.checkbox(
+            message='Select the variables you would like to recieve information for (use [Tab] to select and [Enter] to submit):',
+            choices = ['Positions', 'Velocities'],
+            validate=lambda result: len(result) >= 1,
+            invalid_message="Select at least 1",
+        ).execute()
+        analysis_root, raw_txt = create_analysis_dir(data_vars, data_file)
+        
+
+        # Dump directory data analysis tag
+        # Create Folder for each atom
+        # Under each Folder split into pos and vel
+        # In each folder put the image
 
 
 def setup_loading_configur(loading_config_file):

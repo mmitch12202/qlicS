@@ -1,0 +1,112 @@
+##################################################################
+# LAMMPS input file generated using pylion 0.5.3
+# simulation name: test
+#
+# pylion is written and maintained by Dimitris Trypogeorgos
+# and Elliot Bentine. Download it from
+# https://bitbucket.org/dtrypogeorgos/pylion
+#
+# If you find it useful please cite <paper>.
+##################################################################
+
+
+
+units si
+atom_style charge
+
+# Creating simulation box...
+boundary m m m
+region simulationDomain block -0.001  0.001 -0.001 0.001 -0.001 0.001 units box
+create_box 1 simulationDomain
+
+# Configure neighbour list...
+neighbor 1 nsq
+neigh_modify once yes
+
+# Configure pairwise interactions for long range Coulombics only...
+pair_style coul/cut 10
+pair_coeff * *
+
+# Placing individual ions...
+
+
+create_atoms 1 single 3.105658530743762e-05 -7.994202061703221e-05 -4.103141480411102e-05 units box
+
+create_atoms 1 single -2.308293549242597e-05 5.048457554470311e-06 0.0001403867133527679 units box
+
+create_atoms 1 single 0.0002042181408416675 0.0001534651212275425 0.000843104878588842 units box
+
+create_atoms 1 single -1.3458106782960979e-05 9.492007302795588e-05 -0.0002121105046135409 units box
+
+create_atoms 1 single 0.0001890227046688966 -0.0001284769407468199 -9.18403464151907e-05 units box
+
+create_atoms 1 single -1.0060257330413519e-05 4.505673400857381e-05 -9.273421748510479e-05 units box
+
+create_atoms 1 single -5.8464411301073726e-05 -1.505376401270994e-05 -5.8443088195004125e-05 units box
+
+create_atoms 1 single 0.0004172340791784757 0.0004904597702392137 -0.0007399800668494405 units box
+
+create_atoms 1 single -0.0002320921856778681 -0.0002835201675499574 -0.0006976103486136872 units box
+
+create_atoms 1 single -0.00024101915592200155 -0.00046152894857744365 -0.00010986806635607448 units box
+
+
+# Species...
+mass 1 1.4944851e-26
+set type 1 charge 1.6021764599999998e-19
+group 1 type 1
+
+
+timestep 1e-06
+
+# Configuring additional output to flush buffer during simulation...
+thermo 10000
+thermo_style custom step cpu
+thermo_modify flush yes
+
+# Time integration...
+
+group nonRigidBody union all
+
+fix timeIntegrator nonRigidBody nve
+
+
+
+dump 8979387178 all custom 10 /Users/michaelmitchell/qlicS/data/2024-07-08_11-32-29/positions.txt id x y z vx vy vz
+
+
+
+
+
+# Pseudopotential approximation for Linear Paul trap... (fixID=8980866882)
+
+
+# SHO
+
+variable k_x8980866882		equal 1.773509e-12
+
+variable k_y8980866882		equal 1.773509e-12
+
+variable k_z8980866882		equal 1.548694e-13
+
+variable fX8980866882 atom "-v_k_x8980866882 * x"
+
+variable fY8980866882 atom "-v_k_y8980866882 * y"
+
+variable fZ8980866882 atom "-v_k_z8980866882 * z"
+
+variable E8980866882 atom "v_k_x8980866882 * x * x /         2 + v_k_y8980866882 * y * y / 2 + v_k_z8980866882 * z * z / 2"
+
+fix 8980866882 all addforce         v_fX8980866882 v_fY8980866882 v_fZ8980866882 energy v_E8980866882
+
+
+
+
+timestep 1e-08
+
+
+# Run simulation
+
+run 10000
+
+
