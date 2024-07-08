@@ -47,6 +47,7 @@ def test_pylion_cloud_happy_path(type_pos, species, ion_data, radius, count, exp
 
         # Act
         result = pylion_cloud(type_pos)
+        print(result)
         # Assert
         assert result["mass"] == expected["mass"]
         assert result["charge"] == expected["charge"]

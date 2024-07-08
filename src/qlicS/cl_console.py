@@ -8,10 +8,10 @@ from InquirerPy.base.control import Choice
 from InquirerPy.validator import EmptyInputValidator
 
 from . import __version__, config_controller, exp_sequence_controller
+from .analysis import create_analysis
 from .command_mapping import command_mapping
 from .console_dialogue import followup_questions_creator
 from .resources import PathStringValidator
-from .analysis import create_analysis_dir
 
 loading_configur = ConfigParser()
 
@@ -24,17 +24,7 @@ def main():  # sourcery skip: use-named-expression
     # Whole user dialogue prepping the configuration before the setup sequence.
     # This will also include loading defaults or saved forms
 
-    mode = inquirer.select(
-        message="Select a mode",
-        choices=[
-            "Create New Experiment",
-            "Run Experiment From File",
-            "Edit Existing Experiment",
-            "Analyze Completed Experiment",
-            Choice(value=None, name="Quit"),
-        ],
-        default="Create New Experiment",
-    ).execute()
+    mode = mode_dialogue()
 
     if mode == "Create New Experiment":
         # TODO config updates based on UI dialogue
@@ -172,7 +162,7 @@ def main():  # sourcery skip: use-named-expression
                 ).execute()
                 try_again_scattering_laser = not (
                     inquirer.confirm(
-                        message=f"Current Scattering Laser:\nIon Indices: {scattered_ion_indices}\Target Species: {target_species}\nLaser Direction: {laser_direction}\nSaturation Paramater: {saturation_paramater}\nFrequency: {frequency}"
+                        message=f"Current Scattering Laser:\nIon Indices: {scattered_ion_indices}\nTarget Species: {target_species}\nLaser Direction: {laser_direction}\nSaturation Paramater: {saturation_paramater}\nFrequency: {frequency}"
                     )
                 ).execute()
 
@@ -237,109 +227,7 @@ def main():  # sourcery skip: use-named-expression
 
         click.echo("Create New Experiment")
     elif mode == "Run Experiment From File":
-        config_file = inquirer.filepath(
-            message="Enter a configuration (*.ini) file:",
-            validate=PathStringValidator(
-                is_file=True,
-                message="Input is not a valid filpath.  Make sure input is not a string.",
-            ),  # TODO validate that it is also a .ini file
-        ).execute()
-
-        setup_loading_configur(config_file)
-
-        config_controller.setup_sequence()
-
-        type_poses = count_type_pos()
-
-        s_p, d_p = get_sim_skeleton_inputs()
-        config_controller.create_sim_skeleton(
-            s_p["log_steps"],
-            s_p["timesequence"],
-            d_p["detection_timestep_seq"],
-            d_p["detector_area"],
-            d_p["detector_effeciency"],
-            d_p["detector_distance"],
-        )
-
-        for i in range(type_poses["tickle"]):
-            m = get_modulation_inputs(i)
-            config_controller.configur_modulation(
-                i,
-                m["uid"],
-                m["amp"],
-                m["frequency"],
-                m["ex0"],
-                m["exx1"],
-                m["exx2"],
-                m["exy1"],
-                m["exy2"],
-                m["exz1"],
-                m["exz2"],
-                m["ey0"],
-                m["eyx1"],
-                m["eyx2"],
-                m["eyy1"],
-                m["eyy2"],
-                m["eyz1"],
-                m["eyz2"],
-                m["ez0"],
-                m["ezx1"],
-                m["ezx2"],
-                m["ezy1"],
-                m["ezy2"],
-                m["ezz1"],
-                m["ezz2"],
-                m["x_shift"],
-                m["y_shift"],
-                m["z_shift"],
-                m["static"],
-            )
-
-        for i in range(type_poses["cloud"]):
-            c = get_cloud_inputs(i)
-            config_controller.configur_ion_cloud(
-                i, c["species"], c["radius"], c["count"]
-            )
-
-        for i in range(type_poses["trap"]):
-            t = get_trap_inputs(i)
-            config_controller.configur_trap(
-                i,
-                t["target_ion_pos"],
-                t["radius"],
-                t["length"],
-                t["kappa"],
-                t["frequency"],
-                t["voltage"],
-                t["endcapvoltage"],
-                t["pseudo"],
-            )
-
-        for i in range(type_poses["cooling_laser"]):
-            cl = get_cooling_laser_inputs(i)
-            config_controller.configur_cooling_laser(
-                i,
-                cl["target_ion_pos"],
-                cl["target_ion_type"],
-                cl["beam_radius"],
-                cl["saturation_paramater"],
-                cl["detunning"],
-                cl["laser_direction"],
-                cl["laser_origin_position"],
-            )
-
-        sl = get_scattering_laser_inputs()
-        config_controller.configur_scattering_laser(
-            sl["scattered_ion_indices"],
-            sl["target_species"],
-            sl["laser_direction"],
-            sl["saturation_paramater"],
-            sl["frequency"],
-        )
-
-        config_controller.create_exp_seq(get_exp_seq())
-        # config_controller.commit_changes()
-        exp_sequence_controller.create_and_run_sim_gen()
+        run_from_file()
     elif mode == "Edit Existing Experiment":
         config_file = inquirer.filepath(
             message="Enter a configuration (*.ini) file:",
@@ -361,23 +249,141 @@ def main():  # sourcery skip: use-named-expression
             ),  # TODO validate that it is also a .txt file
         ).execute()
 
-        click.echo('### Analysis is Currently only supported for all Atoms### \n### be sure you know which species lines up with which atom index###\n\n')
-         # TODO we should eventually include scattering options here
-         # TODO we should also include averaging and by species output here
-         # TODO we should also include crystal state at given timestep
+        click.echo(
+            "### Analysis is Currently only supported for all Atoms### \n### be sure you know which species lines up with which atom index###\n\n"
+        )
+        # TODO we should eventually include scattering options here
+        # TODO we should also include averaging and by species output here
+        # TODO we should also include crystal state at given timestep
         data_vars = inquirer.checkbox(
-            message='Select the variables you would like to recieve information for (use [Tab] to select and [Enter] to submit):',
-            choices = ['Positions', 'Velocities'],
+            message="Select the variables you would like to recieve information for (use [Tab] to select and [Enter] to submit):",
+            choices=["Positions", "Velocities"],
             validate=lambda result: len(result) >= 1,
             invalid_message="Select at least 1",
         ).execute()
-        analysis_root, raw_txt = create_analysis_dir(data_vars, data_file)
-        
+        analysis_root, raw_txt = create_analysis(data_vars, data_file)
 
-        # Dump directory data analysis tag
-        # Create Folder for each atom
-        # Under each Folder split into pos and vel
-        # In each folder put the image
+
+def run_from_file():
+    config_file = config_file_dialogue()
+
+    loading_configur = setup_loading_configur(config_file)
+    print("here")
+    config_controller.setup_sequence()
+
+    type_poses = count_type_pos(loading_configur)
+
+    s_p, d_p = get_sim_skeleton_inputs()
+    config_controller.create_sim_skeleton(
+        s_p["log_steps"],
+        s_p["timesequence"],
+        d_p["detection_timestep_seq"],
+        d_p["detector_area"],
+        d_p["detector_effeciency"],
+        d_p["detector_distance"],
+    )
+
+    for i in range(type_poses["tickle"]):
+        m = get_modulation_inputs(i)
+        config_controller.configur_modulation(
+            i,
+            m["uid"],
+            m["amp"],
+            m["frequency"],
+            m["ex0"],
+            m["exx1"],
+            m["exx2"],
+            m["exy1"],
+            m["exy2"],
+            m["exz1"],
+            m["exz2"],
+            m["ey0"],
+            m["eyx1"],
+            m["eyx2"],
+            m["eyy1"],
+            m["eyy2"],
+            m["eyz1"],
+            m["eyz2"],
+            m["ez0"],
+            m["ezx1"],
+            m["ezx2"],
+            m["ezy1"],
+            m["ezy2"],
+            m["ezz1"],
+            m["ezz2"],
+            m["x_shift"],
+            m["y_shift"],
+            m["z_shift"],
+            m["static"],
+        )
+
+    for i in range(type_poses["cloud"]):
+        c = get_cloud_inputs(i)
+        config_controller.configur_ion_cloud(i, c["species"], c["radius"], c["count"])
+
+    for i in range(type_poses["trap"]):
+        t = get_trap_inputs(i)
+        config_controller.configur_trap(
+            i,
+            t["target_ion_pos"],
+            t["radius"],
+            t["length"],
+            t["kappa"],
+            t["frequency"],
+            t["voltage"],
+            t["endcapvoltage"],
+            t["pseudo"],
+        )
+
+    for i in range(type_poses["cooling_laser"]):
+        cl = get_cooling_laser_inputs(i)
+        config_controller.configur_cooling_laser(
+            i,
+            cl["target_ion_pos"],
+            cl["target_ion_type"],
+            cl["beam_radius"],
+            cl["saturation_paramater"],
+            cl["detunning"],
+            cl["laser_direction"],
+            cl["laser_origin_position"],
+        )
+
+    sl = get_scattering_laser_inputs()
+    config_controller.configur_scattering_laser(
+        sl["scattered_ion_indices"],
+        sl["target_species"],
+        sl["laser_direction"],
+        sl["saturation_paramater"],
+        sl["frequency"],
+    )
+
+    config_controller.create_exp_seq(get_exp_seq())
+    # config_controller.commit_changes()
+    exp_sequence_controller.create_and_run_sim_gen()
+
+
+def config_file_dialogue():
+    return inquirer.filepath(
+        message="Enter a configuration (*.ini) file:",
+        validate=PathStringValidator(
+            is_file=True,
+            message="Input is not a valid filpath.  Make sure input is not a string.",
+        ),  # TODO validate that it is also a .ini file
+    ).execute()
+
+
+def mode_dialogue():
+    return inquirer.select(
+        message="Select a mode",
+        choices=[
+            "Create New Experiment",
+            "Run Experiment From File",
+            "Edit Existing Experiment",
+            "Analyze Completed Experiment",
+            Choice(value=None, name="Quit"),
+        ],
+        default="Create New Experiment",
+    ).execute()
 
 
 def setup_loading_configur(loading_config_file):
@@ -386,9 +392,10 @@ def setup_loading_configur(loading_config_file):
     if not loading_config_file.endswith(".ini"):
         raise ValueError("Invalid file format. Only .ini files are supported.")
     loading_configur.read(loading_config_file)
+    return loading_configur
 
 
-def count_type_pos():
+def count_type_pos(loading_configur):
     type_poses = {key: 0 for key in command_mapping}
     command_string = loading_configur.get("exp_seq", "com_list").split(",")
     for command in command_string:

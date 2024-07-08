@@ -116,7 +116,9 @@ from src.qlicS.tickle_efield import create_tickle
     ],
     ids=["happy_path", "zero_frequency"],
 )
-def test_create_tickle(config_values, current_dt, test_pos, expected_uid, expected_code):
+def test_create_tickle(
+    config_values, current_dt, test_pos, expected_uid, expected_code
+):
     # Arrange
     mock_configur = MagicMock()
     mock_configur.get.side_effect = lambda section, key: config_values[section][key]

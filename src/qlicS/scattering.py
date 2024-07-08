@@ -8,7 +8,7 @@ from .time_controller import get_dt_given_timestep
 
 def scattering_rate(velocity: list, laser_config: dict, species_info: dict) -> float:
     c = eval(configur.get("constants", "c"))
-    
+
     this_atom_velocities_dot = (
         velocity[0] * abs(eval(laser_config["laser_direction"])[0])
         + velocity[1] * abs(eval(laser_config["laser_direction"])[1])

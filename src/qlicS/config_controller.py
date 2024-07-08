@@ -218,7 +218,7 @@ def setup_sequence():
     direc = dump_dir()
     create_config(direc)
     # TODO this commit changes is not behaving how I expected
-    #commit_changes()
+    # commit_changes()
 
 
 # getting

@@ -1,11 +1,13 @@
 # For all analysis related tasks, including simply reading the dump file
-from .config_controller import configur
-from .pylion import functions as pl_func
+import os
+import shutil
+import time
+
 import matplotlib.pyplot as plt
 
-import os
-import time
-import shutil
+from .config_controller import configur
+from .pylion import functions as pl_func
+
 
 def velocities(atom_range=None, step_range=None, velocity_indices=None):
     """
@@ -40,22 +42,27 @@ def velocities(atom_range=None, step_range=None, velocity_indices=None):
         )
     )
 
+
 def get_number_atoms(raw_data_copy):
     _, data = pl_func.readdump(raw_data_copy)
     return len(data[1])
 
-def create_analysis_dir(var_list, raw_data_file):
-    analysis_root = f"{os.getcwd()}/data/analysis" + time.strftime("%Y-%m-%d_%H-%M-%S") + "/"
+
+def create_analysis(var_list, raw_data_file):
+    analysis_root = (
+        f"{os.getcwd()}/data/analysis" + time.strftime("%Y-%m-%d_%H-%M-%S") + "/"
+    )
     os.makedirs(analysis_root)
     raw_copy = f"{analysis_root}raw.txt"
     shutil.copy(raw_data_file, raw_copy)
     num_atoms = get_number_atoms(raw_copy)
     for a_i in range(num_atoms):
         for vartype in var_list:
-            graph_dir = f'{analysis_root}atom_{a_i}/{vartype}'
+            graph_dir = f"{analysis_root}atom_{a_i}/{vartype}"
             os.makedirs(graph_dir)
             create_lammps_vars_graphs(graph_dir, raw_copy, vartype, a_i)
     return analysis_root, raw_copy
+
 
 def create_lammps_vars_graphs(directory, raw_data, vartype, atom_num):
     if vartype == "Positions":
@@ -63,7 +70,7 @@ def create_lammps_vars_graphs(directory, raw_data, vartype, atom_num):
     elif vartype == "Velocities":
         var_indices = [3, 6]
     steps, data = pl_func.readdump(raw_data)
-    sel_d = data[:, atom_num, var_indices[0]:var_indices[1]]
+    sel_d = data[:, atom_num, var_indices[0] : var_indices[1]]
     x = []
     y = []
     z = []
@@ -71,13 +78,14 @@ def create_lammps_vars_graphs(directory, raw_data, vartype, atom_num):
         x.append(i[0])
         y.append(i[1])
         z.append(i[2])
-    plt.scatter(steps, x)
-    plt.savefig(f'{directory}/x.png')
-    plt.clf()
-    plt.scatter(steps, y)
-    plt.savefig(f'{directory}/y.png')
-    plt.clf()
-    plt.scatter(steps, z)
-    plt.savefig(f'{directory}/z.png')
-    plt.clf()
+    _extracted_from_create_lammps_vars_graphs_15(steps, x, directory, "/x.png")
+    _extracted_from_create_lammps_vars_graphs_15(steps, y, directory, "/y.png")
+    _extracted_from_create_lammps_vars_graphs_15(steps, z, directory, "/z.png")
     return
+
+
+# TODO Rename this here and in `create_lammps_vars_graphs`
+def _extracted_from_create_lammps_vars_graphs_15(steps, arg1, directory, arg3):
+    plt.scatter(steps, arg1)
+    plt.savefig(f"{directory}{arg3}")
+    plt.clf()

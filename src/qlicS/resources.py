@@ -4,6 +4,7 @@ from typing import Optional
 
 from prompt_toolkit.validation import ValidationError, Validator
 
+
 class PathStringValidator(Validator):
     """:class:`~prompt_toolkit.validation.Validator` to validate if input is a valid filepath on the system.
 
@@ -29,7 +30,6 @@ class PathStringValidator(Validator):
 
         if document.text[0] in ["'", '"']:
             document.text = document.text[1:-1]
-
 
         path = Path(document.text).expanduser()
         if self._is_file and not path.is_file():
