@@ -1,0 +1,167 @@
+##################################################################
+# LAMMPS input file generated using pylion 0.5.3
+# simulation name: test
+#
+# pylion is written and maintained by Dimitris Trypogeorgos
+# and Elliot Bentine. Download it from
+# https://bitbucket.org/dtrypogeorgos/pylion
+#
+# If you find it useful please cite <paper>.
+##################################################################
+
+
+
+units si
+atom_style charge
+
+# Creating simulation box...
+boundary m m m
+region simulationDomain block -0.001  0.001 -0.001 0.001 -0.001 0.001 units box
+create_box 2 simulationDomain
+
+# Configure neighbour list...
+neighbor 1 nsq
+neigh_modify once yes
+
+# Configure pairwise interactions for long range Coulombics only...
+pair_style coul/cut 10
+pair_coeff * *
+
+# Placing individual ions...
+
+
+create_atoms 1 single 3.0422983647564918e-05 -1.2354997480551914e-05 3.7530202857420655e-05 units box
+
+create_atoms 1 single 0.00010152605896500874 -0.00017202665242837883 9.199674200673301e-05 units box
+
+create_atoms 1 single 9.776882400483524e-06 -2.0709537330564867e-05 1.4905288821150177e-05 units box
+
+create_atoms 1 single 0.00010042330136353649 -9.747419806432294e-05 -0.0006333968340868896 units box
+
+create_atoms 1 single 1.2280263990626191e-06 -2.2406572822684627e-06 2.055271836046932e-06 units box
+
+create_atoms 1 single -8.09400932616293e-05 -6.562002569990498e-05 -0.00026848698810247616 units box
+
+create_atoms 1 single -0.0002155601858188182 0.00015299916427961285 -0.0006959622847954557 units box
+
+create_atoms 1 single -0.00010424910712496191 -6.582010572518542e-05 -0.0001328822256412494 units box
+
+create_atoms 1 single -0.00027072772462737667 0.00043978210548692426 0.00026803069071822377 units box
+
+create_atoms 1 single -0.0005635187734440432 -7.626374186226011e-05 0.00022018324957426638 units box
+
+create_atoms 1 single -6.262172683473891e-06 -8.189573236168115e-06 0.0001221489003762014 units box
+
+create_atoms 1 single -2.4202457178911813e-05 -0.0007397086553753173 -0.0006630082322263105 units box
+
+create_atoms 1 single -4.779767832946135e-05 -0.00015638140394357177 9.482561422460769e-05 units box
+
+create_atoms 1 single 3.552389235085547e-05 3.386329373263188e-05 -9.250933874745805e-05 units box
+
+create_atoms 1 single 0.00022056849332047465 -0.0002670127202263471 0.0003297684208456188 units box
+
+create_atoms 1 single -2.0114077465575994e-05 -2.799189896783744e-05 -3.932312803049189e-06 units box
+
+create_atoms 1 single -4.692550574165671e-05 9.654911643181692e-05 2.29419280914563e-05 units box
+
+create_atoms 1 single -9.308569926634457e-05 -0.0001109734040302128 -0.0006708865787361404 units box
+
+create_atoms 1 single -1.0881606589027065e-05 -3.83618140147997e-05 0.00033293782700241127 units box
+
+create_atoms 1 single -1.2661873295271329e-06 3.705463889166928e-06 -2.419202990966244e-05 units box
+
+
+# Species...
+mass 1 1.4944851e-26
+set type 1 charge 1.6021764599999998e-19
+group 1 type 1
+
+
+
+create_atoms 2 single 0.00011401819730716642 8.263048234586483e-05 -8.305772344042202e-05 units box
+
+create_atoms 2 single -1.4008423645557032e-05 2.5794368804691336e-05 0.0003675902978116985 units box
+
+create_atoms 2 single 0.00012637383502917316 8.327253310379872e-05 0.000549269522418916 units box
+
+create_atoms 2 single 0.00011518196581412469 -0.0003931711011027497 -0.0004106483882601607 units box
+
+create_atoms 2 single 9.784474517241102e-05 -0.0001884492303104034 2.7592750579517924e-05 units box
+
+create_atoms 2 single -0.00029079516647438527 -0.0001527855859396479 -0.0001612960466658903 units box
+
+create_atoms 2 single 7.031077148567294e-05 -3.314141316103902e-05 -0.00046376302790520116 units box
+
+create_atoms 2 single -4.767011495407949e-05 -2.3778702707302064e-05 -0.0001629073434630712 units box
+
+create_atoms 2 single -0.0005043964301222071 -6.512364556138466e-05 -1.5267928909087052e-05 units box
+
+create_atoms 2 single 9.451770968273904e-05 -6.504562848439183e-05 0.0007964224351865589 units box
+
+
+# Species...
+mass 2 5.3137248e-26
+set type 2 charge 1.6021764599999998e-19
+group 2 type 2
+
+
+timestep 1e-06
+
+# Configuring additional output to flush buffer during simulation...
+thermo 10000
+thermo_style custom step cpu
+thermo_modify flush yes
+
+# Time integration...
+
+group nonRigidBody union all
+
+fix timeIntegrator nonRigidBody nve
+
+
+
+dump 9252747527 all custom 10 /Users/michaelmitchell/qlicS/data/2024-07-07_16-29-51/positions.txt id x y z vx vy vz
+
+
+
+
+
+# Pseudopotential approximation for Linear Paul trap... (fixID=9254383813)
+
+
+# SHO
+
+variable k_x9254383813		equal 1.773509e-12
+
+variable k_y9254383813		equal 1.773509e-12
+
+variable k_z9254383813		equal 1.548694e-13
+
+variable fX9254383813 atom "-v_k_x9254383813 * x"
+
+variable fY9254383813 atom "-v_k_y9254383813 * y"
+
+variable fZ9254383813 atom "-v_k_z9254383813 * z"
+
+variable E9254383813 atom "v_k_x9254383813 * x * x /         2 + v_k_y9254383813 * y * y / 2 + v_k_z9254383813 * z * z / 2"
+
+fix 9254383813 all addforce         v_fX9254383813 v_fY9254383813 v_fZ9254383813 energy v_E9254383813
+
+
+
+
+variable coolx atom (9.269386030594033e-20+(-2.703426035144626e-21*vx))*-0.5000000000000001
+variable cooly atom (9.269386030594033e-20+-2.703426035144626e-21*vy)*-0.5000000000000001
+variable coolz atom (9.269386030594033e-20+-2.703426035144626e-21*vz)*-0.7071067811865476
+fix 569202603907002 1 addforce v_coolx v_cooly v_coolz
+
+
+
+timestep 1e-08
+
+
+# Run simulation
+
+run 20000
+
+

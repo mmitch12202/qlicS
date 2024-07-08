@@ -2,7 +2,7 @@ import pytest
 from unittest.mock import patch, MagicMock
 from qlicS.exp_sequence_controller import create_and_run_sim_gen
 
-
+# FIXME replaces this with real runs from the examples .ini examples.  Basically just test that they run w/out error and then move on to physics testing
 @pytest.mark.parametrize(
     "input_sequence, expected_calls",
     [

@@ -13,7 +13,7 @@ def get_F_0(k, sat_param, gamma) -> np.float64:
 
 def get_beta(k, sat_param, gamma, delta) -> np.float64:
     num = (
-        -(eval(configur.get("constants", "h")) / (2 * np.pi))
+        (eval(configur.get("constants", "h")) / (2 * np.pi))
         * (k**2)
         * sat_param
         * delta

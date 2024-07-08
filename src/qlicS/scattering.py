@@ -8,11 +8,13 @@ from .time_controller import get_dt_given_timestep
 
 def scattering_rate(velocity: list, laser_config: dict, species_info: dict) -> float:
     c = eval(configur.get("constants", "c"))
+    
     this_atom_velocities_dot = (
         velocity[0] * abs(eval(laser_config["laser_direction"])[0])
         + velocity[1] * abs(eval(laser_config["laser_direction"])[1])
         + velocity[2] * abs(eval(laser_config["laser_direction"])[2])
-    )  # Figure out what we are doing with these abs()
+    )  # TODO Figure out what we are doing with these abs()
+    print(this_atom_velocities_dot/c) 
     return (
         0.5
         * eval(laser_config["saturation_paramater"])

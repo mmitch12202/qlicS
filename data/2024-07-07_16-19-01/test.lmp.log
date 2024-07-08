@@ -1,0 +1,311 @@
+LAMMPS (23 Jun 2022)
+##################################################################
+# LAMMPS input file generated using pylion 0.5.3
+# simulation name: test
+#
+# pylion is written and maintained by Dimitris Trypogeorgos
+# and Elliot Bentine. Download it from
+# https://bitbucket.org/dtrypogeorgos/pylion
+#
+# If you find it useful please cite <paper>.
+##################################################################
+
+
+
+units si
+atom_style charge
+
+# Creating simulation box...
+boundary m m m
+region simulationDomain block -0.001  0.001 -0.001 0.001 -0.001 0.001 units box
+create_box 2 simulationDomain
+Created orthogonal box = (-0.001 -0.001 -0.001) to (0.001 0.001 0.001)
+  1 by 1 by 1 MPI processor grid
+
+# Configure neighbour list...
+neighbor 1 nsq
+neigh_modify once yes
+
+# Configure pairwise interactions for long range Coulombics only...
+pair_style coul/cut 10
+pair_coeff * *
+
+# Placing individual ions...
+
+
+create_atoms 1 single 0.0004272604995800033 -0.0006121651449951067 -0.0002727192619190371 units box
+Created 1 atoms
+  using box units in orthogonal box = (-0.001 -0.001 -0.001) to (0.001 0.001 0.001)
+  create_atoms CPU = 0.001 seconds
+
+create_atoms 1 single -9.0226966789935e-05 2.0175278141101543e-05 0.0003440556260933087 units box
+Created 1 atoms
+  using box units in orthogonal box = (-0.001 -0.001 -0.001) to (0.001 0.001 0.001)
+  create_atoms CPU = 0.000 seconds
+
+create_atoms 1 single -0.0002628562259083538 9.917778865512999e-05 7.713851688573881e-06 units box
+Created 1 atoms
+  using box units in orthogonal box = (-0.001 -0.001 -0.001) to (0.001 0.001 0.001)
+  create_atoms CPU = 0.000 seconds
+
+create_atoms 1 single 6.7192187525282735e-06 0.00016600780131471128 -5.0190363343648767e-05 units box
+Created 1 atoms
+  using box units in orthogonal box = (-0.001 -0.001 -0.001) to (0.001 0.001 0.001)
+  create_atoms CPU = 0.000 seconds
+
+create_atoms 1 single 0.0005575559232943043 5.060332672167971e-05 0.00019883236166543908 units box
+Created 1 atoms
+  using box units in orthogonal box = (-0.001 -0.001 -0.001) to (0.001 0.001 0.001)
+  create_atoms CPU = 0.000 seconds
+
+create_atoms 1 single -2.554763834933201e-05 8.603376440568459e-05 -0.0005509810830296333 units box
+Created 1 atoms
+  using box units in orthogonal box = (-0.001 -0.001 -0.001) to (0.001 0.001 0.001)
+  create_atoms CPU = 0.000 seconds
+
+create_atoms 1 single -0.0003998542689670641 3.5503333834799765e-05 8.880009522143755e-05 units box
+Created 1 atoms
+  using box units in orthogonal box = (-0.001 -0.001 -0.001) to (0.001 0.001 0.001)
+  create_atoms CPU = 0.000 seconds
+
+create_atoms 1 single -0.0005253817632236171 0.0008224077585598727 -0.00013798688754127899 units box
+Created 1 atoms
+  using box units in orthogonal box = (-0.001 -0.001 -0.001) to (0.001 0.001 0.001)
+  create_atoms CPU = 0.000 seconds
+
+create_atoms 1 single -0.00030102527223376056 0.0003016393280692573 -0.00046684895853701323 units box
+Created 1 atoms
+  using box units in orthogonal box = (-0.001 -0.001 -0.001) to (0.001 0.001 0.001)
+  create_atoms CPU = 0.000 seconds
+
+create_atoms 1 single -2.219849834478704e-05 4.7308024645277804e-06 -0.00010868429231989224 units box
+Created 1 atoms
+  using box units in orthogonal box = (-0.001 -0.001 -0.001) to (0.001 0.001 0.001)
+  create_atoms CPU = 0.000 seconds
+
+create_atoms 1 single -0.00029588162679439325 -0.00037822473336577303 -1.9334775402135527e-05 units box
+Created 1 atoms
+  using box units in orthogonal box = (-0.001 -0.001 -0.001) to (0.001 0.001 0.001)
+  create_atoms CPU = 0.000 seconds
+
+create_atoms 1 single -0.000365369675024775 -6.774179611193289e-05 -0.00024302902634424308 units box
+Created 1 atoms
+  using box units in orthogonal box = (-0.001 -0.001 -0.001) to (0.001 0.001 0.001)
+  create_atoms CPU = 0.000 seconds
+
+create_atoms 1 single 0.00010875951718895634 -0.00014928515833733064 -0.0002496427272601749 units box
+Created 1 atoms
+  using box units in orthogonal box = (-0.001 -0.001 -0.001) to (0.001 0.001 0.001)
+  create_atoms CPU = 0.000 seconds
+
+create_atoms 1 single 0.0005263463216549215 0.00044330268842216044 5.259314487922403e-05 units box
+Created 1 atoms
+  using box units in orthogonal box = (-0.001 -0.001 -0.001) to (0.001 0.001 0.001)
+  create_atoms CPU = 0.000 seconds
+
+create_atoms 1 single 1.5515584122618132e-06 -1.0811513836435745e-05 1.9665536451469654e-05 units box
+Created 1 atoms
+  using box units in orthogonal box = (-0.001 -0.001 -0.001) to (0.001 0.001 0.001)
+  create_atoms CPU = 0.000 seconds
+
+create_atoms 1 single 0.0006453122302302901 0.0003964320551344671 -0.00012856252172292938 units box
+Created 1 atoms
+  using box units in orthogonal box = (-0.001 -0.001 -0.001) to (0.001 0.001 0.001)
+  create_atoms CPU = 0.000 seconds
+
+create_atoms 1 single 0.0007317478964572909 -1.8727045883434146e-05 -0.00042596381514057376 units box
+Created 1 atoms
+  using box units in orthogonal box = (-0.001 -0.001 -0.001) to (0.001 0.001 0.001)
+  create_atoms CPU = 0.000 seconds
+
+create_atoms 1 single 0.0003694589056748753 0.0001374045652091437 -0.0001656387705296199 units box
+Created 1 atoms
+  using box units in orthogonal box = (-0.001 -0.001 -0.001) to (0.001 0.001 0.001)
+  create_atoms CPU = 0.000 seconds
+
+create_atoms 1 single -5.4108839543262375e-05 -9.14277755334841e-05 9.30116657587419e-05 units box
+Created 1 atoms
+  using box units in orthogonal box = (-0.001 -0.001 -0.001) to (0.001 0.001 0.001)
+  create_atoms CPU = 0.000 seconds
+
+create_atoms 1 single -3.7019006995758267e-06 1.632628521336376e-05 -0.0009732132709089675 units box
+Created 1 atoms
+  using box units in orthogonal box = (-0.001 -0.001 -0.001) to (0.001 0.001 0.001)
+  create_atoms CPU = 0.000 seconds
+
+
+# Species...
+mass 1 1.4944851e-26
+set type 1 charge 1.6021764599999998e-19
+Setting atom values ...
+  20 settings made for charge
+group 1 type 1
+20 atoms in group 1
+
+
+
+create_atoms 2 single -0.00025060036105980046 -0.0001078584970784477 0.0002488567906291094 units box
+Created 1 atoms
+  using box units in orthogonal box = (-0.001 -0.001 -0.001) to (0.001 0.001 0.001)
+  create_atoms CPU = 0.000 seconds
+
+create_atoms 2 single -4.474180815081775e-05 0.00016047996823401092 -0.00010882877350851547 units box
+Created 1 atoms
+  using box units in orthogonal box = (-0.001 -0.001 -0.001) to (0.001 0.001 0.001)
+  create_atoms CPU = 0.000 seconds
+
+create_atoms 2 single -3.612556052904984e-06 0.00015378503041463767 -0.0001845026202393923 units box
+Created 1 atoms
+  using box units in orthogonal box = (-0.001 -0.001 -0.001) to (0.001 0.001 0.001)
+  create_atoms CPU = 0.000 seconds
+
+create_atoms 2 single -9.013008547733007e-05 -0.0005809722237264189 -0.00045639586483360947 units box
+Created 1 atoms
+  using box units in orthogonal box = (-0.001 -0.001 -0.001) to (0.001 0.001 0.001)
+  create_atoms CPU = 0.000 seconds
+
+create_atoms 2 single -3.0134807935534176e-05 1.2647294849463629e-05 -0.0006533224255624857 units box
+Created 1 atoms
+  using box units in orthogonal box = (-0.001 -0.001 -0.001) to (0.001 0.001 0.001)
+  create_atoms CPU = 0.000 seconds
+
+create_atoms 2 single 6.288279373192548e-05 -5.5626733839373246e-05 0.0009261730716199199 units box
+Created 1 atoms
+  using box units in orthogonal box = (-0.001 -0.001 -0.001) to (0.001 0.001 0.001)
+  create_atoms CPU = 0.000 seconds
+
+create_atoms 2 single -1.2088681741485156e-05 1.994797667772739e-05 -0.00010331516563999609 units box
+Created 1 atoms
+  using box units in orthogonal box = (-0.001 -0.001 -0.001) to (0.001 0.001 0.001)
+  create_atoms CPU = 0.000 seconds
+
+create_atoms 2 single -0.0006766642453692366 0.00031660190018799875 0.00011615402970464169 units box
+Created 1 atoms
+  using box units in orthogonal box = (-0.001 -0.001 -0.001) to (0.001 0.001 0.001)
+  create_atoms CPU = 0.000 seconds
+
+create_atoms 2 single 0.00010052723297275052 8.334911341935231e-05 0.0007746200218021364 units box
+Created 1 atoms
+  using box units in orthogonal box = (-0.001 -0.001 -0.001) to (0.001 0.001 0.001)
+  create_atoms CPU = 0.000 seconds
+
+create_atoms 2 single -2.1240429950793687e-05 0.0001929250277412573 0.000721934119392642 units box
+Created 1 atoms
+  using box units in orthogonal box = (-0.001 -0.001 -0.001) to (0.001 0.001 0.001)
+  create_atoms CPU = 0.000 seconds
+
+
+# Species...
+mass 2 5.3137248e-26
+set type 2 charge 1.6021764599999998e-19
+Setting atom values ...
+  10 settings made for charge
+group 2 type 2
+10 atoms in group 2
+
+
+timestep 1e-06
+
+# Configuring additional output to flush buffer during simulation...
+thermo 10000
+thermo_style custom step cpu
+thermo_modify flush yes
+
+# Time integration...
+
+group nonRigidBody union all
+30 atoms in group nonRigidBody
+
+fix timeIntegrator nonRigidBody nve
+
+
+
+dump 9247604352 all custom 10 /Users/michaelmitchell/qlicS/data/2024-07-07_16-19-01/positions.txt id x y z vx vy vz
+
+
+
+
+
+# Pseudopotential approximation for Linear Paul trap... (fixID=9249155930)
+
+
+# SHO
+
+variable k_x9249155930		equal 1.773509e-12
+
+variable k_y9249155930		equal 1.773509e-12
+
+variable k_z9249155930		equal 1.548694e-13
+
+variable fX9249155930 atom "-v_k_x9249155930 * x"
+
+variable fY9249155930 atom "-v_k_y9249155930 * y"
+
+variable fZ9249155930 atom "-v_k_z9249155930 * z"
+
+variable E9249155930 atom "v_k_x9249155930 * x * x /         2 + v_k_y9249155930 * y * y / 2 + v_k_z9249155930 * z * z / 2"
+
+fix 9249155930 all addforce         v_fX9249155930 v_fY9249155930 v_fZ9249155930 energy v_E9249155930
+
+
+
+
+variable coolx atom (9.269386030594033e-20+(-2.703426035144626e-21*vx))*-0.5000000000000001
+variable cooly atom (9.269386030594033e-20+-2.703426035144626e-21*vy)*-0.5000000000000001
+variable coolz atom (9.269386030594033e-20+-2.703426035144626e-21*vz)*-0.7071067811865476
+fix 569202603907002 1 addforce v_coolx v_cooly v_coolz
+
+
+
+timestep 1e-08
+
+
+# Run simulation
+
+run 20000
+Generated 0 of 1 mixed pair_coeff terms from geometric mixing rule
+Neighbor list info ...
+  update every 1 steps, delay 10 steps, check yes
+  max neighbors/atom: 2000, page size: 100000
+  master list distance cutoff = 11
+  ghost atom cutoff = 11
+  1 neighbor lists, perpetual/occasional/extra = 1 0 0
+  (1) pair coul/cut, perpetual
+      attributes: half, newton on
+      pair build: half/nsq/newton
+      stencil: none
+      bin: none
+WARNING: Proc sub-domain size < neighbor skin, could lead to lost atoms (src/domain.cpp:970)
+Per MPI rank memory allocation (min/avg/max) = 5.282 | 5.282 | 5.282 Mbytes
+   Step          CPU      
+         0   0            
+     10000   0.51652605   
+     20000   1.031241     
+Loop time of 1.03126 on 1 procs for 20000 steps with 30 atoms
+
+96.7% CPU use with 1 MPI tasks x no OpenMP threads
+
+MPI task timing breakdown:
+Section |  min time  |  avg time  |  max time  |%varavg| %total
+---------------------------------------------------------------
+Pair    | 0.097809   | 0.097809   | 0.097809   |   0.0 |  9.48
+Neigh   | 0          | 0          | 0          |   0.0 |  0.00
+Comm    | 0.0029276  | 0.0029276  | 0.0029276  |   0.0 |  0.28
+Output  | 0.13753    | 0.13753    | 0.13753    |   0.0 | 13.34
+Modify  | 0.78778    | 0.78778    | 0.78778    |   0.0 | 76.39
+Other   |            | 0.005214   |            |       |  0.51
+
+Nlocal:             30 ave          30 max          30 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+Nghost:              0 ave           0 max           0 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+Neighs:            435 ave         435 max         435 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+
+Total # of neighbors = 435
+Ave neighs/atom = 14.5
+Neighbor list builds = 0
+Dangerous builds = 0
+
+
+Total wall time: 0:00:01
