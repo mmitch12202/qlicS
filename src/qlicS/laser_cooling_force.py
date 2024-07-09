@@ -24,7 +24,7 @@ def get_beta(k, sat_param, gamma, delta) -> np.float64:
 
 
 def create_cooling_laser(
-    cycle_info, gid, type_pos
+    uid, cycle_info, gid, type_pos
 ):  # gid is for the species we wish to apply the force to
     laser_info = {
         key: eval(value)
@@ -42,8 +42,6 @@ def create_cooling_laser(
     decay_rate = cycle_info["natural linewidth"]
     mag = np.sqrt(sum(vec**2 for vec in laser_info["laser_direction"]))
     normalized_laser_direction = [i / mag for i in laser_info["laser_direction"]]
-    # id stuff
-    uid = 569202603907002  # TODO: work out this explicit id stuff
 
     F_0 = get_F_0(wave_number, s, decay_rate)
     beta = get_beta(wave_number, s, decay_rate, laser_info["detunning"])

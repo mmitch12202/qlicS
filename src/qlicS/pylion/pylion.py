@@ -123,6 +123,9 @@ class Simulation(list):
             raise SimulationError(
                 "There are identical 'uids'. Although this is allowed in some "
                 " cases, 'lammps' is probably not going to like it."
+                f"\nuid list: {uids}"
+                f"\nunique uids: {set(uids)}"
+                f"\nnot unique uids: {[uid for uid in set(uids) if uids.count(uid) > 1]}"
             )
 
         # make sure species will behave

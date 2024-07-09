@@ -1,4 +1,4 @@
-from .command_mapping import command_mapping
+from .command_mapping import give_command_mapping
 from .config_controller import configur
 from .ion_creation import pylion_cloud
 from .laser_cooling_force import create_cooling_laser
@@ -8,6 +8,10 @@ from .sim_controller import pylion_dumping
 from .tickle_efield import create_tickle
 from .time_controller import evolve
 from .trap import gen_trap_lammps
+from .remover import remove_by_uid
+
+import ast
+import re
 
 
 # TODO at some point want evolve to follow the pattern of the rest and the if statement to not exist. But
@@ -17,11 +21,61 @@ def create_and_run_sim_gen():
     commands = configur.get("exp_seq", "com_list").split(
         ","
     )  # Assuming commands are separated by commas
-
+    command_mapping = give_command_mapping()
     type_poses = {key: 0 for key in command_mapping}
     ion_groups = []
+    com_appending(s, commands, command_mapping, type_poses, ion_groups, False)
+    s.execute()
+
+    # Analysis
+    print(get_scattering())
+
+# For expanding select simulation blocks - should most commonly be used for scanning modulation frequency but is completely general
+# For now we are just supporting sweeping one variable at a time
+
+# TODO basically a function that takes s as input and appends appropriatly based on the [iter] information
+
+def append_iter(s):
+    config_dict = dict(configur.items('iter'))
+    scan_objects = ast.literal_eval(config_dict['scan_objects'])
+    scan_var = ast.literal_eval(config_dict['scan_var'])
+    scan_var_seq = ast.literal_eval(config_dict['scan_var_seq'])
+    iter_timesequence = ast.literal_eval(config_dict['iter_timesequence'])
+    iter_detection_seq = ast.literal_eval(config_dict['iter_detection_seq'])
+    com_list = config_dict['com_list'].split(',')
+    command_mapping = give_command_mapping()
+    stat_type_poses = {key: 0 for key in command_mapping}
+    original_uids = {}
+    for scan_object in scan_objects:
+        w, i = separate_word_and_int(scan_object)
+        if i is not None:
+            stat_type_poses[w] = i
+            original_uids[scan_object] = eval(configur.get(scan_object, "uid"))
+    for i, scan_var_val in enumerate(scan_var_seq): # TODO use scan_var_val
+        ion_groups = [] # Not sure if this is the best way of handling this
+        i_steps = i+1
+        com_appending(s, com_list, command_mapping, stat_type_poses, ion_groups, True, iter_step=i_steps)
+        for k in list(original_uids.keys()):
+            remove_by_uid(s, original_uids[k]+i_steps)
+    return
+
+def separate_word_and_int(input_string):
+    if match := re.match(r"^(.*?)(_\d+)?$", input_string):
+        word_part = match[1]
+        int_part = match[2][1:] if match[2] else None
+        return word_part, int_part
+    return None, None
+
+def com_appending(s, commands, command_mapping, type_poses, ion_groups, is_iter, iter_step=0):
     for command in commands:
-        if command not in command_mapping:
+        if command == 'iter':
+            append_iter(s)
+            continue
+        elif command[:2] == 'r_':
+            r_uid = command[2:]
+            remove_by_uid(s, r_uid)
+            continue
+        elif command not in command_mapping:
             raise ValueError(f"Command {command} is not recognized")
         func = command_mapping[command]
         if func == pylion_cloud:
@@ -36,7 +90,7 @@ def create_and_run_sim_gen():
             )
             s.append(func(ion_groups[type_pos], type_poses[command]))
         elif func == create_cooling_laser:
-            if not ion_groups:
+            if not ion_groups and not is_iter:
                 raise SyntaxError("Laser cooling must come after ion creation")
             type_pos = eval(
                 configur.get(f"cooling_laser_{type_poses[command]}", "target_ion_pos")
@@ -44,14 +98,24 @@ def create_and_run_sim_gen():
             cooling_ion_name = configur.get(
                 f"cooling_laser_{type_poses[command]}", "target_ion_type"
             )
+            self_uid = eval(
+                configur.get(f"cooling_laser_{type_poses[command]}", "uid")
+            )
             ion_cooling_data = eval(configur.get("ions", cooling_ion_name))[1]
-            s.append(func(ion_cooling_data, ion_groups[0]["uid"], type_poses[command]))
+            target_uid = eval(configur.get(f"ion_cloud_{type_pos}", "uid"))
+            if is_iter:
+                self_uid += iter_step
+            s.append(func(self_uid, ion_cooling_data, target_uid, type_poses[command])) # TODO I think there may be a bug here where if an ion cloud is never created and cooling is only done in iter, it tries to run the sim (and obviously failes)
         elif func in [evolve, pylion_dumping]:
             s.append(func())
+        elif func == create_tickle:
+            self_uid = eval(
+                configur.get(f"modulation_{type_poses[command]}", "uid")
+            )
+            if is_iter:
+                self_uid += iter_step
+            s.append(func(type_poses[command], self_uid))
         else:
             s.append(func(type_poses[command]))
-        type_poses[command] += 1
-    s.execute()
-
-    # Analysis
-    print(get_scattering())
+        if not is_iter:
+            type_poses[command] += 1

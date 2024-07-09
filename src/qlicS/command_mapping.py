@@ -5,11 +5,16 @@ from .tickle_efield import create_tickle
 from .time_controller import evolve
 from .trap import gen_trap_lammps
 
-command_mapping = {
+
+def give_command_mapping():
+    return {
     "dumping": pylion_dumping,
     "cloud": pylion_cloud,
     "trap": gen_trap_lammps,
     "cooling_laser": create_cooling_laser,
     "evolve": evolve,
     "tickle": create_tickle,
+    "iter": None,
 }
+
+

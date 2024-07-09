@@ -9,7 +9,7 @@ from InquirerPy.validator import EmptyInputValidator
 
 from . import __version__, config_controller, exp_sequence_controller
 from .analysis import create_analysis
-from .command_mapping import command_mapping
+from .command_mapping import give_command_mapping
 from .console_dialogue import followup_questions_creator
 from .resources import PathStringValidator
 
@@ -35,7 +35,7 @@ def main():  # sourcery skip: use-named-expression
         ).execute()
         if create_mode == create_choices[0]:
             config_controller.setup_sequence()
-
+            command_mapping = give_command_mapping()
             type_poses = {key: 0 for key in command_mapping}
 
             avail_block_types = list(command_mapping.keys())
@@ -268,7 +268,6 @@ def run_from_file():
     config_file = config_file_dialogue()
 
     loading_configur = setup_loading_configur(config_file)
-    print("here")
     config_controller.setup_sequence()
 
     type_poses = count_type_pos(loading_configur)
@@ -319,7 +318,7 @@ def run_from_file():
 
     for i in range(type_poses["cloud"]):
         c = get_cloud_inputs(i)
-        config_controller.configur_ion_cloud(i, c["species"], c["radius"], c["count"])
+        config_controller.configur_ion_cloud(i, c["uid"], c["species"], c["radius"], c["count"])
 
     for i in range(type_poses["trap"]):
         t = get_trap_inputs(i)
@@ -338,6 +337,7 @@ def run_from_file():
     for i in range(type_poses["cooling_laser"]):
         cl = get_cooling_laser_inputs(i)
         config_controller.configur_cooling_laser(
+            cl["uid"],
             i,
             cl["target_ion_pos"],
             cl["target_ion_type"],
@@ -356,8 +356,20 @@ def run_from_file():
         sl["saturation_paramater"],
         sl["frequency"],
     )
+    exp_seq = get_exp_seq()
+    # TODO we are assuming only one iter object for now - this could be generalized but I'm not sure how useful it would be to
+    if 'iter' in exp_seq:
+        it = get_iter_inputs()
+        config_controller.configur_iter(
+            it["scan_objects"],
+            it["scan_var"],
+            it["scan_var_seq"],
+            it["iter_timesequence"],
+            it["iter_detection_seq"],
+            it["com_list"],
+        )
 
-    config_controller.create_exp_seq(get_exp_seq())
+    config_controller.create_exp_seq(exp_seq)
     # config_controller.commit_changes()
     exp_sequence_controller.create_and_run_sim_gen()
 
@@ -396,10 +408,18 @@ def setup_loading_configur(loading_config_file):
 
 
 def count_type_pos(loading_configur):
+    command_mapping = give_command_mapping()
     type_poses = {key: 0 for key in command_mapping}
     command_string = loading_configur.get("exp_seq", "com_list").split(",")
+    # Check if there are commands from the iter
+    if loading_configur.has_option("iter", "com_list"):
+        iter_command_string = loading_configur.get("iter", "com_list").split(",")
+        for i in iter_command_string: 
+            if i not in command_string:
+                command_string.append(i)
     for command in command_string:
-        type_poses[command] += 1
+        if command[:2] != "r_": # this is fine since the removers are a fundamentally different type of command
+            type_poses[command] += 1
     return type_poses
 
 
@@ -428,6 +448,8 @@ def get_cooling_laser_inputs(type_pos):
 def get_scattering_laser_inputs():
     return dict(loading_configur.items("scattering_laser"))
 
+def get_iter_inputs():
+    return dict(loading_configur.items("iter"))
 
 def get_exp_seq():
     return loading_configur.get("exp_seq", "com_list")

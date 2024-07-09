@@ -127,8 +127,9 @@ def configur_modulation(
     }
 
 
-def configur_ion_cloud(type_pos, species, radius, count):
+def configur_ion_cloud(type_pos, uid, species, radius, count):
     configur[f"ion_cloud_{type_pos}"] = {
+        "uid": uid,
         "species": species,
         "radius": radius,
         "count": count,
@@ -159,6 +160,7 @@ def configur_trap(
 
 
 def configur_cooling_laser(
+    uid,
     type_pos,
     target_ion_pos,
     target_ion_type,
@@ -169,6 +171,7 @@ def configur_cooling_laser(
     laser_origin_position,
 ):
     configur[f"cooling_laser_{type_pos}"] = {
+        "uid": uid,
         "target_ion_pos": target_ion_pos,
         "target_ion_type": target_ion_type,
         "beam_radius": beam_radius,
@@ -193,6 +196,24 @@ def configur_scattering_laser(
         "saturation_paramater": saturation_paramater,
         "frequency": frequency,
     }
+
+def configur_iter(
+    scan_objects,
+    scan_var,
+    scan_var_seq,
+    iter_timesequence,
+    iter_detection_seq,
+    com_list,
+):
+    configur["iter"] = {
+        "scan_objects": scan_objects,
+        "scan_var": scan_var,
+        "scan_var_seq": scan_var_seq,
+        "iter_timesequence": iter_timesequence,
+        "iter_detection_seq": iter_detection_seq,
+        "com_list": com_list,
+    }
+
 
 
 def create_exp_seq(exp_seq: str):

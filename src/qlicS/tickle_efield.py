@@ -4,9 +4,9 @@ from .config_controller import configur
 from .time_controller import get_current_dt
 
 
-def create_tickle(type_pos):
+def create_tickle(type_pos, uid):
     frequency = eval(configur.get(f"modulation_{type_pos}", "frequency"))
-    uid = eval(configur.get(f"modulation_{type_pos}", "uid"))
+    #uid = eval(configur.get(f"modulation_{type_pos}", "uid"))
     tickleamp = eval(configur.get(f"modulation_{type_pos}", "amp"))
     statics = eval(configur.get(f"modulation_{type_pos}", "static"))
     freq = frequency * get_current_dt()
