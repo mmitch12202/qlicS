@@ -8,13 +8,11 @@ from .trap import gen_trap_lammps
 
 def give_command_mapping():
     return {
-    "dumping": pylion_dumping,
-    "cloud": pylion_cloud,
-    "trap": gen_trap_lammps,
-    "cooling_laser": create_cooling_laser,
-    "evolve": evolve,
-    "tickle": create_tickle,
-    "iter": None,
-}
-
-
+        "dumping": pylion_dumping,
+        "cloud": pylion_cloud,
+        "trap": gen_trap_lammps,
+        "cooling_laser": create_cooling_laser,
+        "evolve": evolve,
+        "tickle": create_tickle,
+        "iter": None,
+    }

@@ -95,6 +95,8 @@ def test_evolve_happy_path(
         "qlicS.time_controller.pl_func", mock_pl_func(expected_evolution_steps)
     ), patch("builtins.open", mock_open(read_data="data")), patch(
         "qlicS.config_controller.configur", mock_configur
+    ), patch(
+        "qlicS.time_controller.configur.has_option", return_value=False
     ):
         result = evolve()
 

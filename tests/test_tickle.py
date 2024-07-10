@@ -46,7 +46,7 @@ from src.qlicS.tickle_efield import create_tickle
             },
             2.0,
             0,
-            "test_uid",
+            "2",
             [
                 "variable E equal 0.1\n"
                 "variable Ex atom (0.5*(1.0+0.1*(x-0.1)+0.01*(x-0.1)^2+0.2*(y-0.2)+"
@@ -60,7 +60,7 @@ from src.qlicS.tickle_efield import create_tickle
                 "variable Ez atom (0.5*(1.2+0.12*(x-0.1)+0.012*(x-0.1)^2+0.22*(y-0.2)+"
                 "0.022*(y-0.2)^2+0.32*(z-0.3)+0.032*(z-0.3)^2))*"
                 "cos((2*3.141592653589793)*2.0*step)\n"
-                "fix test_uid all efield v_Ex v_Ey v_Ez"
+                "fix 2 all efield v_Ex v_Ey v_Ez"
             ],
         ),
         # Edge case: zero frequency
@@ -99,7 +99,7 @@ from src.qlicS.tickle_efield import create_tickle
             },
             2.0,
             0,
-            "zero_freq_uid",
+            "2",
             [
                 "variable E equal 0.1\n"
                 "variable Ex atom (0.5*(1.0+0.1*(x-0.1)+0.01*(x-0.1)^2+0.2*(y-0.2)+0.02*"
@@ -110,7 +110,7 @@ from src.qlicS.tickle_efield import create_tickle
                 "variable C equal 0.3\n"
                 "variable Ez atom (0.5*(1.2+0.12*(x-0.1)+0.012*(x-0.1)^2+0.22*(y-0.2)+0.022*"
                 "(y-0.2)^2+0.32*(z-0.3)+0.032*(z-0.3)^2))*cos((2*3.141592653589793)*0.0*step)\n"
-                "fix zero_freq_uid all efield v_Ex v_Ey v_Ez"
+                "fix 2 all efield v_Ex v_Ey v_Ez"
             ],
         ),
     ],
@@ -128,7 +128,7 @@ def test_create_tickle(
         "src.qlicS.tickle_efield.get_current_dt", return_value=current_dt
     ):
         if isinstance(expected_code, list):
-            result = create_tickle(test_pos)
+            result = create_tickle(test_pos, expected_uid)
 
             # Assert
             assert result["uid"] == expected_uid

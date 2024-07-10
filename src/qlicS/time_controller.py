@@ -19,6 +19,7 @@ def evolve():
         configur.write(configfile)
     return {"code": set_timestep + evolve["code"]}
 
+
 def get_current_dt():  # Make it clear that this is only for simulation generation,
     # for analysis use get_dt_given_timestep()
     time_sequence = get_time_seq()
@@ -28,11 +29,13 @@ def get_current_dt():  # Make it clear that this is only for simulation generati
     current_timeblock_num = eval(configur.get("live_vars", "current_timesequence_pos"))
     return time_sequence[current_timeblock_num][0]
 
+
 def get_time_seq():
     time_sequence = eval(configur.get("sim_parameters", "timesequence"))
     if configur.has_option("iter", "iter_timesequence"):
         time_sequence = iter_correction(time_sequence)
     return time_sequence
+
 
 def get_dt_given_timestep(timestep):
     time_sequence = eval(configur.get("sim_parameters", "timesequence"))
@@ -48,7 +51,8 @@ def get_dt_given_timestep(timestep):
     # sourcery skip: raise-specific-error
     raise Exception(f"Timestep {timestep} is beyond simulation duration {nex_Delt}")
 
+
 def iter_correction(time_sequence):
     iterations = len(eval(configur.get("iter", "scan_var_seq")))
-    time_sequence += eval(configur.get("iter", "iter_timesequence"))*iterations
+    time_sequence += eval(configur.get("iter", "iter_timesequence")) * iterations
     return time_sequence

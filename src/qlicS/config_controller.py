@@ -197,6 +197,7 @@ def configur_scattering_laser(
         "frequency": frequency,
     }
 
+
 def configur_iter(
     scan_objects,
     scan_var,
@@ -213,7 +214,6 @@ def configur_iter(
         "iter_detection_seq": iter_detection_seq,
         "com_list": com_list,
     }
-
 
 
 def create_exp_seq(exp_seq: str):

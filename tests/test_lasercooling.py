@@ -110,7 +110,10 @@ def test_total_force_is_sensible(be_cloud: dict, default_laser_fixture: dict, ty
     ):
         # Test implementation code here
         cooling_force = laser_cooling_force.create_cooling_laser(
-            569202603907006, eval(configur_side_kick("ions", "be+"))[1], be_cloud["uid"], type_pos
+            569202603907006,
+            eval(configur_side_kick("ions", "be+"))[1],
+            be_cloud["uid"],
+            type_pos,
         )
         assert type(cooling_force) is dict
         print("***")

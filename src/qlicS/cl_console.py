@@ -248,7 +248,7 @@ def main():  # sourcery skip: use-named-expression
                 message="Input is not a valid filpath.  Make sure input is not a string.",
             ),  # TODO validate that it is also a .txt file
         ).execute()
-        if data_file[-4:] == '.txt':
+        if data_file[-4:] == ".txt":
             click.echo(
                 "### Analysis is Currently only supported for all Atoms### \n### be sure you know which species lines up with which atom index###\n\n"
             )
@@ -261,13 +261,13 @@ def main():  # sourcery skip: use-named-expression
                 invalid_message="Select at least 1",
             ).execute()
             analysis_root, raw_txt = create_analysis(data_vars, data_file)
-        elif data_file[-4:] == '.csv':
+        elif data_file[-4:] == ".csv":
             # Make scattering graph
             create_scat_graph(data_file)
         else:
-            raise ValueError("The input file extension should be .txt (ion data) or .csv (scattering data)")
-
-
+            raise ValueError(
+                "The input file extension should be .txt (ion data) or .csv (scattering data)"
+            )
 
 
 def run_from_file():
@@ -324,7 +324,9 @@ def run_from_file():
 
     for i in range(type_poses["cloud"]):
         c = get_cloud_inputs(i)
-        config_controller.configur_ion_cloud(i, c["uid"], c["species"], c["radius"], c["count"])
+        config_controller.configur_ion_cloud(
+            i, c["uid"], c["species"], c["radius"], c["count"]
+        )
 
     for i in range(type_poses["trap"]):
         t = get_trap_inputs(i)
@@ -364,7 +366,7 @@ def run_from_file():
     )
     exp_seq = get_exp_seq()
     # TODO we are assuming only one iter object for now - this could be generalized but I'm not sure how useful it would be to
-    if 'iter' in exp_seq:
+    if "iter" in exp_seq:
         it = get_iter_inputs()
         config_controller.configur_iter(
             it["scan_objects"],
@@ -378,7 +380,6 @@ def run_from_file():
     config_controller.create_exp_seq(exp_seq)
     # config_controller.commit_changes()
     exp_sequence_controller.create_and_run_sim_gen()
-
 
 
 def config_file_dialogue():
@@ -421,11 +422,13 @@ def count_type_pos(loading_configur):
     # Check if there are commands from the iter
     if loading_configur.has_option("iter", "com_list"):
         iter_command_string = loading_configur.get("iter", "com_list").split(",")
-        for i in iter_command_string: 
+        for i in iter_command_string:
             if i not in command_string:
                 command_string.append(i)
     for command in command_string:
-        if command[:2] != "r_": # this is fine since the removers are a fundamentally different type of command
+        if (
+            command[:2] != "r_"
+        ):  # this is fine since the removers are a fundamentally different type of command
             type_poses[command] += 1
     return type_poses
 
@@ -455,8 +458,10 @@ def get_cooling_laser_inputs(type_pos):
 def get_scattering_laser_inputs():
     return dict(loading_configur.items("scattering_laser"))
 
+
 def get_iter_inputs():
     return dict(loading_configur.items("iter"))
+
 
 def get_exp_seq():
     return loading_configur.get("exp_seq", "com_list")
