@@ -65,7 +65,8 @@ def append_iter(s):
     scan_var_seq = ast.literal_eval(config_dict["scan_var_seq"])
     iter_timesequence = ast.literal_eval(config_dict["iter_timesequence"])
     iter_detection_seq = ast.literal_eval(config_dict["iter_detection_seq"])
-    com_list = config_dict["com_list"].split(",")
+    com_list_str = config_dict["com_list"]
+    com_list = com_list_str.split(",")
     command_mapping = give_command_mapping()
     stat_type_poses = {key: 0 for key in command_mapping}
     original_uids = {}
@@ -88,7 +89,8 @@ def append_iter(s):
             iter_step=i_steps,
         )
         for k in list(original_uids.keys()):
-            remove_by_uid(s, original_uids[k] + i_steps)
+            if str(original_uids[k]) not in com_list_str:
+                remove_by_uid(s, original_uids[k] + i_steps)
     return
 
 
@@ -108,8 +110,10 @@ def com_appending(
             append_iter(s)
             continue
         elif command[:2] == "r_":
-            r_uid = command[2:]
-            remove_by_uid(s, r_uid)
+            r_uid = int(command[2:])
+            if is_iter:
+                r_uid += iter_step
+            remove_by_uid(s, str(r_uid))
             continue
         elif command not in command_mapping:
             raise ValueError(f"Command {command} is not recognized")

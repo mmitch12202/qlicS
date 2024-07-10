@@ -49,7 +49,7 @@ def get_number_atoms(raw_data_copy):
     return len(data[1])
 
 
-def create_analysis(var_list, raw_data_file):
+def create_analysis(var_list, raw_data_file, start):
     analysis_root = (
         f"{os.getcwd()}/data/analysis" + time.strftime("%Y-%m-%d_%H-%M-%S") + "/"
     )
@@ -61,7 +61,7 @@ def create_analysis(var_list, raw_data_file):
         for vartype in var_list:
             graph_dir = f"{analysis_root}atom_{a_i}/{vartype}"
             os.makedirs(graph_dir)
-            create_lammps_vars_graphs(graph_dir, raw_copy, vartype, a_i)
+            create_lammps_vars_graphs(graph_dir, raw_copy, vartype, a_i, start)
     return analysis_root, raw_copy
 
 
@@ -91,13 +91,13 @@ def create_scat_graph(raw_data_file):
     return
 
 
-def create_lammps_vars_graphs(directory, raw_data, vartype, atom_num):
+def create_lammps_vars_graphs(directory, raw_data, vartype, atom_num, start=0):
     if vartype == "Positions":
         var_indices = [0, 3]
     elif vartype == "Velocities":
         var_indices = [3, 6]
     steps, data = pl_func.readdump(raw_data)
-    sel_d = data[:, atom_num, var_indices[0] : var_indices[1]]
+    sel_d = data[start:, atom_num, var_indices[0] : var_indices[1]]
     x = []
     y = []
     z = []
@@ -105,9 +105,10 @@ def create_lammps_vars_graphs(directory, raw_data, vartype, atom_num):
         x.append(i[0])
         y.append(i[1])
         z.append(i[2])
-    _extracted_from_create_lammps_vars_graphs_15(steps, x, directory, "/x.png")
-    _extracted_from_create_lammps_vars_graphs_15(steps, y, directory, "/y.png")
-    _extracted_from_create_lammps_vars_graphs_15(steps, z, directory, "/z.png")
+
+    _extracted_from_create_lammps_vars_graphs_15(steps[start:], x, directory, "/x.png")
+    _extracted_from_create_lammps_vars_graphs_15(steps[start:], y, directory, "/y.png")
+    _extracted_from_create_lammps_vars_graphs_15(steps[start:], z, directory, "/z.png")
     return
 
 

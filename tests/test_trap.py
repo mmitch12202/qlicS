@@ -32,7 +32,7 @@ expected_pattern = (
     rf"\"v_k_x{int_pattern} \* x \* x /\s+"
     rf"2 \+ v_k_y{int_pattern} \* y \* y / 2 \+"
     rf" v_k_z{int_pattern} \* z \* z / 2\""
-    rf"fix {int_pattern} all addforce\s+v_fX{int_pattern}"
+    rf"fix {int_pattern} 1 addforce\s+v_fX{int_pattern}"
     rf" v_fY{int_pattern} v_fZ{int_pattern} energy v_E{int_pattern}\n"
 )
 
@@ -43,7 +43,7 @@ expected_pattern = (
 @pytest.mark.parametrize(
     "ions, trap_pos, trap_config, expected_result",
     [
-        ({"mass": 9, "charge": 1}, 0, test_trap.items(), expected_pattern),
+        ({"mass": 9, "charge": 1, "uid": 1}, 0, test_trap.items(), expected_pattern),
     ],
     ids=["single_ion"],
 )
@@ -52,11 +52,9 @@ def test_gen_trap_lammps_happy_path(ions, trap_pos, trap_config, expected_result
     with patch("qlicS.trap.configur.items", return_value=trap_config):
         # Act
         result = gen_trap_lammps(ions, trap_pos)
-        # print(''.join(result['code'][0]))
-        # print(expected_result)
-        # assert check_string_format(''.join(result['code'][0]), expected_result)
         print(type(result["code"][0]))
         print(expected_result)
+        print("".join(result["code"]))
         assert check_string_format("".join(result["code"]), expected_result) is True
 
 

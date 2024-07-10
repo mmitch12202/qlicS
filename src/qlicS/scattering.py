@@ -68,8 +68,9 @@ def get_scattering() -> list:
         detection_seq = iter_correction(detection_seq)
     results = []
     for start_stop_f_set in detection_seq:
-        laser_config = dict(configur.items("scattering_laser"))
-        results.append(start_stop_f_set + [illuminate(start_stop_f_set, laser_config)])
+        if len(start_stop_f_set) >= 2:
+            laser_config = dict(configur.items("scattering_laser"))
+            results.append(start_stop_f_set + [illuminate(start_stop_f_set, laser_config)])
     return results
 
 

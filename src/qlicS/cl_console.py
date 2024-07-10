@@ -260,7 +260,12 @@ def main():  # sourcery skip: use-named-expression
                 validate=lambda result: len(result) >= 1,
                 invalid_message="Select at least 1",
             ).execute()
-            analysis_root, raw_txt = create_analysis(data_vars, data_file)
+            start = inquirer.number(
+                message="Enter graph start log step (=timestep/log_steps):",
+                min_allowed=0,
+                validate=EmptyInputValidator(),
+            ).execute()
+            analysis_root, raw_txt = create_analysis(data_vars, data_file,int(start))
         elif data_file[-4:] == ".csv":
             # Make scattering graph
             create_scat_graph(data_file)
