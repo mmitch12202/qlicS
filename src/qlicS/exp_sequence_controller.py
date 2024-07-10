@@ -77,6 +77,7 @@ def append_iter(s):
     for i, scan_var_val in enumerate(scan_var_seq):  # TODO use scan_var_val
         ion_groups = []  # Not sure if this is the best way of handling this
         i_steps = i + 1
+        configur.set(scan_var[0], scan_var[1], str(scan_var_val))
         com_appending(
             s,
             com_list,

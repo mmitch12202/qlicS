@@ -51,6 +51,8 @@ def test_iter_appending(iter_config, config_ids, expected_calls):
         },
     ), patch(
         "qlicS.exp_sequence_controller.configur.get", return_value=config_ids
+    ), patch(
+        "qlicS.exp_sequence_controller.configur.set"
     ):
         mock_s = MagicMock()
 
