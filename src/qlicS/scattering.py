@@ -67,9 +67,9 @@ def get_scattering() -> list:
     if "iter" in configur.get("exp_seq", "com_list"):
         detection_seq = iter_correction(detection_seq)
     results = []
-    for start_stop_pair in detection_seq:
+    for start_stop_f_set in detection_seq:
         laser_config = dict(configur.items("scattering_laser"))
-        results.append(start_stop_pair + [illuminate(start_stop_pair, laser_config)])
+        results.append(start_stop_f_set + [illuminate(start_stop_f_set, laser_config)])
     return results
 
 def iter_correction(detection_seq):
@@ -77,13 +77,14 @@ def iter_correction(detection_seq):
             i[1] for i in eval(configur.get("iter", "iter_timesequence"))
         ]
     steps_per_iter = sum(l_steps_per_iter)
-    iterations = len(eval(configur.get("iter", "scan_var_seq")))
+    iterations = eval(configur.get("iter", "scan_var_seq"))
     iter_detection_seq = eval(configur.get("iter", "iter_detection_seq"))
     pre_iter_steps = sum(
         k[1] for k in eval(configur.get("sim_parameters", "timesequence"))
     ) # assuming evolves have been called and iter is last
-    for its in range(iterations):
+    for its in range(len(iterations)):
         for iter_detection_event in iter_detection_seq:
             shift = (its*steps_per_iter)+pre_iter_steps
-            detection_seq.append([iter_detection_event[0]+shift, iter_detection_event[1]+shift])
+            shifted = [iter_detection_event[0]+shift, iter_detection_event[1]+shift]
+            detection_seq.append(shifted+[iterations[its]])
     return detection_seq

@@ -12,6 +12,7 @@ from .remover import remove_by_uid
 
 import ast
 import re
+import csv
 
 
 # TODO at some point want evolve to follow the pattern of the rest and the if statement to not exist. But
@@ -28,7 +29,27 @@ def create_and_run_sim_gen():
     s.execute()
 
     # Analysis
-    print(get_scattering())
+    scat = get_scattering()
+    print(scat)
+    with open(configur.get("directory", "dump_dir")+'ph_scattering.csv', 'w', newline='') as csvfile:
+        csvwriter = csv.writer(csvfile)
+        # Write the header row
+        if configur.has_option("iter", "scan_var"):
+            scan_var = eval(configur.get("iter", "scan_var"))
+            csvwriter.writerow(['det_start', 'det_stop', ' - '.join(scan_var), 'photon count'])
+        else:
+            csvwriter.writerow(['det_start', 'det_stop', 'no_scan_var', 'photon count'])
+        
+        
+        # Write the data rows
+        for sublist in scat:
+            if len(sublist) == 3:
+                csvwriter.writerow([sublist[0], sublist[1], '', sublist[2]])
+            elif len(sublist) == 4:
+                csvwriter.writerow([sublist[0], sublist[1], sublist[2], sublist[3]])
+        
+
+
 
 # For expanding select simulation blocks - should most commonly be used for scanning modulation frequency but is completely general
 # For now we are just supporting sweeping one variable at a time

@@ -3,6 +3,7 @@ import os
 import shutil
 import time
 
+import pandas as pd
 import matplotlib.pyplot as plt
 
 from .config_controller import configur
@@ -62,6 +63,22 @@ def create_analysis(var_list, raw_data_file):
             os.makedirs(graph_dir)
             create_lammps_vars_graphs(graph_dir, raw_copy, vartype, a_i)
     return analysis_root, raw_copy
+
+def create_scat_graph(raw_data_file):
+    analysis_root = (
+        f"{os.getcwd()}/data/ph_count" + time.strftime("%Y-%m-%d_%H-%M-%S") + "/"
+    )
+    os.makedirs(analysis_root)
+    raw_copy = f"{analysis_root}raw.csv"
+    shutil.copy(raw_data_file, raw_copy)
+    data = pd.read_csv(raw_copy)
+    filtered_data = data[data.iloc[:, 2].notnull()]
+    plt.plot(filtered_data.iloc[:, 2], filtered_data.iloc[:, 3], marker='|', markersize=10, color='lightblue', linestyle='-', markerfacecolor='black', markeredgecolor='black')
+    plt.xlabel('scan_var')
+    plt.ylabel('# of Photons')
+    plt.title('Photon Count vs Iter Var')
+    plt.savefig(analysis_root+'count_plot.png')
+    return
 
 
 def create_lammps_vars_graphs(directory, raw_data, vartype, atom_num):

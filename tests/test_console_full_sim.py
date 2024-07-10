@@ -27,7 +27,6 @@ def reload_package():
     ]
     for key in loaded_package_modules:
         del sys.modules[key]
-    print("hellooooo")
 
 
 # TODO set this up so it checks for more specific things - right now all it checks is that the simulations
