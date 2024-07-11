@@ -1,0 +1,105 @@
+##################################################################
+# LAMMPS input file generated using pylion 0.5.3
+# simulation name: test
+#
+# pylion is written and maintained by Dimitris Trypogeorgos
+# and Elliot Bentine. Download it from
+# https://bitbucket.org/dtrypogeorgos/pylion
+#
+# If you find it useful please cite <paper>.
+##################################################################
+
+
+
+units si
+atom_style charge
+
+# Creating simulation box...
+boundary m m m
+region simulationDomain block -0.001  0.001 -0.001 0.001 -0.001 0.001 units box
+create_box 1 simulationDomain
+
+# Configure neighbour list...
+neighbor 1 nsq
+neigh_modify once yes
+
+# Configure pairwise interactions for long range Coulombics only...
+pair_style coul/cut 10
+pair_coeff * *
+
+# Placing individual ions...
+
+
+create_atoms 1 single -4.0913656875715225e-05 -3.8172748234445614e-05 0.00014073750563046595 units box
+
+create_atoms 1 single 0.00028727620859201523 0.00015540810572392774 0.00014964289898111076 units box
+
+create_atoms 1 single 0.0002539046452223126 0.0003571447030221903 -0.0002604371776621685 units box
+
+
+# Species...
+mass 1 1.4944851e-26
+set type 1 charge 1.6021764599999998e-19
+group 1 type 1
+
+
+timestep 1e-06
+
+# Configuring additional output to flush buffer during simulation...
+thermo 10000
+thermo_style custom step cpu
+thermo_modify flush yes
+
+# Time integration...
+
+group nonRigidBody union all
+
+fix timeIntegrator nonRigidBody nve
+
+
+
+dump 9351503625 all custom 10 /Users/michaelmitchell/qlicS/data/2024-07-11_13-37-12/positions.txt id x y z vx vy vz
+
+
+
+
+
+# Pseudopotential approximation for Linear Paul trap... (fixID=9351652706)
+
+
+# SHO
+
+variable k_x9351652706		equal 1.773509e-12
+
+variable k_y9351652706		equal 1.773509e-12
+
+variable k_z9351652706		equal 1.548694e-13
+
+variable fX9351652706 atom "-v_k_x9351652706 * x"
+
+variable fY9351652706 atom "-v_k_y9351652706 * y"
+
+variable fZ9351652706 atom "-v_k_z9351652706 * z"
+
+variable E9351652706 atom "v_k_x9351652706 * x * x /         2 + v_k_y9351652706 * y * y / 2 + v_k_z9351652706 * z * z / 2"
+
+fix 9351652706 1 addforce         v_fX9351652706 v_fY9351652706 v_fZ9351652706 energy v_E9351652706
+
+
+
+
+variable coolx atom (9.269386030594033e-20+(2.703426035144626e-21*vx))*-0.5000000000000001
+variable cooly atom (9.269386030594033e-20+2.703426035144626e-21*vy)*-0.5000000000000001
+variable coolz atom (9.269386030594033e-20+2.703426035144626e-21*vz)*-0.7071067811865476
+fix 569202603907002 1 addforce v_coolx v_cooly v_coolz
+
+
+
+timestep 1e-07
+
+
+# Run simulation
+
+run 50000
+
+

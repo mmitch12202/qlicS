@@ -360,15 +360,15 @@ def run_from_file():
             cl["laser_direction"],
             cl["laser_origin_position"],
         )
-
-    sl = get_scattering_laser_inputs()
-    config_controller.configur_scattering_laser(
-        sl["scattered_ion_indices"],
-        sl["target_species"],
-        sl["laser_direction"],
-        sl["saturation_paramater"],
-        sl["frequency"],
-    )
+    if loading_configur.has_section("scattering_laser"):
+        sl = get_scattering_laser_inputs()
+        config_controller.configur_scattering_laser(
+            sl["scattered_ion_indices"],
+            sl["target_species"],
+            sl["laser_direction"],
+            sl["saturation_paramater"],
+            sl["frequency"],
+        )
     exp_seq = get_exp_seq()
     # TODO we are assuming only one iter object for now - this could be generalized but I'm not sure how useful it would be to
     if "iter" in exp_seq:
@@ -440,7 +440,15 @@ def count_type_pos(loading_configur):
 
 def get_sim_skeleton_inputs():
     sim_params = loading_configur.items("sim_parameters")
-    detection_params = loading_configur.items("detection")
+    if loading_configur.has_section("detection"):
+        detection_params = loading_configur.items("detection")
+    else:
+        detection_params = [
+            ['detection_timestep_seq', [[]]],
+            ['detector_area', 'null'],
+            ['detector_effeciency', 'null'],
+            ['detector_distance', 'null']
+        ]
     return dict(sim_params), dict(detection_params)
 
 

@@ -28,7 +28,8 @@ def create_and_run_sim_gen():
     com_appending(s, commands, command_mapping, type_poses, ion_groups, False)
     s.execute()
 
-    # Analysis
+    if configur.get("detection", "detector_area") == 'null':
+        return configur.get("directory", "dump_dir")
     scat = get_scattering()
     print(scat)
     with open(
