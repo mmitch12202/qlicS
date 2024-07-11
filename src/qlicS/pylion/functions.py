@@ -402,9 +402,9 @@ def linearpaultrap(uid, trap, ions=None, all=True):
 
         wr = 2 * np.pi * freq / 2 * np.sqrt(ar + qr**2 / 2)
         wz = 2 * np.pi * freq / 2 * np.sqrt(az)
-
+        
         print(f"Frequency of motion: fr = {wr/2/np.pi:e}, fz = {wz/2/np.pi:e}")
-
+        print(f"Trap Values: ar = {ar}, az = {az}, qr = {qr}")
         # Spring constants for force calculation.
         kr = wr**2 * mass
         kz = wz**2 * mass

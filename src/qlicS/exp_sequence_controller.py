@@ -50,6 +50,7 @@ def create_and_run_sim_gen():
                 csvwriter.writerow([sublist[0], sublist[1], "", sublist[2]])
             elif len(sublist) == 4:
                 csvwriter.writerow([sublist[0], sublist[1], sublist[2], sublist[3]])
+    return scat
 
 
 # For expanding select simulation blocks - should most commonly be used for scanning modulation frequency but is completely general

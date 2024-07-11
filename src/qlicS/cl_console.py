@@ -384,7 +384,7 @@ def run_from_file():
 
     config_controller.create_exp_seq(exp_seq)
     # config_controller.commit_changes()
-    exp_sequence_controller.create_and_run_sim_gen()
+    return exp_sequence_controller.create_and_run_sim_gen()
 
 
 def config_file_dialogue():
