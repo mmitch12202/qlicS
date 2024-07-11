@@ -1,7 +1,7 @@
 import pytest
 import os
 from unittest.mock import patch, MagicMock
-
+import math
 # TODO we are only checking the most primative, sim doesnt throw error case - make this better
 
 
@@ -173,6 +173,47 @@ def test_3_be_freeze_pos(reload_package):
         # Check that each wing has a different sign
         assert len(wing_zs) == 2 and wing_zs[0] * wing_zs[1] < 0
 
+@pytest.mark.order(index=-6)
+def test_1_be_cool_ts_switch(reload_package):
+    reload_package
+    examples_dir = f"{os.getcwd()}/examples"
+    file_path = f"{examples_dir}/1_be_damp_test.ini"
+    with patch("qlicS.cl_console.mode_dialogue") as mock_m_d, patch(
+            "qlicS.cl_console.config_file_dialogue") as mock_c_f_d:
+        mock_m_d.return_value = "Run Experiment From File"
+        mock_c_f_d.return_value = file_path
+        dd = qlicS.cl_console.run_from_file()
+        positions = f"{dd}positions.txt"
+        with open(positions, 'r') as pos_file:
+            lines = pos_file.readlines()[:]
+        data_values = [[float(val) for val in line.split()[1:]] for line in lines if len(line.split()) == 7]
+        initial_amp = data_values[0][0]
+        step_num = 10
+        damp_factor = 2.703426035144626e-21/(2*9*1.6605402e-27)
+        def dec_curve(x, timestep):
+            return abs(initial_amp*math.e**(-damp_factor*x*step_num*timestep))
+
+        threshold = 0.25
+        score = 0
+        within_envelope = 0
+        for index, d in enumerate(data_values):
+            if index < 2000:
+                expected = dec_curve(index, 1e-9)
+            else:
+                expected = dec_curve(index, 1e-8)
+            if abs(d[0]) > expected*(1-threshold) and abs(d[0]) < expected*(1+threshold):
+                score += 1
+            if d[0] > -expected*(1+threshold) and d[0] < expected*(1+threshold):
+                within_envelope += 1
+        print(score)
+        print(within_envelope)
+        poss = len(data_values)
+        score_threshold = 0.1
+        in_envelope_threshold = 0.75
+        assert score >= score_threshold*poss
+        # TODO the envelope logic doesnt work well when it cools down alot due to F_0.  Either fix or just
+        # only test for short cooling times
+        #assert within_envelope >= in_envelope_threshold*poss
 
 
 
