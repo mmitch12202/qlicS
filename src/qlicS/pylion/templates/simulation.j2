@@ -43,7 +43,6 @@ set type {{ ions.uid }} charge {{ 1.60217646*10**(-19) * ions.charge }}
 group {{ ions.uid }} type {{ ions.uid }}
 
 {% endfor %}
-timestep {{ timestep }}
 
 # Configuring additional output to flush buffer during simulation...
 thermo 10000
