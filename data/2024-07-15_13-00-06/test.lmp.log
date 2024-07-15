@@ -1,0 +1,1945 @@
+LAMMPS (23 Jun 2022)
+##################################################################
+# LAMMPS input file generated using pylion 0.5.3
+# simulation name: test
+#
+# pylion is written and maintained by Dimitris Trypogeorgos
+# and Elliot Bentine. Download it from
+# https://bitbucket.org/dtrypogeorgos/pylion
+#
+# If you find it useful please cite <paper>.
+##################################################################
+
+
+
+units si
+atom_style charge
+
+# Creating simulation box...
+boundary m m m
+region simulationDomain block -0.001  0.001 -0.001 0.001 -0.001 0.001 units box
+create_box 1 simulationDomain
+Created orthogonal box = (-0.001 -0.001 -0.001) to (0.001 0.001 0.001)
+  1 by 1 by 1 MPI processor grid
+
+# Configure neighbour list...
+neighbor 1 nsq
+neigh_modify once yes
+
+# Configure pairwise interactions for long range Coulombics only...
+pair_style coul/cut 10
+pair_coeff * *
+
+# Placing individual ions...
+
+
+create_atoms 1 single 0.00033997200905883524 -3.35358747721899e-05 0.0009164037662879094 units box
+Created 1 atoms
+  using box units in orthogonal box = (-0.001 -0.001 -0.001) to (0.001 0.001 0.001)
+  create_atoms CPU = 0.000 seconds
+
+create_atoms 1 single 1.329093317770949e-05 2.7998747696162107e-05 -0.00010677562348252938 units box
+Created 1 atoms
+  using box units in orthogonal box = (-0.001 -0.001 -0.001) to (0.001 0.001 0.001)
+  create_atoms CPU = 0.000 seconds
+
+create_atoms 1 single 0.000312091561772195 -8.729745647327494e-05 -9.123265575249843e-05 units box
+Created 1 atoms
+  using box units in orthogonal box = (-0.001 -0.001 -0.001) to (0.001 0.001 0.001)
+  create_atoms CPU = 0.000 seconds
+
+create_atoms 1 single 0.0002626568763992668 -0.00018199754844227587 0.000343721175056826 units box
+Created 1 atoms
+  using box units in orthogonal box = (-0.001 -0.001 -0.001) to (0.001 0.001 0.001)
+  create_atoms CPU = 0.000 seconds
+
+create_atoms 1 single -9.319099283952328e-05 -2.4490795606590918e-05 -0.00022794963025528603 units box
+Created 1 atoms
+  using box units in orthogonal box = (-0.001 -0.001 -0.001) to (0.001 0.001 0.001)
+  create_atoms CPU = 0.000 seconds
+
+create_atoms 1 single -3.751737433290123e-05 0.00013202884682873687 0.00018091788253942463 units box
+Created 1 atoms
+  using box units in orthogonal box = (-0.001 -0.001 -0.001) to (0.001 0.001 0.001)
+  create_atoms CPU = 0.000 seconds
+
+create_atoms 1 single -0.0002096986633486687 -0.000251223944986674 0.0003802326767834243 units box
+Created 1 atoms
+  using box units in orthogonal box = (-0.001 -0.001 -0.001) to (0.001 0.001 0.001)
+  create_atoms CPU = 0.000 seconds
+
+create_atoms 1 single 0.0003362537087741183 -0.00029880574083989016 -0.00016245287507082073 units box
+Created 1 atoms
+  using box units in orthogonal box = (-0.001 -0.001 -0.001) to (0.001 0.001 0.001)
+  create_atoms CPU = 0.000 seconds
+
+create_atoms 1 single 0.0001415314617471914 0.0003772799570626955 -7.086145826911853e-05 units box
+Created 1 atoms
+  using box units in orthogonal box = (-0.001 -0.001 -0.001) to (0.001 0.001 0.001)
+  create_atoms CPU = 0.000 seconds
+
+create_atoms 1 single 3.0217559383272967e-05 -6.463407650838474e-05 0.0004298536710566896 units box
+Created 1 atoms
+  using box units in orthogonal box = (-0.001 -0.001 -0.001) to (0.001 0.001 0.001)
+  create_atoms CPU = 0.000 seconds
+
+
+# Species...
+mass 1 1.4944851e-26
+set type 1 charge 1.6021764599999998e-19
+Setting atom values ...
+  10 settings made for charge
+group 1 type 1
+10 atoms in group 1
+
+
+
+# Configuring additional output to flush buffer during simulation...
+thermo 10000
+thermo_style custom step cpu
+thermo_modify flush yes
+
+# Time integration...
+
+group nonRigidBody union all
+10 atoms in group nonRigidBody
+
+fix timeIntegrator nonRigidBody nve
+
+
+
+dump 9315593901 all custom 10 /Users/michaelmitchell/qlicS/data/2024-07-15_13-00-06/positions.txt id x y z vx vy vz
+
+
+
+
+
+# Pseudopotential approximation for Linear Paul trap... (fixID=9315658936)
+
+
+# SHO
+
+variable k_x9315658936		equal 2.973789e-13
+
+variable k_y9315658936		equal 2.973789e-13
+
+variable k_z9315658936		equal 4.835556e-14
+
+variable fX9315658936 atom "-v_k_x9315658936 * x"
+
+variable fY9315658936 atom "-v_k_y9315658936 * y"
+
+variable fZ9315658936 atom "-v_k_z9315658936 * z"
+
+variable E9315658936 atom "v_k_x9315658936 * x * x /         2 + v_k_y9315658936 * y * y / 2 + v_k_z9315658936 * z * z / 2"
+
+fix 9315658936 1 addforce         v_fX9315658936 v_fY9315658936 v_fZ9315658936 energy v_E9315658936
+
+
+
+
+variable coolx atom (9.269386030594033e-20+(2.703426035144626e-21*vx))*-0.5000000000000001
+variable cooly atom (9.269386030594033e-20+2.703426035144626e-21*vy)*-0.5000000000000001
+variable coolz atom (9.269386030594033e-20+2.703426035144626e-21*vz)*-0.7071067811865476
+fix 569202603907002 1 addforce v_coolx v_cooly v_coolz
+
+
+
+timestep 1e-07
+
+
+# Run simulation
+
+run 50000
+Generated 0 of 0 mixed pair_coeff terms from geometric mixing rule
+Neighbor list info ...
+  update every 1 steps, delay 10 steps, check yes
+  max neighbors/atom: 2000, page size: 100000
+  master list distance cutoff = 11
+  ghost atom cutoff = 11
+  1 neighbor lists, perpetual/occasional/extra = 1 0 0
+  (1) pair coul/cut, perpetual
+      attributes: half, newton on
+      pair build: half/nsq/newton
+      stencil: none
+      bin: none
+WARNING: Proc sub-domain size < neighbor skin, could lead to lost atoms (src/domain.cpp:970)
+Per MPI rank memory allocation (min/avg/max) = 5.28 | 5.28 | 5.28 Mbytes
+   Step          CPU      
+         0   0            
+     10000   0.46274224   
+     20000   0.89510553   
+     30000   1.3584779    
+     40000   2.0498882    
+     50000   2.5950582    
+Loop time of 2.59549 on 1 procs for 50000 steps with 10 atoms
+
+87.3% CPU use with 1 MPI tasks x no OpenMP threads
+
+MPI task timing breakdown:
+Section |  min time  |  avg time  |  max time  |%varavg| %total
+---------------------------------------------------------------
+Pair    | 0.054029   | 0.054029   | 0.054029   |   0.0 |  2.08
+Neigh   | 0          | 0          | 0          |   0.0 |  0.00
+Comm    | 0.0097359  | 0.0097359  | 0.0097359  |   0.0 |  0.38
+Output  | 0.25369    | 0.25369    | 0.25369    |   0.0 |  9.77
+Modify  | 2.2589     | 2.2589     | 2.2589     |   0.0 | 87.03
+Other   |            | 0.0191     |            |       |  0.74
+
+Nlocal:             10 ave          10 max          10 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+Nghost:              0 ave           0 max           0 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+Neighs:             45 ave          45 max          45 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+
+Total # of neighbors = 45
+Ave neighs/atom = 4.5
+Neighbor list builds = 0
+Dangerous builds = 0
+
+
+
+
+
+# Deleting a fix by uid
+
+unfix 569202603907002
+
+
+
+
+variable E equal 0
+variable Ex atom (1*(1+0*(x-0)+0*(x-0)^2+0*(y-0)+0*(y-0)^2+0*(z-0)+0*(z-0)^2))*cos((2*3.141592653589793)*0.005*step)
+variable B equal 0
+variable Ey atom (1*(0+0*(x-0)+0*(x-0)^2+0.0*(y-0)+0.0*(y-0)^2+0*(z-0)+0*(z-0)^2))*cos((2*3.141592653589793)*0.005*step)
+variable C equal 0
+variable Ez atom (1*(0+0*(x-0)+0*(x-0)^2+0*(y-0)+0*(y-0)^2+0*(z-0)+0*(z-0)^2))*cos((2*3.141592653589793)*0.005*step)
+fix 469202603907007 all efield v_Ex v_Ey v_Ez
+
+
+
+timestep 1e-08
+
+
+# Run simulation
+
+run 10000
+Generated 0 of 0 mixed pair_coeff terms from geometric mixing rule
+WARNING: Proc sub-domain size < neighbor skin, could lead to lost atoms (src/domain.cpp:970)
+Per MPI rank memory allocation (min/avg/max) = 5.28 | 5.28 | 5.28 Mbytes
+   Step          CPU      
+     50000   0            
+     60000   1.0614623    
+Loop time of 1.06148 on 1 procs for 10000 steps with 10 atoms
+
+93.8% CPU use with 1 MPI tasks x no OpenMP threads
+
+MPI task timing breakdown:
+Section |  min time  |  avg time  |  max time  |%varavg| %total
+---------------------------------------------------------------
+Pair    | 0.010506   | 0.010506   | 0.010506   |   0.0 |  0.99
+Neigh   | 0          | 0          | 0          |   0.0 |  0.00
+Comm    | 0.0019128  | 0.0019128  | 0.0019128  |   0.0 |  0.18
+Output  | 0.046078   | 0.046078   | 0.046078   |   0.0 |  4.34
+Modify  | 0.99934    | 0.99934    | 0.99934    |   0.0 | 94.15
+Other   |            | 0.00364    |            |       |  0.34
+
+Nlocal:             10 ave          10 max          10 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+Nghost:              0 ave           0 max           0 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+Neighs:             45 ave          45 max          45 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+
+Total # of neighbors = 45
+Ave neighs/atom = 4.5
+Neighbor list builds = 0
+Dangerous builds = 0
+
+
+
+
+
+# Deleting a fix by uid
+
+unfix 469202603907007
+
+
+
+
+timestep 1e-07
+
+
+# Run simulation
+
+run 1000
+Generated 0 of 0 mixed pair_coeff terms from geometric mixing rule
+WARNING: Proc sub-domain size < neighbor skin, could lead to lost atoms (src/domain.cpp:970)
+Per MPI rank memory allocation (min/avg/max) = 4.78 | 4.78 | 4.78 Mbytes
+   Step          CPU      
+     60000   0            
+     61000   0.026641366  
+Loop time of 0.0266593 on 1 procs for 1000 steps with 10 atoms
+
+94.0% CPU use with 1 MPI tasks x no OpenMP threads
+
+MPI task timing breakdown:
+Section |  min time  |  avg time  |  max time  |%varavg| %total
+---------------------------------------------------------------
+Pair    | 0.00085469 | 0.00085469 | 0.00085469 |   0.0 |  3.21
+Neigh   | 0          | 0          | 0          |   0.0 |  0.00
+Comm    | 0.00014403 | 0.00014403 | 0.00014403 |   0.0 |  0.54
+Output  | 0.0030547  | 0.0030547  | 0.0030547  |   0.0 | 11.46
+Modify  | 0.022352   | 0.022352   | 0.022352   |   0.0 | 83.84
+Other   |            | 0.0002538  |            |       |  0.95
+
+Nlocal:             10 ave          10 max          10 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+Nghost:              0 ave           0 max           0 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+Neighs:             45 ave          45 max          45 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+
+Total # of neighbors = 45
+Ave neighs/atom = 4.5
+Neighbor list builds = 0
+Dangerous builds = 0
+
+
+
+
+variable coolx atom (9.269386030594033e-20+(2.703426035144626e-21*vx))*-0.5000000000000001
+variable cooly atom (9.269386030594033e-20+2.703426035144626e-21*vy)*-0.5000000000000001
+variable coolz atom (9.269386030594033e-20+2.703426035144626e-21*vz)*-0.7071067811865476
+fix 569202603907003 1 addforce v_coolx v_cooly v_coolz
+
+
+
+timestep 1e-07
+
+
+# Run simulation
+
+run 10000
+Generated 0 of 0 mixed pair_coeff terms from geometric mixing rule
+WARNING: Proc sub-domain size < neighbor skin, could lead to lost atoms (src/domain.cpp:970)
+Per MPI rank memory allocation (min/avg/max) = 5.28 | 5.28 | 5.28 Mbytes
+   Step          CPU      
+     61000   0            
+     70000   0.41239225   
+     71000   0.45402779   
+Loop time of 0.454046 on 1 procs for 10000 steps with 10 atoms
+
+91.0% CPU use with 1 MPI tasks x no OpenMP threads
+
+MPI task timing breakdown:
+Section |  min time  |  avg time  |  max time  |%varavg| %total
+---------------------------------------------------------------
+Pair    | 0.0093141  | 0.0093141  | 0.0093141  |   0.0 |  2.05
+Neigh   | 0          | 0          | 0          |   0.0 |  0.00
+Comm    | 0.001707   | 0.001707   | 0.001707   |   0.0 |  0.38
+Output  | 0.038741   | 0.038741   | 0.038741   |   0.0 |  8.53
+Modify  | 0.40099    | 0.40099    | 0.40099    |   0.0 | 88.31
+Other   |            | 0.003294   |            |       |  0.73
+
+Nlocal:             10 ave          10 max          10 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+Nghost:              0 ave           0 max           0 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+Neighs:             45 ave          45 max          45 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+
+Total # of neighbors = 45
+Ave neighs/atom = 4.5
+Neighbor list builds = 0
+Dangerous builds = 0
+
+
+
+
+
+# Deleting a fix by uid
+
+unfix 569202603907003
+
+
+
+
+variable E equal 0
+variable Ex atom (1*(1+0*(x-0)+0*(x-0)^2+0*(y-0)+0*(y-0)^2+0*(z-0)+0*(z-0)^2))*cos((2*3.141592653589793)*0.006*step)
+variable B equal 0
+variable Ey atom (1*(0+0*(x-0)+0*(x-0)^2+0.0*(y-0)+0.0*(y-0)^2+0*(z-0)+0*(z-0)^2))*cos((2*3.141592653589793)*0.006*step)
+variable C equal 0
+variable Ez atom (1*(0+0*(x-0)+0*(x-0)^2+0*(y-0)+0*(y-0)^2+0*(z-0)+0*(z-0)^2))*cos((2*3.141592653589793)*0.006*step)
+fix 469202603907008 all efield v_Ex v_Ey v_Ez
+
+
+
+timestep 1e-08
+
+
+# Run simulation
+
+run 10000
+Generated 0 of 0 mixed pair_coeff terms from geometric mixing rule
+WARNING: Proc sub-domain size < neighbor skin, could lead to lost atoms (src/domain.cpp:970)
+Per MPI rank memory allocation (min/avg/max) = 5.28 | 5.28 | 5.28 Mbytes
+   Step          CPU      
+     71000   0            
+     80000   1.0081156    
+     81000   1.1155522    
+Loop time of 1.11557 on 1 procs for 10000 steps with 10 atoms
+
+91.7% CPU use with 1 MPI tasks x no OpenMP threads
+
+MPI task timing breakdown:
+Section |  min time  |  avg time  |  max time  |%varavg| %total
+---------------------------------------------------------------
+Pair    | 0.010723   | 0.010723   | 0.010723   |   0.0 |  0.96
+Neigh   | 0          | 0          | 0          |   0.0 |  0.00
+Comm    | 0.002157   | 0.002157   | 0.002157   |   0.0 |  0.19
+Output  | 0.051685   | 0.051685   | 0.051685   |   0.0 |  4.63
+Modify  | 1.0459     | 1.0459     | 1.0459     |   0.0 | 93.75
+Other   |            | 0.005139   |            |       |  0.46
+
+Nlocal:             10 ave          10 max          10 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+Nghost:              0 ave           0 max           0 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+Neighs:             45 ave          45 max          45 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+
+Total # of neighbors = 45
+Ave neighs/atom = 4.5
+Neighbor list builds = 0
+Dangerous builds = 0
+
+
+
+
+
+# Deleting a fix by uid
+
+unfix 469202603907008
+
+
+
+
+timestep 1e-07
+
+
+# Run simulation
+
+run 1000
+Generated 0 of 0 mixed pair_coeff terms from geometric mixing rule
+WARNING: Proc sub-domain size < neighbor skin, could lead to lost atoms (src/domain.cpp:970)
+Per MPI rank memory allocation (min/avg/max) = 4.78 | 4.78 | 4.78 Mbytes
+   Step          CPU      
+     81000   0            
+     82000   0.028269283  
+Loop time of 0.0283487 on 1 procs for 1000 steps with 10 atoms
+
+91.4% CPU use with 1 MPI tasks x no OpenMP threads
+
+MPI task timing breakdown:
+Section |  min time  |  avg time  |  max time  |%varavg| %total
+---------------------------------------------------------------
+Pair    | 0.00099668 | 0.00099668 | 0.00099668 |   0.0 |  3.52
+Neigh   | 0          | 0          | 0          |   0.0 |  0.00
+Comm    | 0.00015411 | 0.00015411 | 0.00015411 |   0.0 |  0.54
+Output  | 0.0033104  | 0.0033104  | 0.0033104  |   0.0 | 11.68
+Modify  | 0.023518   | 0.023518   | 0.023518   |   0.0 | 82.96
+Other   |            | 0.0003694  |            |       |  1.30
+
+Nlocal:             10 ave          10 max          10 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+Nghost:              0 ave           0 max           0 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+Neighs:             45 ave          45 max          45 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+
+Total # of neighbors = 45
+Ave neighs/atom = 4.5
+Neighbor list builds = 0
+Dangerous builds = 0
+
+
+
+
+variable coolx atom (9.269386030594033e-20+(2.703426035144626e-21*vx))*-0.5000000000000001
+variable cooly atom (9.269386030594033e-20+2.703426035144626e-21*vy)*-0.5000000000000001
+variable coolz atom (9.269386030594033e-20+2.703426035144626e-21*vz)*-0.7071067811865476
+fix 569202603907004 1 addforce v_coolx v_cooly v_coolz
+
+
+
+timestep 1e-07
+
+
+# Run simulation
+
+run 10000
+Generated 0 of 0 mixed pair_coeff terms from geometric mixing rule
+WARNING: Proc sub-domain size < neighbor skin, could lead to lost atoms (src/domain.cpp:970)
+Per MPI rank memory allocation (min/avg/max) = 5.28 | 5.28 | 5.28 Mbytes
+   Step          CPU      
+     82000   0            
+     90000   0.3683064    
+     92000   0.46430437   
+Loop time of 0.464435 on 1 procs for 10000 steps with 10 atoms
+
+90.5% CPU use with 1 MPI tasks x no OpenMP threads
+
+MPI task timing breakdown:
+Section |  min time  |  avg time  |  max time  |%varavg| %total
+---------------------------------------------------------------
+Pair    | 0.009745   | 0.009745   | 0.009745   |   0.0 |  2.10
+Neigh   | 0          | 0          | 0          |   0.0 |  0.00
+Comm    | 0.0018375  | 0.0018375  | 0.0018375  |   0.0 |  0.40
+Output  | 0.044103   | 0.044103   | 0.044103   |   0.0 |  9.50
+Modify  | 0.40539    | 0.40539    | 0.40539    |   0.0 | 87.29
+Other   |            | 0.003362   |            |       |  0.72
+
+Nlocal:             10 ave          10 max          10 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+Nghost:              0 ave           0 max           0 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+Neighs:             45 ave          45 max          45 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+
+Total # of neighbors = 45
+Ave neighs/atom = 4.5
+Neighbor list builds = 0
+Dangerous builds = 0
+
+
+
+
+
+# Deleting a fix by uid
+
+unfix 569202603907004
+
+
+
+
+variable E equal 0
+variable Ex atom (1*(1+0*(x-0)+0*(x-0)^2+0*(y-0)+0*(y-0)^2+0*(z-0)+0*(z-0)^2))*cos((2*3.141592653589793)*0.007*step)
+variable B equal 0
+variable Ey atom (1*(0+0*(x-0)+0*(x-0)^2+0.0*(y-0)+0.0*(y-0)^2+0*(z-0)+0*(z-0)^2))*cos((2*3.141592653589793)*0.007*step)
+variable C equal 0
+variable Ez atom (1*(0+0*(x-0)+0*(x-0)^2+0*(y-0)+0*(y-0)^2+0*(z-0)+0*(z-0)^2))*cos((2*3.141592653589793)*0.007*step)
+fix 469202603907009 all efield v_Ex v_Ey v_Ez
+
+
+
+timestep 1e-08
+
+
+# Run simulation
+
+run 10000
+Generated 0 of 0 mixed pair_coeff terms from geometric mixing rule
+WARNING: Proc sub-domain size < neighbor skin, could lead to lost atoms (src/domain.cpp:970)
+Per MPI rank memory allocation (min/avg/max) = 5.28 | 5.28 | 5.28 Mbytes
+   Step          CPU      
+     92000   0            
+    100000   0.82539403   
+    102000   1.0657011    
+Loop time of 1.06573 on 1 procs for 10000 steps with 10 atoms
+
+93.4% CPU use with 1 MPI tasks x no OpenMP threads
+
+MPI task timing breakdown:
+Section |  min time  |  avg time  |  max time  |%varavg| %total
+---------------------------------------------------------------
+Pair    | 0.0097855  | 0.0097855  | 0.0097855  |   0.0 |  0.92
+Neigh   | 0          | 0          | 0          |   0.0 |  0.00
+Comm    | 0.0018892  | 0.0018892  | 0.0018892  |   0.0 |  0.18
+Output  | 0.045565   | 0.045565   | 0.045565   |   0.0 |  4.28
+Modify  | 1.0048     | 1.0048     | 1.0048     |   0.0 | 94.29
+Other   |            | 0.003662   |            |       |  0.34
+
+Nlocal:             10 ave          10 max          10 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+Nghost:              0 ave           0 max           0 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+Neighs:             45 ave          45 max          45 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+
+Total # of neighbors = 45
+Ave neighs/atom = 4.5
+Neighbor list builds = 0
+Dangerous builds = 0
+
+
+
+
+
+# Deleting a fix by uid
+
+unfix 469202603907009
+
+
+
+
+timestep 1e-07
+
+
+# Run simulation
+
+run 1000
+Generated 0 of 0 mixed pair_coeff terms from geometric mixing rule
+WARNING: Proc sub-domain size < neighbor skin, could lead to lost atoms (src/domain.cpp:970)
+Per MPI rank memory allocation (min/avg/max) = 4.78 | 4.78 | 4.78 Mbytes
+   Step          CPU      
+    102000   0            
+    103000   0.029285697  
+Loop time of 0.0293149 on 1 procs for 1000 steps with 10 atoms
+
+91.9% CPU use with 1 MPI tasks x no OpenMP threads
+
+MPI task timing breakdown:
+Section |  min time  |  avg time  |  max time  |%varavg| %total
+---------------------------------------------------------------
+Pair    | 0.00091063 | 0.00091063 | 0.00091063 |   0.0 |  3.11
+Neigh   | 0          | 0          | 0          |   0.0 |  0.00
+Comm    | 0.000188   | 0.000188   | 0.000188   |   0.0 |  0.64
+Output  | 0.0036956  | 0.0036956  | 0.0036956  |   0.0 | 12.61
+Modify  | 0.024214   | 0.024214   | 0.024214   |   0.0 | 82.60
+Other   |            | 0.0003067  |            |       |  1.05
+
+Nlocal:             10 ave          10 max          10 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+Nghost:              0 ave           0 max           0 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+Neighs:             45 ave          45 max          45 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+
+Total # of neighbors = 45
+Ave neighs/atom = 4.5
+Neighbor list builds = 0
+Dangerous builds = 0
+
+
+
+
+variable coolx atom (9.269386030594033e-20+(2.703426035144626e-21*vx))*-0.5000000000000001
+variable cooly atom (9.269386030594033e-20+2.703426035144626e-21*vy)*-0.5000000000000001
+variable coolz atom (9.269386030594033e-20+2.703426035144626e-21*vz)*-0.7071067811865476
+fix 569202603907005 1 addforce v_coolx v_cooly v_coolz
+
+
+
+timestep 1e-07
+
+
+# Run simulation
+
+run 10000
+Generated 0 of 0 mixed pair_coeff terms from geometric mixing rule
+WARNING: Proc sub-domain size < neighbor skin, could lead to lost atoms (src/domain.cpp:970)
+Per MPI rank memory allocation (min/avg/max) = 5.28 | 5.28 | 5.28 Mbytes
+   Step          CPU      
+    103000   0            
+    110000   0.29949925   
+    113000   0.45070972   
+Loop time of 0.450787 on 1 procs for 10000 steps with 10 atoms
+
+92.2% CPU use with 1 MPI tasks x no OpenMP threads
+
+MPI task timing breakdown:
+Section |  min time  |  avg time  |  max time  |%varavg| %total
+---------------------------------------------------------------
+Pair    | 0.0097621  | 0.0097621  | 0.0097621  |   0.0 |  2.17
+Neigh   | 0          | 0          | 0          |   0.0 |  0.00
+Comm    | 0.0017052  | 0.0017052  | 0.0017052  |   0.0 |  0.38
+Output  | 0.038346   | 0.038346   | 0.038346   |   0.0 |  8.51
+Modify  | 0.39782    | 0.39782    | 0.39782    |   0.0 | 88.25
+Other   |            | 0.003149   |            |       |  0.70
+
+Nlocal:             10 ave          10 max          10 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+Nghost:              0 ave           0 max           0 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+Neighs:             45 ave          45 max          45 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+
+Total # of neighbors = 45
+Ave neighs/atom = 4.5
+Neighbor list builds = 0
+Dangerous builds = 0
+
+
+
+
+
+# Deleting a fix by uid
+
+unfix 569202603907005
+
+
+
+
+variable E equal 0
+variable Ex atom (1*(1+0*(x-0)+0*(x-0)^2+0*(y-0)+0*(y-0)^2+0*(z-0)+0*(z-0)^2))*cos((2*3.141592653589793)*0.00705*step)
+variable B equal 0
+variable Ey atom (1*(0+0*(x-0)+0*(x-0)^2+0.0*(y-0)+0.0*(y-0)^2+0*(z-0)+0*(z-0)^2))*cos((2*3.141592653589793)*0.00705*step)
+variable C equal 0
+variable Ez atom (1*(0+0*(x-0)+0*(x-0)^2+0*(y-0)+0*(y-0)^2+0*(z-0)+0*(z-0)^2))*cos((2*3.141592653589793)*0.00705*step)
+fix 469202603907010 all efield v_Ex v_Ey v_Ez
+
+
+
+timestep 1e-08
+
+
+# Run simulation
+
+run 10000
+Generated 0 of 0 mixed pair_coeff terms from geometric mixing rule
+WARNING: Proc sub-domain size < neighbor skin, could lead to lost atoms (src/domain.cpp:970)
+Per MPI rank memory allocation (min/avg/max) = 5.28 | 5.28 | 5.28 Mbytes
+   Step          CPU      
+    113000   0            
+    120000   0.80475601   
+    123000   1.2299936    
+Loop time of 1.23001 on 1 procs for 10000 steps with 10 atoms
+
+84.4% CPU use with 1 MPI tasks x no OpenMP threads
+
+MPI task timing breakdown:
+Section |  min time  |  avg time  |  max time  |%varavg| %total
+---------------------------------------------------------------
+Pair    | 0.011015   | 0.011015   | 0.011015   |   0.0 |  0.90
+Neigh   | 0          | 0          | 0          |   0.0 |  0.00
+Comm    | 0.0021036  | 0.0021036  | 0.0021036  |   0.0 |  0.17
+Output  | 0.060685   | 0.060685   | 0.060685   |   0.0 |  4.93
+Modify  | 1.1508     | 1.1508     | 1.1508     |   0.0 | 93.56
+Other   |            | 0.005421   |            |       |  0.44
+
+Nlocal:             10 ave          10 max          10 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+Nghost:              0 ave           0 max           0 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+Neighs:             45 ave          45 max          45 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+
+Total # of neighbors = 45
+Ave neighs/atom = 4.5
+Neighbor list builds = 0
+Dangerous builds = 0
+
+
+
+
+
+# Deleting a fix by uid
+
+unfix 469202603907010
+
+
+
+
+timestep 1e-07
+
+
+# Run simulation
+
+run 1000
+Generated 0 of 0 mixed pair_coeff terms from geometric mixing rule
+WARNING: Proc sub-domain size < neighbor skin, could lead to lost atoms (src/domain.cpp:970)
+Per MPI rank memory allocation (min/avg/max) = 4.78 | 4.78 | 4.78 Mbytes
+   Step          CPU      
+    123000   0            
+    124000   0.069468686  
+Loop time of 0.0695159 on 1 procs for 1000 steps with 10 atoms
+
+38.8% CPU use with 1 MPI tasks x no OpenMP threads
+
+MPI task timing breakdown:
+Section |  min time  |  avg time  |  max time  |%varavg| %total
+---------------------------------------------------------------
+Pair    | 0.0010429  | 0.0010429  | 0.0010429  |   0.0 |  1.50
+Neigh   | 0          | 0          | 0          |   0.0 |  0.00
+Comm    | 0.00017488 | 0.00017488 | 0.00017488 |   0.0 |  0.25
+Output  | 0.0085148  | 0.0085148  | 0.0085148  |   0.0 | 12.25
+Modify  | 0.059321   | 0.059321   | 0.059321   |   0.0 | 85.33
+Other   |            | 0.0004622  |            |       |  0.66
+
+Nlocal:             10 ave          10 max          10 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+Nghost:              0 ave           0 max           0 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+Neighs:             45 ave          45 max          45 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+
+Total # of neighbors = 45
+Ave neighs/atom = 4.5
+Neighbor list builds = 0
+Dangerous builds = 0
+
+
+
+
+variable coolx atom (9.269386030594033e-20+(2.703426035144626e-21*vx))*-0.5000000000000001
+variable cooly atom (9.269386030594033e-20+2.703426035144626e-21*vy)*-0.5000000000000001
+variable coolz atom (9.269386030594033e-20+2.703426035144626e-21*vz)*-0.7071067811865476
+fix 569202603907006 1 addforce v_coolx v_cooly v_coolz
+
+
+
+timestep 1e-07
+
+
+# Run simulation
+
+run 10000
+Generated 0 of 0 mixed pair_coeff terms from geometric mixing rule
+WARNING: Proc sub-domain size < neighbor skin, could lead to lost atoms (src/domain.cpp:970)
+Per MPI rank memory allocation (min/avg/max) = 5.28 | 5.28 | 5.28 Mbytes
+   Step          CPU      
+    124000   0            
+    130000   0.27289584   
+    134000   0.47255669   
+Loop time of 0.472577 on 1 procs for 10000 steps with 10 atoms
+
+90.8% CPU use with 1 MPI tasks x no OpenMP threads
+
+MPI task timing breakdown:
+Section |  min time  |  avg time  |  max time  |%varavg| %total
+---------------------------------------------------------------
+Pair    | 0.0098056  | 0.0098056  | 0.0098056  |   0.0 |  2.07
+Neigh   | 0          | 0          | 0          |   0.0 |  0.00
+Comm    | 0.0018293  | 0.0018293  | 0.0018293  |   0.0 |  0.39
+Output  | 0.041705   | 0.041705   | 0.041705   |   0.0 |  8.83
+Modify  | 0.41565    | 0.41565    | 0.41565    |   0.0 | 87.95
+Other   |            | 0.003587   |            |       |  0.76
+
+Nlocal:             10 ave          10 max          10 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+Nghost:              0 ave           0 max           0 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+Neighs:             45 ave          45 max          45 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+
+Total # of neighbors = 45
+Ave neighs/atom = 4.5
+Neighbor list builds = 0
+Dangerous builds = 0
+
+
+
+
+
+# Deleting a fix by uid
+
+unfix 569202603907006
+
+
+
+
+variable E equal 0
+variable Ex atom (1*(1+0*(x-0)+0*(x-0)^2+0*(y-0)+0*(y-0)^2+0*(z-0)+0*(z-0)^2))*cos((2*3.141592653589793)*0.0071*step)
+variable B equal 0
+variable Ey atom (1*(0+0*(x-0)+0*(x-0)^2+0.0*(y-0)+0.0*(y-0)^2+0*(z-0)+0*(z-0)^2))*cos((2*3.141592653589793)*0.0071*step)
+variable C equal 0
+variable Ez atom (1*(0+0*(x-0)+0*(x-0)^2+0*(y-0)+0*(y-0)^2+0*(z-0)+0*(z-0)^2))*cos((2*3.141592653589793)*0.0071*step)
+fix 469202603907011 all efield v_Ex v_Ey v_Ez
+
+
+
+timestep 1e-08
+
+
+# Run simulation
+
+run 10000
+Generated 0 of 0 mixed pair_coeff terms from geometric mixing rule
+WARNING: Proc sub-domain size < neighbor skin, could lead to lost atoms (src/domain.cpp:970)
+Per MPI rank memory allocation (min/avg/max) = 5.28 | 5.28 | 5.28 Mbytes
+   Step          CPU      
+    134000   0            
+    140000   0.82388736   
+    144000   1.3957328    
+Loop time of 1.39576 on 1 procs for 10000 steps with 10 atoms
+
+86.2% CPU use with 1 MPI tasks x no OpenMP threads
+
+MPI task timing breakdown:
+Section |  min time  |  avg time  |  max time  |%varavg| %total
+---------------------------------------------------------------
+Pair    | 0.012567   | 0.012567   | 0.012567   |   0.0 |  0.90
+Neigh   | 0          | 0          | 0          |   0.0 |  0.00
+Comm    | 0.0029397  | 0.0029397  | 0.0029397  |   0.0 |  0.21
+Output  | 0.10011    | 0.10011    | 0.10011    |   0.0 |  7.17
+Modify  | 1.2746     | 1.2746     | 1.2746     |   0.0 | 91.32
+Other   |            | 0.005551   |            |       |  0.40
+
+Nlocal:             10 ave          10 max          10 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+Nghost:              0 ave           0 max           0 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+Neighs:             45 ave          45 max          45 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+
+Total # of neighbors = 45
+Ave neighs/atom = 4.5
+Neighbor list builds = 0
+Dangerous builds = 0
+
+
+
+
+
+# Deleting a fix by uid
+
+unfix 469202603907011
+
+
+
+
+timestep 1e-07
+
+
+# Run simulation
+
+run 1000
+Generated 0 of 0 mixed pair_coeff terms from geometric mixing rule
+WARNING: Proc sub-domain size < neighbor skin, could lead to lost atoms (src/domain.cpp:970)
+Per MPI rank memory allocation (min/avg/max) = 4.78 | 4.78 | 4.78 Mbytes
+   Step          CPU      
+    144000   0            
+    145000   0.030940987  
+Loop time of 0.03101 on 1 procs for 1000 steps with 10 atoms
+
+91.4% CPU use with 1 MPI tasks x no OpenMP threads
+
+MPI task timing breakdown:
+Section |  min time  |  avg time  |  max time  |%varavg| %total
+---------------------------------------------------------------
+Pair    | 0.00094952 | 0.00094952 | 0.00094952 |   0.0 |  3.06
+Neigh   | 0          | 0          | 0          |   0.0 |  0.00
+Comm    | 0.00016346 | 0.00016346 | 0.00016346 |   0.0 |  0.53
+Output  | 0.0041154  | 0.0041154  | 0.0041154  |   0.0 | 13.27
+Modify  | 0.025391   | 0.025391   | 0.025391   |   0.0 | 81.88
+Other   |            | 0.0003908  |            |       |  1.26
+
+Nlocal:             10 ave          10 max          10 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+Nghost:              0 ave           0 max           0 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+Neighs:             45 ave          45 max          45 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+
+Total # of neighbors = 45
+Ave neighs/atom = 4.5
+Neighbor list builds = 0
+Dangerous builds = 0
+
+
+
+
+variable coolx atom (9.269386030594033e-20+(2.703426035144626e-21*vx))*-0.5000000000000001
+variable cooly atom (9.269386030594033e-20+2.703426035144626e-21*vy)*-0.5000000000000001
+variable coolz atom (9.269386030594033e-20+2.703426035144626e-21*vz)*-0.7071067811865476
+fix 569202603907007 1 addforce v_coolx v_cooly v_coolz
+
+
+
+timestep 1e-07
+
+
+# Run simulation
+
+run 10000
+Generated 0 of 0 mixed pair_coeff terms from geometric mixing rule
+WARNING: Proc sub-domain size < neighbor skin, could lead to lost atoms (src/domain.cpp:970)
+Per MPI rank memory allocation (min/avg/max) = 5.28 | 5.28 | 5.28 Mbytes
+   Step          CPU      
+    145000   0            
+    150000   0.35215765   
+    155000   0.60835183   
+Loop time of 0.608371 on 1 procs for 10000 steps with 10 atoms
+
+82.3% CPU use with 1 MPI tasks x no OpenMP threads
+
+MPI task timing breakdown:
+Section |  min time  |  avg time  |  max time  |%varavg| %total
+---------------------------------------------------------------
+Pair    | 0.011107   | 0.011107   | 0.011107   |   0.0 |  1.83
+Neigh   | 0          | 0          | 0          |   0.0 |  0.00
+Comm    | 0.0021471  | 0.0021471  | 0.0021471  |   0.0 |  0.35
+Output  | 0.07907    | 0.07907    | 0.07907    |   0.0 | 13.00
+Modify  | 0.51157    | 0.51157    | 0.51157    |   0.0 | 84.09
+Other   |            | 0.004481   |            |       |  0.74
+
+Nlocal:             10 ave          10 max          10 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+Nghost:              0 ave           0 max           0 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+Neighs:             45 ave          45 max          45 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+
+Total # of neighbors = 45
+Ave neighs/atom = 4.5
+Neighbor list builds = 0
+Dangerous builds = 0
+
+
+
+
+
+# Deleting a fix by uid
+
+unfix 569202603907007
+
+
+
+
+variable E equal 0
+variable Ex atom (1*(1+0*(x-0)+0*(x-0)^2+0*(y-0)+0*(y-0)^2+0*(z-0)+0*(z-0)^2))*cos((2*3.141592653589793)*0.0071400000000000005*step)
+variable B equal 0
+variable Ey atom (1*(0+0*(x-0)+0*(x-0)^2+0.0*(y-0)+0.0*(y-0)^2+0*(z-0)+0*(z-0)^2))*cos((2*3.141592653589793)*0.0071400000000000005*step)
+variable C equal 0
+variable Ez atom (1*(0+0*(x-0)+0*(x-0)^2+0*(y-0)+0*(y-0)^2+0*(z-0)+0*(z-0)^2))*cos((2*3.141592653589793)*0.0071400000000000005*step)
+fix 469202603907012 all efield v_Ex v_Ey v_Ez
+
+
+
+timestep 1e-08
+
+
+# Run simulation
+
+run 10000
+Generated 0 of 0 mixed pair_coeff terms from geometric mixing rule
+WARNING: Proc sub-domain size < neighbor skin, could lead to lost atoms (src/domain.cpp:970)
+Per MPI rank memory allocation (min/avg/max) = 5.28 | 5.28 | 5.28 Mbytes
+   Step          CPU      
+    155000   0            
+    160000   0.53815647   
+    165000   1.1897351    
+Loop time of 1.18976 on 1 procs for 10000 steps with 10 atoms
+
+90.5% CPU use with 1 MPI tasks x no OpenMP threads
+
+MPI task timing breakdown:
+Section |  min time  |  avg time  |  max time  |%varavg| %total
+---------------------------------------------------------------
+Pair    | 0.010752   | 0.010752   | 0.010752   |   0.0 |  0.90
+Neigh   | 0          | 0          | 0          |   0.0 |  0.00
+Comm    | 0.0021326  | 0.0021326  | 0.0021326  |   0.0 |  0.18
+Output  | 0.081422   | 0.081422   | 0.081422   |   0.0 |  6.84
+Modify  | 1.0908     | 1.0908     | 1.0908     |   0.0 | 91.68
+Other   |            | 0.004688   |            |       |  0.39
+
+Nlocal:             10 ave          10 max          10 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+Nghost:              0 ave           0 max           0 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+Neighs:             45 ave          45 max          45 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+
+Total # of neighbors = 45
+Ave neighs/atom = 4.5
+Neighbor list builds = 0
+Dangerous builds = 0
+
+
+
+
+
+# Deleting a fix by uid
+
+unfix 469202603907012
+
+
+
+
+timestep 1e-07
+
+
+# Run simulation
+
+run 1000
+Generated 0 of 0 mixed pair_coeff terms from geometric mixing rule
+WARNING: Proc sub-domain size < neighbor skin, could lead to lost atoms (src/domain.cpp:970)
+Per MPI rank memory allocation (min/avg/max) = 4.78 | 4.78 | 4.78 Mbytes
+   Step          CPU      
+    165000   0            
+    166000   0.02902978   
+Loop time of 0.0290508 on 1 procs for 1000 steps with 10 atoms
+
+94.4% CPU use with 1 MPI tasks x no OpenMP threads
+
+MPI task timing breakdown:
+Section |  min time  |  avg time  |  max time  |%varavg| %total
+---------------------------------------------------------------
+Pair    | 0.00098342 | 0.00098342 | 0.00098342 |   0.0 |  3.39
+Neigh   | 0          | 0          | 0          |   0.0 |  0.00
+Comm    | 0.00015479 | 0.00015479 | 0.00015479 |   0.0 |  0.53
+Output  | 0.0035396  | 0.0035396  | 0.0035396  |   0.0 | 12.18
+Modify  | 0.024079   | 0.024079   | 0.024079   |   0.0 | 82.89
+Other   |            | 0.0002941  |            |       |  1.01
+
+Nlocal:             10 ave          10 max          10 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+Nghost:              0 ave           0 max           0 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+Neighs:             45 ave          45 max          45 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+
+Total # of neighbors = 45
+Ave neighs/atom = 4.5
+Neighbor list builds = 0
+Dangerous builds = 0
+
+
+
+
+variable coolx atom (9.269386030594033e-20+(2.703426035144626e-21*vx))*-0.5000000000000001
+variable cooly atom (9.269386030594033e-20+2.703426035144626e-21*vy)*-0.5000000000000001
+variable coolz atom (9.269386030594033e-20+2.703426035144626e-21*vz)*-0.7071067811865476
+fix 569202603907008 1 addforce v_coolx v_cooly v_coolz
+
+
+
+timestep 1e-07
+
+
+# Run simulation
+
+run 10000
+Generated 0 of 0 mixed pair_coeff terms from geometric mixing rule
+WARNING: Proc sub-domain size < neighbor skin, could lead to lost atoms (src/domain.cpp:970)
+Per MPI rank memory allocation (min/avg/max) = 5.28 | 5.28 | 5.28 Mbytes
+   Step          CPU      
+    166000   0            
+    170000   0.21930122   
+    176000   0.67562198   
+Loop time of 0.675674 on 1 procs for 10000 steps with 10 atoms
+
+78.9% CPU use with 1 MPI tasks x no OpenMP threads
+
+MPI task timing breakdown:
+Section |  min time  |  avg time  |  max time  |%varavg| %total
+---------------------------------------------------------------
+Pair    | 0.014276   | 0.014276   | 0.014276   |   0.0 |  2.11
+Neigh   | 0          | 0          | 0          |   0.0 |  0.00
+Comm    | 0.0026985  | 0.0026985  | 0.0026985  |   0.0 |  0.40
+Output  | 0.092653   | 0.092653   | 0.092653   |   0.0 | 13.71
+Modify  | 0.56158    | 0.56158    | 0.56158    |   0.0 | 83.11
+Other   |            | 0.004464   |            |       |  0.66
+
+Nlocal:             10 ave          10 max          10 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+Nghost:              0 ave           0 max           0 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+Neighs:             45 ave          45 max          45 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+
+Total # of neighbors = 45
+Ave neighs/atom = 4.5
+Neighbor list builds = 0
+Dangerous builds = 0
+
+
+
+
+
+# Deleting a fix by uid
+
+unfix 569202603907008
+
+
+
+
+variable E equal 0
+variable Ex atom (1*(1+0*(x-0)+0*(x-0)^2+0*(y-0)+0*(y-0)^2+0*(z-0)+0*(z-0)^2))*cos((2*3.141592653589793)*0.0071600000000000006*step)
+variable B equal 0
+variable Ey atom (1*(0+0*(x-0)+0*(x-0)^2+0.0*(y-0)+0.0*(y-0)^2+0*(z-0)+0*(z-0)^2))*cos((2*3.141592653589793)*0.0071600000000000006*step)
+variable C equal 0
+variable Ez atom (1*(0+0*(x-0)+0*(x-0)^2+0*(y-0)+0*(y-0)^2+0*(z-0)+0*(z-0)^2))*cos((2*3.141592653589793)*0.0071600000000000006*step)
+fix 469202603907013 all efield v_Ex v_Ey v_Ez
+
+
+
+timestep 1e-08
+
+
+# Run simulation
+
+run 10000
+Generated 0 of 0 mixed pair_coeff terms from geometric mixing rule
+WARNING: Proc sub-domain size < neighbor skin, could lead to lost atoms (src/domain.cpp:970)
+Per MPI rank memory allocation (min/avg/max) = 5.28 | 5.28 | 5.28 Mbytes
+   Step          CPU      
+    176000   0            
+    180000   0.55110987   
+    186000   1.3414378    
+Loop time of 1.34146 on 1 procs for 10000 steps with 10 atoms
+
+87.6% CPU use with 1 MPI tasks x no OpenMP threads
+
+MPI task timing breakdown:
+Section |  min time  |  avg time  |  max time  |%varavg| %total
+---------------------------------------------------------------
+Pair    | 0.011685   | 0.011685   | 0.011685   |   0.0 |  0.87
+Neigh   | 0          | 0          | 0          |   0.0 |  0.00
+Comm    | 0.0023468  | 0.0023468  | 0.0023468  |   0.0 |  0.17
+Output  | 0.14139    | 0.14139    | 0.14139    |   0.0 | 10.54
+Modify  | 1.1805     | 1.1805     | 1.1805     |   0.0 | 88.00
+Other   |            | 0.005555   |            |       |  0.41
+
+Nlocal:             10 ave          10 max          10 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+Nghost:              0 ave           0 max           0 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+Neighs:             45 ave          45 max          45 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+
+Total # of neighbors = 45
+Ave neighs/atom = 4.5
+Neighbor list builds = 0
+Dangerous builds = 0
+
+
+
+
+
+# Deleting a fix by uid
+
+unfix 469202603907013
+
+
+
+
+timestep 1e-07
+
+
+# Run simulation
+
+run 1000
+Generated 0 of 0 mixed pair_coeff terms from geometric mixing rule
+WARNING: Proc sub-domain size < neighbor skin, could lead to lost atoms (src/domain.cpp:970)
+Per MPI rank memory allocation (min/avg/max) = 4.78 | 4.78 | 4.78 Mbytes
+   Step          CPU      
+    186000   0            
+    187000   0.031120093  
+Loop time of 0.0311397 on 1 procs for 1000 steps with 10 atoms
+
+90.9% CPU use with 1 MPI tasks x no OpenMP threads
+
+MPI task timing breakdown:
+Section |  min time  |  avg time  |  max time  |%varavg| %total
+---------------------------------------------------------------
+Pair    | 0.0010357  | 0.0010357  | 0.0010357  |   0.0 |  3.33
+Neigh   | 0          | 0          | 0          |   0.0 |  0.00
+Comm    | 0.00016473 | 0.00016473 | 0.00016473 |   0.0 |  0.53
+Output  | 0.0039637  | 0.0039637  | 0.0039637  |   0.0 | 12.73
+Modify  | 0.025659   | 0.025659   | 0.025659   |   0.0 | 82.40
+Other   |            | 0.0003162  |            |       |  1.02
+
+Nlocal:             10 ave          10 max          10 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+Nghost:              0 ave           0 max           0 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+Neighs:             45 ave          45 max          45 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+
+Total # of neighbors = 45
+Ave neighs/atom = 4.5
+Neighbor list builds = 0
+Dangerous builds = 0
+
+
+
+
+variable coolx atom (9.269386030594033e-20+(2.703426035144626e-21*vx))*-0.5000000000000001
+variable cooly atom (9.269386030594033e-20+2.703426035144626e-21*vy)*-0.5000000000000001
+variable coolz atom (9.269386030594033e-20+2.703426035144626e-21*vz)*-0.7071067811865476
+fix 569202603907009 1 addforce v_coolx v_cooly v_coolz
+
+
+
+timestep 1e-07
+
+
+# Run simulation
+
+run 10000
+Generated 0 of 0 mixed pair_coeff terms from geometric mixing rule
+WARNING: Proc sub-domain size < neighbor skin, could lead to lost atoms (src/domain.cpp:970)
+Per MPI rank memory allocation (min/avg/max) = 5.28 | 5.28 | 5.28 Mbytes
+   Step          CPU      
+    187000   0            
+    190000   0.13182024   
+    197000   0.52276711   
+Loop time of 0.522806 on 1 procs for 10000 steps with 10 atoms
+
+91.6% CPU use with 1 MPI tasks x no OpenMP threads
+
+MPI task timing breakdown:
+Section |  min time  |  avg time  |  max time  |%varavg| %total
+---------------------------------------------------------------
+Pair    | 0.010624   | 0.010624   | 0.010624   |   0.0 |  2.03
+Neigh   | 0          | 0          | 0          |   0.0 |  0.00
+Comm    | 0.0020213  | 0.0020213  | 0.0020213  |   0.0 |  0.39
+Output  | 0.054288   | 0.054288   | 0.054288   |   0.0 | 10.38
+Modify  | 0.45225    | 0.45225    | 0.45225    |   0.0 | 86.50
+Other   |            | 0.003621   |            |       |  0.69
+
+Nlocal:             10 ave          10 max          10 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+Nghost:              0 ave           0 max           0 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+Neighs:             45 ave          45 max          45 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+
+Total # of neighbors = 45
+Ave neighs/atom = 4.5
+Neighbor list builds = 0
+Dangerous builds = 0
+
+
+
+
+
+# Deleting a fix by uid
+
+unfix 569202603907009
+
+
+
+
+variable E equal 0
+variable Ex atom (1*(1+0*(x-0)+0*(x-0)^2+0*(y-0)+0*(y-0)^2+0*(z-0)+0*(z-0)^2))*cos((2*3.141592653589793)*0.00718*step)
+variable B equal 0
+variable Ey atom (1*(0+0*(x-0)+0*(x-0)^2+0.0*(y-0)+0.0*(y-0)^2+0*(z-0)+0*(z-0)^2))*cos((2*3.141592653589793)*0.00718*step)
+variable C equal 0
+variable Ez atom (1*(0+0*(x-0)+0*(x-0)^2+0*(y-0)+0*(y-0)^2+0*(z-0)+0*(z-0)^2))*cos((2*3.141592653589793)*0.00718*step)
+fix 469202603907014 all efield v_Ex v_Ey v_Ez
+
+
+
+timestep 1e-08
+
+
+# Run simulation
+
+run 10000
+Generated 0 of 0 mixed pair_coeff terms from geometric mixing rule
+WARNING: Proc sub-domain size < neighbor skin, could lead to lost atoms (src/domain.cpp:970)
+Per MPI rank memory allocation (min/avg/max) = 5.28 | 5.28 | 5.28 Mbytes
+   Step          CPU      
+    197000   0            
+    200000   0.32498103   
+    207000   1.0435606    
+Loop time of 1.04379 on 1 procs for 10000 steps with 10 atoms
+
+95.2% CPU use with 1 MPI tasks x no OpenMP threads
+
+MPI task timing breakdown:
+Section |  min time  |  avg time  |  max time  |%varavg| %total
+---------------------------------------------------------------
+Pair    | 0.0096919  | 0.0096919  | 0.0096919  |   0.0 |  0.93
+Neigh   | 0          | 0          | 0          |   0.0 |  0.00
+Comm    | 0.0017267  | 0.0017267  | 0.0017267  |   0.0 |  0.17
+Output  | 0.042995   | 0.042995   | 0.042995   |   0.0 |  4.12
+Modify  | 0.98588    | 0.98588    | 0.98588    |   0.0 | 94.45
+Other   |            | 0.0035     |            |       |  0.34
+
+Nlocal:             10 ave          10 max          10 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+Nghost:              0 ave           0 max           0 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+Neighs:             45 ave          45 max          45 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+
+Total # of neighbors = 45
+Ave neighs/atom = 4.5
+Neighbor list builds = 0
+Dangerous builds = 0
+
+
+
+
+
+# Deleting a fix by uid
+
+unfix 469202603907014
+
+
+
+
+timestep 1e-07
+
+
+# Run simulation
+
+run 1000
+Generated 0 of 0 mixed pair_coeff terms from geometric mixing rule
+WARNING: Proc sub-domain size < neighbor skin, could lead to lost atoms (src/domain.cpp:970)
+Per MPI rank memory allocation (min/avg/max) = 4.78 | 4.78 | 4.78 Mbytes
+   Step          CPU      
+    207000   0            
+    208000   0.029938131  
+Loop time of 0.0299643 on 1 procs for 1000 steps with 10 atoms
+
+92.6% CPU use with 1 MPI tasks x no OpenMP threads
+
+MPI task timing breakdown:
+Section |  min time  |  avg time  |  max time  |%varavg| %total
+---------------------------------------------------------------
+Pair    | 0.00093915 | 0.00093915 | 0.00093915 |   0.0 |  3.13
+Neigh   | 0          | 0          | 0          |   0.0 |  0.00
+Comm    | 0.00015452 | 0.00015452 | 0.00015452 |   0.0 |  0.52
+Output  | 0.0036478  | 0.0036478  | 0.0036478  |   0.0 | 12.17
+Modify  | 0.024941   | 0.024941   | 0.024941   |   0.0 | 83.23
+Other   |            | 0.0002823  |            |       |  0.94
+
+Nlocal:             10 ave          10 max          10 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+Nghost:              0 ave           0 max           0 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+Neighs:             45 ave          45 max          45 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+
+Total # of neighbors = 45
+Ave neighs/atom = 4.5
+Neighbor list builds = 0
+Dangerous builds = 0
+
+
+
+
+variable coolx atom (9.269386030594033e-20+(2.703426035144626e-21*vx))*-0.5000000000000001
+variable cooly atom (9.269386030594033e-20+2.703426035144626e-21*vy)*-0.5000000000000001
+variable coolz atom (9.269386030594033e-20+2.703426035144626e-21*vz)*-0.7071067811865476
+fix 569202603907010 1 addforce v_coolx v_cooly v_coolz
+
+
+
+timestep 1e-07
+
+
+# Run simulation
+
+run 10000
+Generated 0 of 0 mixed pair_coeff terms from geometric mixing rule
+WARNING: Proc sub-domain size < neighbor skin, could lead to lost atoms (src/domain.cpp:970)
+Per MPI rank memory allocation (min/avg/max) = 5.28 | 5.28 | 5.28 Mbytes
+   Step          CPU      
+    208000   0            
+    210000   0.084876932  
+    218000   0.44028491   
+Loop time of 0.440304 on 1 procs for 10000 steps with 10 atoms
+
+94.5% CPU use with 1 MPI tasks x no OpenMP threads
+
+MPI task timing breakdown:
+Section |  min time  |  avg time  |  max time  |%varavg| %total
+---------------------------------------------------------------
+Pair    | 0.009567   | 0.009567   | 0.009567   |   0.0 |  2.17
+Neigh   | 0          | 0          | 0          |   0.0 |  0.00
+Comm    | 0.0016258  | 0.0016258  | 0.0016258  |   0.0 |  0.37
+Output  | 0.038585   | 0.038585   | 0.038585   |   0.0 |  8.76
+Modify  | 0.38748    | 0.38748    | 0.38748    |   0.0 | 88.00
+Other   |            | 0.003049   |            |       |  0.69
+
+Nlocal:             10 ave          10 max          10 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+Nghost:              0 ave           0 max           0 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+Neighs:             45 ave          45 max          45 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+
+Total # of neighbors = 45
+Ave neighs/atom = 4.5
+Neighbor list builds = 0
+Dangerous builds = 0
+
+
+
+
+
+# Deleting a fix by uid
+
+unfix 569202603907010
+
+
+
+
+variable E equal 0
+variable Ex atom (1*(1+0*(x-0)+0*(x-0)^2+0*(y-0)+0*(y-0)^2+0*(z-0)+0*(z-0)^2))*cos((2*3.141592653589793)*0.0072*step)
+variable B equal 0
+variable Ey atom (1*(0+0*(x-0)+0*(x-0)^2+0.0*(y-0)+0.0*(y-0)^2+0*(z-0)+0*(z-0)^2))*cos((2*3.141592653589793)*0.0072*step)
+variable C equal 0
+variable Ez atom (1*(0+0*(x-0)+0*(x-0)^2+0*(y-0)+0*(y-0)^2+0*(z-0)+0*(z-0)^2))*cos((2*3.141592653589793)*0.0072*step)
+fix 469202603907015 all efield v_Ex v_Ey v_Ez
+
+
+
+timestep 1e-08
+
+
+# Run simulation
+
+run 10000
+Generated 0 of 0 mixed pair_coeff terms from geometric mixing rule
+WARNING: Proc sub-domain size < neighbor skin, could lead to lost atoms (src/domain.cpp:970)
+Per MPI rank memory allocation (min/avg/max) = 5.28 | 5.28 | 5.28 Mbytes
+   Step          CPU      
+    218000   0            
+    220000   0.19939938   
+    228000   1.031655     
+Loop time of 1.03167 on 1 procs for 10000 steps with 10 atoms
+
+95.2% CPU use with 1 MPI tasks x no OpenMP threads
+
+MPI task timing breakdown:
+Section |  min time  |  avg time  |  max time  |%varavg| %total
+---------------------------------------------------------------
+Pair    | 0.0098922  | 0.0098922  | 0.0098922  |   0.0 |  0.96
+Neigh   | 0          | 0          | 0          |   0.0 |  0.00
+Comm    | 0.0017596  | 0.0017596  | 0.0017596  |   0.0 |  0.17
+Output  | 0.04195    | 0.04195    | 0.04195    |   0.0 |  4.07
+Modify  | 0.97453    | 0.97453    | 0.97453    |   0.0 | 94.46
+Other   |            | 0.003543   |            |       |  0.34
+
+Nlocal:             10 ave          10 max          10 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+Nghost:              0 ave           0 max           0 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+Neighs:             45 ave          45 max          45 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+
+Total # of neighbors = 45
+Ave neighs/atom = 4.5
+Neighbor list builds = 0
+Dangerous builds = 0
+
+
+
+
+
+# Deleting a fix by uid
+
+unfix 469202603907015
+
+
+
+
+timestep 1e-07
+
+
+# Run simulation
+
+run 1000
+Generated 0 of 0 mixed pair_coeff terms from geometric mixing rule
+WARNING: Proc sub-domain size < neighbor skin, could lead to lost atoms (src/domain.cpp:970)
+Per MPI rank memory allocation (min/avg/max) = 4.78 | 4.78 | 4.78 Mbytes
+   Step          CPU      
+    228000   0            
+    229000   0.02562422   
+Loop time of 0.0256424 on 1 procs for 1000 steps with 10 atoms
+
+95.7% CPU use with 1 MPI tasks x no OpenMP threads
+
+MPI task timing breakdown:
+Section |  min time  |  avg time  |  max time  |%varavg| %total
+---------------------------------------------------------------
+Pair    | 0.00083711 | 0.00083711 | 0.00083711 |   0.0 |  3.26
+Neigh   | 0          | 0          | 0          |   0.0 |  0.00
+Comm    | 0.00013999 | 0.00013999 | 0.00013999 |   0.0 |  0.55
+Output  | 0.0027897  | 0.0027897  | 0.0027897  |   0.0 | 10.88
+Modify  | 0.021617   | 0.021617   | 0.021617   |   0.0 | 84.30
+Other   |            | 0.000259   |            |       |  1.01
+
+Nlocal:             10 ave          10 max          10 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+Nghost:              0 ave           0 max           0 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+Neighs:             45 ave          45 max          45 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+
+Total # of neighbors = 45
+Ave neighs/atom = 4.5
+Neighbor list builds = 0
+Dangerous builds = 0
+
+
+
+
+variable coolx atom (9.269386030594033e-20+(2.703426035144626e-21*vx))*-0.5000000000000001
+variable cooly atom (9.269386030594033e-20+2.703426035144626e-21*vy)*-0.5000000000000001
+variable coolz atom (9.269386030594033e-20+2.703426035144626e-21*vz)*-0.7071067811865476
+fix 569202603907011 1 addforce v_coolx v_cooly v_coolz
+
+
+
+timestep 1e-07
+
+
+# Run simulation
+
+run 10000
+Generated 0 of 0 mixed pair_coeff terms from geometric mixing rule
+WARNING: Proc sub-domain size < neighbor skin, could lead to lost atoms (src/domain.cpp:970)
+Per MPI rank memory allocation (min/avg/max) = 5.28 | 5.28 | 5.28 Mbytes
+   Step          CPU      
+    229000   0            
+    230000   0.039941979  
+    239000   0.40111033   
+Loop time of 0.401129 on 1 procs for 10000 steps with 10 atoms
+
+96.2% CPU use with 1 MPI tasks x no OpenMP threads
+
+MPI task timing breakdown:
+Section |  min time  |  avg time  |  max time  |%varavg| %total
+---------------------------------------------------------------
+Pair    | 0.0088905  | 0.0088905  | 0.0088905  |   0.0 |  2.22
+Neigh   | 0          | 0          | 0          |   0.0 |  0.00
+Comm    | 0.0015499  | 0.0015499  | 0.0015499  |   0.0 |  0.39
+Output  | 0.029623   | 0.029623   | 0.029623   |   0.0 |  7.38
+Modify  | 0.35841    | 0.35841    | 0.35841    |   0.0 | 89.35
+Other   |            | 0.002658   |            |       |  0.66
+
+Nlocal:             10 ave          10 max          10 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+Nghost:              0 ave           0 max           0 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+Neighs:             45 ave          45 max          45 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+
+Total # of neighbors = 45
+Ave neighs/atom = 4.5
+Neighbor list builds = 0
+Dangerous builds = 0
+
+
+
+
+
+# Deleting a fix by uid
+
+unfix 569202603907011
+
+
+
+
+variable E equal 0
+variable Ex atom (1*(1+0*(x-0)+0*(x-0)^2+0*(y-0)+0*(y-0)^2+0*(z-0)+0*(z-0)^2))*cos((2*3.141592653589793)*0.007500000000000001*step)
+variable B equal 0
+variable Ey atom (1*(0+0*(x-0)+0*(x-0)^2+0.0*(y-0)+0.0*(y-0)^2+0*(z-0)+0*(z-0)^2))*cos((2*3.141592653589793)*0.007500000000000001*step)
+variable C equal 0
+variable Ez atom (1*(0+0*(x-0)+0*(x-0)^2+0*(y-0)+0*(y-0)^2+0*(z-0)+0*(z-0)^2))*cos((2*3.141592653589793)*0.007500000000000001*step)
+fix 469202603907016 all efield v_Ex v_Ey v_Ez
+
+
+
+timestep 1e-08
+
+
+# Run simulation
+
+run 10000
+Generated 0 of 0 mixed pair_coeff terms from geometric mixing rule
+WARNING: Proc sub-domain size < neighbor skin, could lead to lost atoms (src/domain.cpp:970)
+Per MPI rank memory allocation (min/avg/max) = 5.28 | 5.28 | 5.28 Mbytes
+   Step          CPU      
+    239000   0            
+    240000   0.098285828  
+    249000   0.99550344   
+Loop time of 0.995522 on 1 procs for 10000 steps with 10 atoms
+
+96.8% CPU use with 1 MPI tasks x no OpenMP threads
+
+MPI task timing breakdown:
+Section |  min time  |  avg time  |  max time  |%varavg| %total
+---------------------------------------------------------------
+Pair    | 0.0092057  | 0.0092057  | 0.0092057  |   0.0 |  0.92
+Neigh   | 0          | 0          | 0          |   0.0 |  0.00
+Comm    | 0.0016355  | 0.0016355  | 0.0016355  |   0.0 |  0.16
+Output  | 0.03568    | 0.03568    | 0.03568    |   0.0 |  3.58
+Modify  | 0.94604    | 0.94604    | 0.94604    |   0.0 | 95.03
+Other   |            | 0.002964   |            |       |  0.30
+
+Nlocal:             10 ave          10 max          10 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+Nghost:              0 ave           0 max           0 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+Neighs:             45 ave          45 max          45 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+
+Total # of neighbors = 45
+Ave neighs/atom = 4.5
+Neighbor list builds = 0
+Dangerous builds = 0
+
+
+
+
+
+# Deleting a fix by uid
+
+unfix 469202603907016
+
+
+
+
+timestep 1e-07
+
+
+# Run simulation
+
+run 1000
+Generated 0 of 0 mixed pair_coeff terms from geometric mixing rule
+WARNING: Proc sub-domain size < neighbor skin, could lead to lost atoms (src/domain.cpp:970)
+Per MPI rank memory allocation (min/avg/max) = 4.78 | 4.78 | 4.78 Mbytes
+   Step          CPU      
+    249000   0            
+    250000   0.026136711  
+Loop time of 0.0261553 on 1 procs for 1000 steps with 10 atoms
+
+94.5% CPU use with 1 MPI tasks x no OpenMP threads
+
+MPI task timing breakdown:
+Section |  min time  |  avg time  |  max time  |%varavg| %total
+---------------------------------------------------------------
+Pair    | 0.00084693 | 0.00084693 | 0.00084693 |   0.0 |  3.24
+Neigh   | 0          | 0          | 0          |   0.0 |  0.00
+Comm    | 0.00014199 | 0.00014199 | 0.00014199 |   0.0 |  0.54
+Output  | 0.0028035  | 0.0028035  | 0.0028035  |   0.0 | 10.72
+Modify  | 0.022114   | 0.022114   | 0.022114   |   0.0 | 84.55
+Other   |            | 0.0002493  |            |       |  0.95
+
+Nlocal:             10 ave          10 max          10 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+Nghost:              0 ave           0 max           0 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+Neighs:             45 ave          45 max          45 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+
+Total # of neighbors = 45
+Ave neighs/atom = 4.5
+Neighbor list builds = 0
+Dangerous builds = 0
+
+
+
+
+variable coolx atom (9.269386030594033e-20+(2.703426035144626e-21*vx))*-0.5000000000000001
+variable cooly atom (9.269386030594033e-20+2.703426035144626e-21*vy)*-0.5000000000000001
+variable coolz atom (9.269386030594033e-20+2.703426035144626e-21*vz)*-0.7071067811865476
+fix 569202603907012 1 addforce v_coolx v_cooly v_coolz
+
+
+
+timestep 1e-07
+
+
+# Run simulation
+
+run 10000
+Generated 0 of 0 mixed pair_coeff terms from geometric mixing rule
+WARNING: Proc sub-domain size < neighbor skin, could lead to lost atoms (src/domain.cpp:970)
+Per MPI rank memory allocation (min/avg/max) = 5.28 | 5.28 | 5.28 Mbytes
+   Step          CPU      
+    250000   0            
+    260000   0.40639125   
+Loop time of 0.40641 on 1 procs for 10000 steps with 10 atoms
+
+95.4% CPU use with 1 MPI tasks x no OpenMP threads
+
+MPI task timing breakdown:
+Section |  min time  |  avg time  |  max time  |%varavg| %total
+---------------------------------------------------------------
+Pair    | 0.0088598  | 0.0088598  | 0.0088598  |   0.0 |  2.18
+Neigh   | 0          | 0          | 0          |   0.0 |  0.00
+Comm    | 0.0014823  | 0.0014823  | 0.0014823  |   0.0 |  0.36
+Output  | 0.032213   | 0.032213   | 0.032213   |   0.0 |  7.93
+Modify  | 0.36108    | 0.36108    | 0.36108    |   0.0 | 88.85
+Other   |            | 0.00277    |            |       |  0.68
+
+Nlocal:             10 ave          10 max          10 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+Nghost:              0 ave           0 max           0 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+Neighs:             45 ave          45 max          45 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+
+Total # of neighbors = 45
+Ave neighs/atom = 4.5
+Neighbor list builds = 0
+Dangerous builds = 0
+
+
+
+
+
+# Deleting a fix by uid
+
+unfix 569202603907012
+
+
+
+
+variable E equal 0
+variable Ex atom (1*(1+0*(x-0)+0*(x-0)^2+0*(y-0)+0*(y-0)^2+0*(z-0)+0*(z-0)^2))*cos((2*3.141592653589793)*0.0085*step)
+variable B equal 0
+variable Ey atom (1*(0+0*(x-0)+0*(x-0)^2+0.0*(y-0)+0.0*(y-0)^2+0*(z-0)+0*(z-0)^2))*cos((2*3.141592653589793)*0.0085*step)
+variable C equal 0
+variable Ez atom (1*(0+0*(x-0)+0*(x-0)^2+0*(y-0)+0*(y-0)^2+0*(z-0)+0*(z-0)^2))*cos((2*3.141592653589793)*0.0085*step)
+fix 469202603907017 all efield v_Ex v_Ey v_Ez
+
+
+
+timestep 1e-08
+
+
+# Run simulation
+
+run 10000
+Generated 0 of 0 mixed pair_coeff terms from geometric mixing rule
+WARNING: Proc sub-domain size < neighbor skin, could lead to lost atoms (src/domain.cpp:970)
+Per MPI rank memory allocation (min/avg/max) = 5.28 | 5.28 | 5.28 Mbytes
+   Step          CPU      
+    260000   0            
+    270000   0.98657933   
+Loop time of 0.986597 on 1 procs for 10000 steps with 10 atoms
+
+96.1% CPU use with 1 MPI tasks x no OpenMP threads
+
+MPI task timing breakdown:
+Section |  min time  |  avg time  |  max time  |%varavg| %total
+---------------------------------------------------------------
+Pair    | 0.0093737  | 0.0093737  | 0.0093737  |   0.0 |  0.95
+Neigh   | 0          | 0          | 0          |   0.0 |  0.00
+Comm    | 0.0016857  | 0.0016857  | 0.0016857  |   0.0 |  0.17
+Output  | 0.037585   | 0.037585   | 0.037585   |   0.0 |  3.81
+Modify  | 0.93496    | 0.93496    | 0.93496    |   0.0 | 94.77
+Other   |            | 0.00299    |            |       |  0.30
+
+Nlocal:             10 ave          10 max          10 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+Nghost:              0 ave           0 max           0 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+Neighs:             45 ave          45 max          45 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+
+Total # of neighbors = 45
+Ave neighs/atom = 4.5
+Neighbor list builds = 0
+Dangerous builds = 0
+
+
+
+
+
+# Deleting a fix by uid
+
+unfix 469202603907017
+
+
+
+
+timestep 1e-07
+
+
+# Run simulation
+
+run 1000
+Generated 0 of 0 mixed pair_coeff terms from geometric mixing rule
+WARNING: Proc sub-domain size < neighbor skin, could lead to lost atoms (src/domain.cpp:970)
+Per MPI rank memory allocation (min/avg/max) = 4.78 | 4.78 | 4.78 Mbytes
+   Step          CPU      
+    270000   0            
+    271000   0.025715579  
+Loop time of 0.025733 on 1 procs for 1000 steps with 10 atoms
+
+96.1% CPU use with 1 MPI tasks x no OpenMP threads
+
+MPI task timing breakdown:
+Section |  min time  |  avg time  |  max time  |%varavg| %total
+---------------------------------------------------------------
+Pair    | 0.00085961 | 0.00085961 | 0.00085961 |   0.0 |  3.34
+Neigh   | 0          | 0          | 0          |   0.0 |  0.00
+Comm    | 0.00014003 | 0.00014003 | 0.00014003 |   0.0 |  0.54
+Output  | 0.0026853  | 0.0026853  | 0.0026853  |   0.0 | 10.44
+Modify  | 0.021799   | 0.021799   | 0.021799   |   0.0 | 84.71
+Other   |            | 0.0002492  |            |       |  0.97
+
+Nlocal:             10 ave          10 max          10 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+Nghost:              0 ave           0 max           0 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+Neighs:             45 ave          45 max          45 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+
+Total # of neighbors = 45
+Ave neighs/atom = 4.5
+Neighbor list builds = 0
+Dangerous builds = 0
+
+
+
+
+variable coolx atom (9.269386030594033e-20+(2.703426035144626e-21*vx))*-0.5000000000000001
+variable cooly atom (9.269386030594033e-20+2.703426035144626e-21*vy)*-0.5000000000000001
+variable coolz atom (9.269386030594033e-20+2.703426035144626e-21*vz)*-0.7071067811865476
+fix 569202603907013 1 addforce v_coolx v_cooly v_coolz
+
+
+
+timestep 1e-07
+
+
+# Run simulation
+
+run 10000
+Generated 0 of 0 mixed pair_coeff terms from geometric mixing rule
+WARNING: Proc sub-domain size < neighbor skin, could lead to lost atoms (src/domain.cpp:970)
+Per MPI rank memory allocation (min/avg/max) = 5.28 | 5.28 | 5.28 Mbytes
+   Step          CPU      
+    271000   0            
+    280000   0.36428934   
+    281000   0.40377659   
+Loop time of 0.403796 on 1 procs for 10000 steps with 10 atoms
+
+96.0% CPU use with 1 MPI tasks x no OpenMP threads
+
+MPI task timing breakdown:
+Section |  min time  |  avg time  |  max time  |%varavg| %total
+---------------------------------------------------------------
+Pair    | 0.0086744  | 0.0086744  | 0.0086744  |   0.0 |  2.15
+Neigh   | 0          | 0          | 0          |   0.0 |  0.00
+Comm    | 0.0014714  | 0.0014714  | 0.0014714  |   0.0 |  0.36
+Output  | 0.030174   | 0.030174   | 0.030174   |   0.0 |  7.47
+Modify  | 0.36081    | 0.36081    | 0.36081    |   0.0 | 89.35
+Other   |            | 0.002665   |            |       |  0.66
+
+Nlocal:             10 ave          10 max          10 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+Nghost:              0 ave           0 max           0 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+Neighs:             45 ave          45 max          45 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+
+Total # of neighbors = 45
+Ave neighs/atom = 4.5
+Neighbor list builds = 0
+Dangerous builds = 0
+
+
+
+
+
+# Deleting a fix by uid
+
+unfix 569202603907013
+
+
+Total wall time: 0:00:20

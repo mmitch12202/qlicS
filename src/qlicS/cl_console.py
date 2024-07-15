@@ -265,7 +265,7 @@ def main():  # sourcery skip: use-named-expression
                 min_allowed=0,
                 validate=EmptyInputValidator(),
             ).execute()
-            analysis_root, raw_txt = create_analysis(data_vars, data_file,int(start))
+            analysis_root, raw_txt = create_analysis(data_vars, data_file, int(start))
         elif data_file[-4:] == ".csv":
             # Make scattering graph
             create_scat_graph(data_file)
@@ -444,10 +444,10 @@ def get_sim_skeleton_inputs():
         detection_params = loading_configur.items("detection")
     else:
         detection_params = [
-            ['detection_timestep_seq', [[]]],
-            ['detector_area', 'null'],
-            ['detector_effeciency', 'null'],
-            ['detector_distance', 'null']
+            ["detection_timestep_seq", [[]]],
+            ["detector_area", "null"],
+            ["detector_effeciency", "null"],
+            ["detector_distance", "null"],
         ]
     return dict(sim_params), dict(detection_params)
 

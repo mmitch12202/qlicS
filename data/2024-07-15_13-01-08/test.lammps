@@ -1,0 +1,191 @@
+##################################################################
+# LAMMPS input file generated using pylion 0.5.3
+# simulation name: test
+#
+# pylion is written and maintained by Dimitris Trypogeorgos
+# and Elliot Bentine. Download it from
+# https://bitbucket.org/dtrypogeorgos/pylion
+#
+# If you find it useful please cite <paper>.
+##################################################################
+
+
+
+units si
+atom_style charge
+
+# Creating simulation box...
+boundary m m m
+region simulationDomain block -0.001  0.001 -0.001 0.001 -0.001 0.001 units box
+create_box 2 simulationDomain
+
+# Configure neighbour list...
+neighbor 1 nsq
+neigh_modify once yes
+
+# Configure pairwise interactions for long range Coulombics only...
+pair_style coul/cut 10
+pair_coeff * *
+
+# Placing individual ions...
+
+
+create_atoms 1 single -0.000580018774971221 5.317721135514955e-06 -0.0006329727064265314 units box
+
+create_atoms 1 single -0.0003962714542590064 -4.726838117057877e-06 -0.0004189518287308212 units box
+
+create_atoms 1 single -5.424322389235675e-05 -3.66771039194923e-05 -0.00039733859037858495 units box
+
+create_atoms 1 single 0.00028860481441471636 2.601149638316627e-05 0.0001377484581496556 units box
+
+create_atoms 1 single 1.1043578730129407e-05 -1.9143552004832414e-05 -1.3301701825999779e-05 units box
+
+create_atoms 1 single 5.9138826664965405e-05 1.8052046258611876e-05 6.184348961738561e-05 units box
+
+create_atoms 1 single 0.0005585377012108056 -0.00012741906667090538 7.096069846179209e-05 units box
+
+create_atoms 1 single 0.0002399413413348417 -7.247357817658417e-05 0.00019900853138372346 units box
+
+create_atoms 1 single -0.00014047163077027749 -0.00024349232587563658 -0.000533954015210801 units box
+
+create_atoms 1 single 0.0001466352337424215 6.771954891564542e-05 0.0006955188443830681 units box
+
+create_atoms 1 single 2.1315838147017578e-05 3.705328328466572e-06 -0.0001908708664188786 units box
+
+create_atoms 1 single -0.0003229360215474617 0.00041150872658618536 9.653415527994517e-05 units box
+
+create_atoms 1 single 0.000181264805280963 4.6585732331639926e-05 -0.0006152412365355114 units box
+
+create_atoms 1 single -0.000247350363548937 -4.819181721208532e-05 3.261937219745373e-05 units box
+
+create_atoms 1 single 0.00010042829983197073 -0.0001739017405473377 6.739350586750085e-05 units box
+
+create_atoms 1 single 2.1759860060055485e-05 7.470982115498051e-06 -3.880659316676869e-05 units box
+
+create_atoms 1 single -0.000556530243280999 -0.0002623309492136042 -0.00015619250963627205 units box
+
+create_atoms 1 single 2.911193247190886e-05 -3.8696748672340896e-05 -2.1029293319007078e-05 units box
+
+create_atoms 1 single -0.00027116085507148 0.00013671417158373305 -2.0052203983138063e-05 units box
+
+create_atoms 1 single -3.548609156527791e-05 -1.745558232160684e-05 -0.00010529121194130022 units box
+
+
+# Species...
+mass 1 1.4944851e-26
+set type 1 charge 1.6021764599999998e-19
+group 1 type 1
+
+
+
+create_atoms 2 single 0.00013013830280743667 1.9385020947699436e-06 -0.0007479041825626336 units box
+
+create_atoms 2 single 0.0001979080819495852 4.759876193375433e-05 -0.00019203478032985176 units box
+
+create_atoms 2 single 0.0006069314450567647 3.4623098890733904e-06 0.00023401236034544312 units box
+
+create_atoms 2 single 2.8880437560386403e-05 -5.022145691714566e-05 -0.00026291079349681897 units box
+
+create_atoms 2 single 0.00015811163319317997 0.00037633175497880927 0.0003032630058934044 units box
+
+create_atoms 2 single 0.00028242952887505167 -0.00030552873900625117 -0.0003673450867524635 units box
+
+create_atoms 2 single -8.903852161618966e-05 9.513482147326211e-06 -6.434361706693661e-05 units box
+
+create_atoms 2 single 0.0002807559592445161 -0.0008609118983567909 -4.3035793399259605e-05 units box
+
+create_atoms 2 single 0.00019041968820164367 0.00016034701940770692 -0.0005814677500469051 units box
+
+create_atoms 2 single 6.045573599472127e-06 -9.747917925849945e-05 4.8586058362832096e-05 units box
+
+
+# Species...
+mass 2 5.3137248e-26
+set type 2 charge 1.6021764599999998e-19
+group 2 type 2
+
+
+
+# Configuring additional output to flush buffer during simulation...
+thermo 10000
+thermo_style custom step cpu
+thermo_modify flush yes
+
+# Time integration...
+
+group nonRigidBody union all
+
+fix timeIntegrator nonRigidBody nve
+
+
+
+dump 9796389681 all custom 10 /Users/michaelmitchell/qlicS/data/2024-07-15_13-01-08/positions.txt id x y z vx vy vz
+
+
+
+
+
+# Pseudopotential approximation for Linear Paul trap... (fixID=9601221034)
+
+
+# SHO
+
+variable k_x9601221034		equal 1.773509e-12
+
+variable k_y9601221034		equal 1.773509e-12
+
+variable k_z9601221034		equal 1.548694e-13
+
+variable fX9601221034 atom "-v_k_x9601221034 * x"
+
+variable fY9601221034 atom "-v_k_y9601221034 * y"
+
+variable fZ9601221034 atom "-v_k_z9601221034 * z"
+
+variable E9601221034 atom "v_k_x9601221034 * x * x /         2 + v_k_y9601221034 * y * y / 2 + v_k_z9601221034 * z * z / 2"
+
+fix 9601221034 1 addforce         v_fX9601221034 v_fY9601221034 v_fZ9601221034 energy v_E9601221034
+
+
+
+
+
+# Pseudopotential approximation for Linear Paul trap... (fixID=9601117180)
+
+
+# SHO
+
+variable k_x9601117180		equal 4.431431e-13
+
+variable k_y9601117180		equal 4.431431e-13
+
+variable k_z9601117180		equal 1.548694e-13
+
+variable fX9601117180 atom "-v_k_x9601117180 * x"
+
+variable fY9601117180 atom "-v_k_y9601117180 * y"
+
+variable fZ9601117180 atom "-v_k_z9601117180 * z"
+
+variable E9601117180 atom "v_k_x9601117180 * x * x /         2 + v_k_y9601117180 * y * y / 2 + v_k_z9601117180 * z * z / 2"
+
+fix 9601117180 2 addforce         v_fX9601117180 v_fY9601117180 v_fZ9601117180 energy v_E9601117180
+
+
+
+
+variable coolx atom (9.269386030594033e-20+(2.703426035144626e-21*vx))*-0.5000000000000001
+variable cooly atom (9.269386030594033e-20+2.703426035144626e-21*vy)*-0.5000000000000001
+variable coolz atom (9.269386030594033e-20+2.703426035144626e-21*vz)*-0.7071067811865476
+fix 569202603907002 1 addforce v_coolx v_cooly v_coolz
+
+
+
+timestep 1e-08
+
+
+# Run simulation
+
+run 20000
+
+

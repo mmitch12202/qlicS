@@ -1,0 +1,819 @@
+##################################################################
+# LAMMPS input file generated using pylion 0.5.3
+# simulation name: test
+#
+# pylion is written and maintained by Dimitris Trypogeorgos
+# and Elliot Bentine. Download it from
+# https://bitbucket.org/dtrypogeorgos/pylion
+#
+# If you find it useful please cite <paper>.
+##################################################################
+
+
+
+units si
+atom_style charge
+
+# Creating simulation box...
+boundary m m m
+region simulationDomain block -0.001  0.001 -0.001 0.001 -0.001 0.001 units box
+create_box 1 simulationDomain
+
+# Configure neighbour list...
+neighbor 1 nsq
+neigh_modify once yes
+
+# Configure pairwise interactions for long range Coulombics only...
+pair_style coul/cut 10
+pair_coeff * *
+
+# Placing individual ions...
+
+
+create_atoms 1 single 0.0001235073912070797 0.00012914548517573707 0.0005900854548374599 units box
+
+create_atoms 1 single 7.926234031869872e-05 7.750784017175236e-05 -0.00042280315278463566 units box
+
+create_atoms 1 single -0.00012763128073258042 -0.00027332570107526424 -0.0008885844845281308 units box
+
+create_atoms 1 single 7.004813787828281e-05 -8.359729242606789e-05 0.000126043521621616 units box
+
+create_atoms 1 single 8.237828819994239e-05 0.000263256040038632 -0.0005417258832836015 units box
+
+create_atoms 1 single -2.7077832930227517e-06 -5.229237549601992e-06 4.53183908299068e-05 units box
+
+create_atoms 1 single 0.00026081014885402616 0.0001379373783257524 0.0004492385022642461 units box
+
+create_atoms 1 single 0.0001387819611148775 1.833176470758798e-05 0.00017397553320751475 units box
+
+create_atoms 1 single 0.0005772949475555923 0.0004982005957493874 8.77164740322512e-06 units box
+
+create_atoms 1 single 4.82685813256615e-05 -5.98789343424066e-06 0.000535968999701007 units box
+
+
+# Species...
+mass 1 1.4944851e-26
+set type 1 charge 1.6021764599999998e-19
+group 1 type 1
+
+
+
+# Configuring additional output to flush buffer during simulation...
+thermo 10000
+thermo_style custom step cpu
+thermo_modify flush yes
+
+# Time integration...
+
+group nonRigidBody union all
+
+fix timeIntegrator nonRigidBody nve
+
+
+
+dump 9926225791 all custom 10 /Users/michaelmitchell/qlicS/data/2024-07-15_12-53-35/positions.txt id x y z vx vy vz
+
+
+
+
+
+# Pseudopotential approximation for Linear Paul trap... (fixID=9926356652)
+
+
+# SHO
+
+variable k_x9926356652		equal 2.973789e-13
+
+variable k_y9926356652		equal 2.973789e-13
+
+variable k_z9926356652		equal 4.835556e-14
+
+variable fX9926356652 atom "-v_k_x9926356652 * x"
+
+variable fY9926356652 atom "-v_k_y9926356652 * y"
+
+variable fZ9926356652 atom "-v_k_z9926356652 * z"
+
+variable E9926356652 atom "v_k_x9926356652 * x * x /         2 + v_k_y9926356652 * y * y / 2 + v_k_z9926356652 * z * z / 2"
+
+fix 9926356652 1 addforce         v_fX9926356652 v_fY9926356652 v_fZ9926356652 energy v_E9926356652
+
+
+
+
+variable coolx atom (9.269386030594033e-20+(2.703426035144626e-21*vx))*-0.5000000000000001
+variable cooly atom (9.269386030594033e-20+2.703426035144626e-21*vy)*-0.5000000000000001
+variable coolz atom (9.269386030594033e-20+2.703426035144626e-21*vz)*-0.7071067811865476
+fix 569202603907002 1 addforce v_coolx v_cooly v_coolz
+
+
+
+timestep 1e-07
+
+
+# Run simulation
+
+run 50000
+
+
+
+
+
+# Deleting a fix by uid
+
+unfix 569202603907002
+
+
+
+
+variable E equal 0
+variable Ex atom (1*(1+0*(x-0)+0*(x-0)^2+0*(y-0)+0*(y-0)^2+0*(z-0)+0*(z-0)^2))*cos((2*3.141592653589793)*0.005*step)
+variable B equal 0
+variable Ey atom (1*(0+0*(x-0)+0*(x-0)^2+0.0*(y-0)+0.0*(y-0)^2+0*(z-0)+0*(z-0)^2))*cos((2*3.141592653589793)*0.005*step)
+variable C equal 0
+variable Ez atom (1*(0+0*(x-0)+0*(x-0)^2+0*(y-0)+0*(y-0)^2+0*(z-0)+0*(z-0)^2))*cos((2*3.141592653589793)*0.005*step)
+fix 469202603907007 all efield v_Ex v_Ey v_Ez
+
+
+
+timestep 1e-08
+
+
+# Run simulation
+
+run 10000
+
+
+
+
+
+# Deleting a fix by uid
+
+unfix 469202603907007
+
+
+
+
+timestep 1e-07
+
+
+# Run simulation
+
+run 1000
+
+
+
+
+variable coolx atom (9.269386030594033e-20+(2.703426035144626e-21*vx))*-0.5000000000000001
+variable cooly atom (9.269386030594033e-20+2.703426035144626e-21*vy)*-0.5000000000000001
+variable coolz atom (9.269386030594033e-20+2.703426035144626e-21*vz)*-0.7071067811865476
+fix 569202603907003 1 addforce v_coolx v_cooly v_coolz
+
+
+
+timestep 1e-07
+
+
+# Run simulation
+
+run 10000
+
+
+
+
+
+# Deleting a fix by uid
+
+unfix 569202603907003
+
+
+
+
+variable E equal 0
+variable Ex atom (1*(1+0*(x-0)+0*(x-0)^2+0*(y-0)+0*(y-0)^2+0*(z-0)+0*(z-0)^2))*cos((2*3.141592653589793)*0.006*step)
+variable B equal 0
+variable Ey atom (1*(0+0*(x-0)+0*(x-0)^2+0.0*(y-0)+0.0*(y-0)^2+0*(z-0)+0*(z-0)^2))*cos((2*3.141592653589793)*0.006*step)
+variable C equal 0
+variable Ez atom (1*(0+0*(x-0)+0*(x-0)^2+0*(y-0)+0*(y-0)^2+0*(z-0)+0*(z-0)^2))*cos((2*3.141592653589793)*0.006*step)
+fix 469202603907008 all efield v_Ex v_Ey v_Ez
+
+
+
+timestep 1e-08
+
+
+# Run simulation
+
+run 10000
+
+
+
+
+
+# Deleting a fix by uid
+
+unfix 469202603907008
+
+
+
+
+timestep 1e-07
+
+
+# Run simulation
+
+run 1000
+
+
+
+
+variable coolx atom (9.269386030594033e-20+(2.703426035144626e-21*vx))*-0.5000000000000001
+variable cooly atom (9.269386030594033e-20+2.703426035144626e-21*vy)*-0.5000000000000001
+variable coolz atom (9.269386030594033e-20+2.703426035144626e-21*vz)*-0.7071067811865476
+fix 569202603907004 1 addforce v_coolx v_cooly v_coolz
+
+
+
+timestep 1e-07
+
+
+# Run simulation
+
+run 10000
+
+
+
+
+
+# Deleting a fix by uid
+
+unfix 569202603907004
+
+
+
+
+variable E equal 0
+variable Ex atom (1*(1+0*(x-0)+0*(x-0)^2+0*(y-0)+0*(y-0)^2+0*(z-0)+0*(z-0)^2))*cos((2*3.141592653589793)*0.007*step)
+variable B equal 0
+variable Ey atom (1*(0+0*(x-0)+0*(x-0)^2+0.0*(y-0)+0.0*(y-0)^2+0*(z-0)+0*(z-0)^2))*cos((2*3.141592653589793)*0.007*step)
+variable C equal 0
+variable Ez atom (1*(0+0*(x-0)+0*(x-0)^2+0*(y-0)+0*(y-0)^2+0*(z-0)+0*(z-0)^2))*cos((2*3.141592653589793)*0.007*step)
+fix 469202603907009 all efield v_Ex v_Ey v_Ez
+
+
+
+timestep 1e-08
+
+
+# Run simulation
+
+run 10000
+
+
+
+
+
+# Deleting a fix by uid
+
+unfix 469202603907009
+
+
+
+
+timestep 1e-07
+
+
+# Run simulation
+
+run 1000
+
+
+
+
+variable coolx atom (9.269386030594033e-20+(2.703426035144626e-21*vx))*-0.5000000000000001
+variable cooly atom (9.269386030594033e-20+2.703426035144626e-21*vy)*-0.5000000000000001
+variable coolz atom (9.269386030594033e-20+2.703426035144626e-21*vz)*-0.7071067811865476
+fix 569202603907005 1 addforce v_coolx v_cooly v_coolz
+
+
+
+timestep 1e-07
+
+
+# Run simulation
+
+run 10000
+
+
+
+
+
+# Deleting a fix by uid
+
+unfix 569202603907005
+
+
+
+
+variable E equal 0
+variable Ex atom (1*(1+0*(x-0)+0*(x-0)^2+0*(y-0)+0*(y-0)^2+0*(z-0)+0*(z-0)^2))*cos((2*3.141592653589793)*0.00705*step)
+variable B equal 0
+variable Ey atom (1*(0+0*(x-0)+0*(x-0)^2+0.0*(y-0)+0.0*(y-0)^2+0*(z-0)+0*(z-0)^2))*cos((2*3.141592653589793)*0.00705*step)
+variable C equal 0
+variable Ez atom (1*(0+0*(x-0)+0*(x-0)^2+0*(y-0)+0*(y-0)^2+0*(z-0)+0*(z-0)^2))*cos((2*3.141592653589793)*0.00705*step)
+fix 469202603907010 all efield v_Ex v_Ey v_Ez
+
+
+
+timestep 1e-08
+
+
+# Run simulation
+
+run 10000
+
+
+
+
+
+# Deleting a fix by uid
+
+unfix 469202603907010
+
+
+
+
+timestep 1e-07
+
+
+# Run simulation
+
+run 1000
+
+
+
+
+variable coolx atom (9.269386030594033e-20+(2.703426035144626e-21*vx))*-0.5000000000000001
+variable cooly atom (9.269386030594033e-20+2.703426035144626e-21*vy)*-0.5000000000000001
+variable coolz atom (9.269386030594033e-20+2.703426035144626e-21*vz)*-0.7071067811865476
+fix 569202603907006 1 addforce v_coolx v_cooly v_coolz
+
+
+
+timestep 1e-07
+
+
+# Run simulation
+
+run 10000
+
+
+
+
+
+# Deleting a fix by uid
+
+unfix 569202603907006
+
+
+
+
+variable E equal 0
+variable Ex atom (1*(1+0*(x-0)+0*(x-0)^2+0*(y-0)+0*(y-0)^2+0*(z-0)+0*(z-0)^2))*cos((2*3.141592653589793)*0.0071*step)
+variable B equal 0
+variable Ey atom (1*(0+0*(x-0)+0*(x-0)^2+0.0*(y-0)+0.0*(y-0)^2+0*(z-0)+0*(z-0)^2))*cos((2*3.141592653589793)*0.0071*step)
+variable C equal 0
+variable Ez atom (1*(0+0*(x-0)+0*(x-0)^2+0*(y-0)+0*(y-0)^2+0*(z-0)+0*(z-0)^2))*cos((2*3.141592653589793)*0.0071*step)
+fix 469202603907011 all efield v_Ex v_Ey v_Ez
+
+
+
+timestep 1e-08
+
+
+# Run simulation
+
+run 10000
+
+
+
+
+
+# Deleting a fix by uid
+
+unfix 469202603907011
+
+
+
+
+timestep 1e-07
+
+
+# Run simulation
+
+run 1000
+
+
+
+
+variable coolx atom (9.269386030594033e-20+(2.703426035144626e-21*vx))*-0.5000000000000001
+variable cooly atom (9.269386030594033e-20+2.703426035144626e-21*vy)*-0.5000000000000001
+variable coolz atom (9.269386030594033e-20+2.703426035144626e-21*vz)*-0.7071067811865476
+fix 569202603907007 1 addforce v_coolx v_cooly v_coolz
+
+
+
+timestep 1e-07
+
+
+# Run simulation
+
+run 10000
+
+
+
+
+
+# Deleting a fix by uid
+
+unfix 569202603907007
+
+
+
+
+variable E equal 0
+variable Ex atom (1*(1+0*(x-0)+0*(x-0)^2+0*(y-0)+0*(y-0)^2+0*(z-0)+0*(z-0)^2))*cos((2*3.141592653589793)*0.0071400000000000005*step)
+variable B equal 0
+variable Ey atom (1*(0+0*(x-0)+0*(x-0)^2+0.0*(y-0)+0.0*(y-0)^2+0*(z-0)+0*(z-0)^2))*cos((2*3.141592653589793)*0.0071400000000000005*step)
+variable C equal 0
+variable Ez atom (1*(0+0*(x-0)+0*(x-0)^2+0*(y-0)+0*(y-0)^2+0*(z-0)+0*(z-0)^2))*cos((2*3.141592653589793)*0.0071400000000000005*step)
+fix 469202603907012 all efield v_Ex v_Ey v_Ez
+
+
+
+timestep 1e-08
+
+
+# Run simulation
+
+run 10000
+
+
+
+
+
+# Deleting a fix by uid
+
+unfix 469202603907012
+
+
+
+
+timestep 1e-07
+
+
+# Run simulation
+
+run 1000
+
+
+
+
+variable coolx atom (9.269386030594033e-20+(2.703426035144626e-21*vx))*-0.5000000000000001
+variable cooly atom (9.269386030594033e-20+2.703426035144626e-21*vy)*-0.5000000000000001
+variable coolz atom (9.269386030594033e-20+2.703426035144626e-21*vz)*-0.7071067811865476
+fix 569202603907008 1 addforce v_coolx v_cooly v_coolz
+
+
+
+timestep 1e-07
+
+
+# Run simulation
+
+run 10000
+
+
+
+
+
+# Deleting a fix by uid
+
+unfix 569202603907008
+
+
+
+
+variable E equal 0
+variable Ex atom (1*(1+0*(x-0)+0*(x-0)^2+0*(y-0)+0*(y-0)^2+0*(z-0)+0*(z-0)^2))*cos((2*3.141592653589793)*0.0071600000000000006*step)
+variable B equal 0
+variable Ey atom (1*(0+0*(x-0)+0*(x-0)^2+0.0*(y-0)+0.0*(y-0)^2+0*(z-0)+0*(z-0)^2))*cos((2*3.141592653589793)*0.0071600000000000006*step)
+variable C equal 0
+variable Ez atom (1*(0+0*(x-0)+0*(x-0)^2+0*(y-0)+0*(y-0)^2+0*(z-0)+0*(z-0)^2))*cos((2*3.141592653589793)*0.0071600000000000006*step)
+fix 469202603907013 all efield v_Ex v_Ey v_Ez
+
+
+
+timestep 1e-08
+
+
+# Run simulation
+
+run 10000
+
+
+
+
+
+# Deleting a fix by uid
+
+unfix 469202603907013
+
+
+
+
+timestep 1e-07
+
+
+# Run simulation
+
+run 1000
+
+
+
+
+variable coolx atom (9.269386030594033e-20+(2.703426035144626e-21*vx))*-0.5000000000000001
+variable cooly atom (9.269386030594033e-20+2.703426035144626e-21*vy)*-0.5000000000000001
+variable coolz atom (9.269386030594033e-20+2.703426035144626e-21*vz)*-0.7071067811865476
+fix 569202603907009 1 addforce v_coolx v_cooly v_coolz
+
+
+
+timestep 1e-07
+
+
+# Run simulation
+
+run 10000
+
+
+
+
+
+# Deleting a fix by uid
+
+unfix 569202603907009
+
+
+
+
+variable E equal 0
+variable Ex atom (1*(1+0*(x-0)+0*(x-0)^2+0*(y-0)+0*(y-0)^2+0*(z-0)+0*(z-0)^2))*cos((2*3.141592653589793)*0.00718*step)
+variable B equal 0
+variable Ey atom (1*(0+0*(x-0)+0*(x-0)^2+0.0*(y-0)+0.0*(y-0)^2+0*(z-0)+0*(z-0)^2))*cos((2*3.141592653589793)*0.00718*step)
+variable C equal 0
+variable Ez atom (1*(0+0*(x-0)+0*(x-0)^2+0*(y-0)+0*(y-0)^2+0*(z-0)+0*(z-0)^2))*cos((2*3.141592653589793)*0.00718*step)
+fix 469202603907014 all efield v_Ex v_Ey v_Ez
+
+
+
+timestep 1e-08
+
+
+# Run simulation
+
+run 10000
+
+
+
+
+
+# Deleting a fix by uid
+
+unfix 469202603907014
+
+
+
+
+timestep 1e-07
+
+
+# Run simulation
+
+run 1000
+
+
+
+
+variable coolx atom (9.269386030594033e-20+(2.703426035144626e-21*vx))*-0.5000000000000001
+variable cooly atom (9.269386030594033e-20+2.703426035144626e-21*vy)*-0.5000000000000001
+variable coolz atom (9.269386030594033e-20+2.703426035144626e-21*vz)*-0.7071067811865476
+fix 569202603907010 1 addforce v_coolx v_cooly v_coolz
+
+
+
+timestep 1e-07
+
+
+# Run simulation
+
+run 10000
+
+
+
+
+
+# Deleting a fix by uid
+
+unfix 569202603907010
+
+
+
+
+variable E equal 0
+variable Ex atom (1*(1+0*(x-0)+0*(x-0)^2+0*(y-0)+0*(y-0)^2+0*(z-0)+0*(z-0)^2))*cos((2*3.141592653589793)*0.0072*step)
+variable B equal 0
+variable Ey atom (1*(0+0*(x-0)+0*(x-0)^2+0.0*(y-0)+0.0*(y-0)^2+0*(z-0)+0*(z-0)^2))*cos((2*3.141592653589793)*0.0072*step)
+variable C equal 0
+variable Ez atom (1*(0+0*(x-0)+0*(x-0)^2+0*(y-0)+0*(y-0)^2+0*(z-0)+0*(z-0)^2))*cos((2*3.141592653589793)*0.0072*step)
+fix 469202603907015 all efield v_Ex v_Ey v_Ez
+
+
+
+timestep 1e-08
+
+
+# Run simulation
+
+run 10000
+
+
+
+
+
+# Deleting a fix by uid
+
+unfix 469202603907015
+
+
+
+
+timestep 1e-07
+
+
+# Run simulation
+
+run 1000
+
+
+
+
+variable coolx atom (9.269386030594033e-20+(2.703426035144626e-21*vx))*-0.5000000000000001
+variable cooly atom (9.269386030594033e-20+2.703426035144626e-21*vy)*-0.5000000000000001
+variable coolz atom (9.269386030594033e-20+2.703426035144626e-21*vz)*-0.7071067811865476
+fix 569202603907011 1 addforce v_coolx v_cooly v_coolz
+
+
+
+timestep 1e-07
+
+
+# Run simulation
+
+run 10000
+
+
+
+
+
+# Deleting a fix by uid
+
+unfix 569202603907011
+
+
+
+
+variable E equal 0
+variable Ex atom (1*(1+0*(x-0)+0*(x-0)^2+0*(y-0)+0*(y-0)^2+0*(z-0)+0*(z-0)^2))*cos((2*3.141592653589793)*0.007500000000000001*step)
+variable B equal 0
+variable Ey atom (1*(0+0*(x-0)+0*(x-0)^2+0.0*(y-0)+0.0*(y-0)^2+0*(z-0)+0*(z-0)^2))*cos((2*3.141592653589793)*0.007500000000000001*step)
+variable C equal 0
+variable Ez atom (1*(0+0*(x-0)+0*(x-0)^2+0*(y-0)+0*(y-0)^2+0*(z-0)+0*(z-0)^2))*cos((2*3.141592653589793)*0.007500000000000001*step)
+fix 469202603907016 all efield v_Ex v_Ey v_Ez
+
+
+
+timestep 1e-08
+
+
+# Run simulation
+
+run 10000
+
+
+
+
+
+# Deleting a fix by uid
+
+unfix 469202603907016
+
+
+
+
+timestep 1e-07
+
+
+# Run simulation
+
+run 1000
+
+
+
+
+variable coolx atom (9.269386030594033e-20+(2.703426035144626e-21*vx))*-0.5000000000000001
+variable cooly atom (9.269386030594033e-20+2.703426035144626e-21*vy)*-0.5000000000000001
+variable coolz atom (9.269386030594033e-20+2.703426035144626e-21*vz)*-0.7071067811865476
+fix 569202603907012 1 addforce v_coolx v_cooly v_coolz
+
+
+
+timestep 1e-07
+
+
+# Run simulation
+
+run 10000
+
+
+
+
+
+# Deleting a fix by uid
+
+unfix 569202603907012
+
+
+
+
+variable E equal 0
+variable Ex atom (1*(1+0*(x-0)+0*(x-0)^2+0*(y-0)+0*(y-0)^2+0*(z-0)+0*(z-0)^2))*cos((2*3.141592653589793)*0.0085*step)
+variable B equal 0
+variable Ey atom (1*(0+0*(x-0)+0*(x-0)^2+0.0*(y-0)+0.0*(y-0)^2+0*(z-0)+0*(z-0)^2))*cos((2*3.141592653589793)*0.0085*step)
+variable C equal 0
+variable Ez atom (1*(0+0*(x-0)+0*(x-0)^2+0*(y-0)+0*(y-0)^2+0*(z-0)+0*(z-0)^2))*cos((2*3.141592653589793)*0.0085*step)
+fix 469202603907017 all efield v_Ex v_Ey v_Ez
+
+
+
+timestep 1e-08
+
+
+# Run simulation
+
+run 10000
+
+
+
+
+
+# Deleting a fix by uid
+
+unfix 469202603907017
+
+
+
+
+timestep 1e-07
+
+
+# Run simulation
+
+run 1000
+
+
+
+
+variable coolx atom (9.269386030594033e-20+(2.703426035144626e-21*vx))*-0.5000000000000001
+variable cooly atom (9.269386030594033e-20+2.703426035144626e-21*vy)*-0.5000000000000001
+variable coolz atom (9.269386030594033e-20+2.703426035144626e-21*vz)*-0.7071067811865476
+fix 569202603907013 1 addforce v_coolx v_cooly v_coolz
+
+
+
+timestep 1e-07
+
+
+# Run simulation
+
+run 10000
+
+
+
+
+
+# Deleting a fix by uid
+
+unfix 569202603907013
+
+
