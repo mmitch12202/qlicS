@@ -291,6 +291,7 @@ def run_from_file():
         d_p["detector_area"],
         d_p["detector_effeciency"],
         d_p["detector_distance"],
+        s_p["gpu"],
     )
 
     for i in range(type_poses["tickle"]):

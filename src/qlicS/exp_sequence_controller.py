@@ -19,6 +19,10 @@ from .trap import gen_trap_lammps
 # doesn't limit us functionally now.
 def create_and_run_sim_gen():
     s = pl.Simulation("test")
+    if configur.has_option("sim_parameters", "gpu") and eval(configur.get("sim_parameters", "gpu")):
+        s.attrs["gpu"] = True
+
+
     commands = configur.get("exp_seq", "com_list").split(
         ","
     )  # Assuming commands are separated by commas

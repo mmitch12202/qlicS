@@ -51,10 +51,12 @@ def create_sim_skeleton(
     detector_area,
     detector_effeciency,
     detector_distance,
+    GPU=False
 ):
     configur["sim_parameters"] = {
         "log_steps": log_steps,
         "timesequence": timesequence,
+        "gpu": GPU,
     }
     configur["detection"] = {
         "detection_timestep_seq": detection_timestep_seq,
