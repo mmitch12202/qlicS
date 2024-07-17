@@ -199,6 +199,20 @@ def configur_scattering_laser(
         "frequency": frequency,
     }
 
+def configur_cloud_reset(
+        type_pos,
+        initial_atom_id,
+        style,
+        radius,
+        count,
+):
+    configur[f"cloud_reset_{type_pos}"] = {
+        "initial_atom_id": initial_atom_id,
+        "style": style,
+        "radius": radius,
+        "count": count,
+    }
+
 
 def configur_iter(
     scan_objects,

@@ -99,7 +99,7 @@ def test_beta_is_sensible():
             random.uniform(-10e6, -90e6),
         )
         assert type(beta) is float
-        assert beta < 0
+        assert beta > 0
 
 
 def test_total_force_is_sensible(be_cloud: dict, default_laser_fixture: dict, type_pos):

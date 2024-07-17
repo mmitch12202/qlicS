@@ -294,6 +294,17 @@ def run_from_file():
         s_p["gpu"],
     )
 
+    for i in range(type_poses["cloud_reset"]):
+        cl_reset = get_cloud_reset(i)
+        config_controller.configur_cloud_reset(
+            i,
+            cl_reset["initial_atom_id"],
+            cl_reset["style"],
+            cl_reset["radius"],
+            cl_reset["count"],
+        )
+
+
     for i in range(type_poses["tickle"]):
         m = get_modulation_inputs(i)
         config_controller.configur_modulation(
@@ -450,8 +461,12 @@ def get_sim_skeleton_inputs():
             ["detector_effeciency", "null"],
             ["detector_distance", "null"],
         ]
+    if "gpu" not in dict(sim_params):
+        sim_params.append(["gpu", False])
     return dict(sim_params), dict(detection_params)
 
+def get_cloud_reset(type_pos):
+    return dict(loading_configur.items(f"cloud_reset_{type_pos}"))
 
 def get_modulation_inputs(type_pos):
     return dict(loading_configur.items(f"modulation_{type_pos}"))

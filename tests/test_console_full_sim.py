@@ -3,9 +3,6 @@ import os
 from unittest.mock import patch, MagicMock
 import math
 
-# TODO we are only checking the most primative, sim doesnt throw error case - make this better
-
-
 # Did some hacky things to prevent cross-talk between tests, this may just be inherint of full
 # Sim testing though
 @pytest.fixture()
@@ -285,8 +282,8 @@ def test_1_be_steady_state(reload_package):
     # I think it has to do with removing and readding the tickle (phase change).  TODO this probably doesn't need to
     # be fixed immediatly, but should be noted in documentation.
 
-    # If you want to see the projected envelop, flip to true.
-    show_plot = False
+    # If you want to see the steady state amp, flip to true.
+    show_plot = True
     reload_package
     import matplotlib.pyplot as plt
     import numpy as np
@@ -388,3 +385,118 @@ def test_1_be_steady_state(reload_package):
 
 
 # More complex Physics tests
+@pytest.mark.order(index=-8)
+def test_laser_cooling_max_rate_cond(reload_package):
+    # NOTE: Based on pg. 89 H. Metcalf et al. "Laser Cooling and Trapping"
+    reload_package # TODO Why is reload_package here? Remove likely
+    show_plot = True
+    import matplotlib.pyplot as plt
+    import numpy as np
+    from qlicS.pylion.functions import readdump
+
+    examples_dir = f"{os.getcwd()}/examples"
+    file_path = f"{examples_dir}/laser_cooling_thermal_test.ini"
+    with patch("qlicS.cl_console.mode_dialogue") as mock_m_d, patch(
+        "qlicS.cl_console.config_file_dialogue"
+    ) as mock_c_f_d:
+        mock_m_d.return_value = "Run Experiment From File"
+        mock_c_f_d.return_value = file_path
+        dd = qlicS.cl_console.run_from_file()
+        positions = f"{dd}positions.txt"
+        steps, data = readdump(positions)
+
+        def calculate_rms(lst):
+            if not lst:
+                return 0  # Handle the case of an empty list to avoid division by zero
+            squared_values = [x**2 for x in lst]
+            mean_squared = sum(squared_values) / len(lst)
+            rms = math.sqrt(mean_squared)
+            return rms
+        boltzmann_constant = 1.380649e-23  # Boltzmann constant in J/K
+        hbar = 6.626e-34/(2*np.pi)
+        linewidth = 113097335.52923255
+        def convert_rms_to_temp(rms_velocities, mass):
+            temperatures = [(mass * vel**2) / (boltzmann_constant) for vel in rms_velocities]
+            return temperatures
+
+        rmses = []
+        for step in data:
+            atom_vels = []
+            for atom in step:
+                v = np.sqrt(atom[3]**2+atom[4]**2+atom[5]**2)
+                #v = atom[3]
+                atom_vels.append(v)
+            rms_vel = calculate_rms(atom_vels)
+            rmses.append(rms_vel)
+
+        temp = convert_rms_to_temp(rmses, 9*1.6605402e-27)
+
+        def analytical_doppler_limit(detunning, linewidth):
+            coef = (2*hbar*linewidth)/(boltzmann_constant*8)
+            add_terms = (2*detunning/linewidth)+(linewidth/(2*detunning))
+            return coef*add_terms
+
+        t1 = analytical_doppler_limit(1e7, 113097335.52923255)
+        t2 = analytical_doppler_limit(2.5e7, 113097335.52923255)
+        t3 = analytical_doppler_limit(5.65486677646e7, 113097335.52923255)
+        t4 = analytical_doppler_limit(9e7, 113097335.52923255)
+
+
+        print(t1)
+        print(t2)
+        print(t3)
+        print(t4)
+
+        index_ranges = [(8000, 11000), (18000, 21000), (28000, 31000),
+                        (38000, 41000), (48000, 51000)]
+
+        # Initialize lists to store minimum values and their indices
+        min_values = []
+        min_indices = []
+
+        # Iterate over the index ranges to find the minimum value and index in each range
+        for start_index, end_index in index_ranges:
+            min_index, min_value = min(enumerate(temp[start_index:end_index], start=start_index), key=lambda x: x[1])
+            min_values.append(min_value)
+            min_indices.append(min_index)
+        print(min_values)
+        print(min_indices)
+
+        if show_plot:
+            plt.figure()
+            plt.plot(steps, temp, label="T (K)")
+            plt.axhline(
+                y=t1,
+                color="r",
+                linestyle="--",
+                label="1e7",
+            )
+            plt.axhline(
+                y=t2,
+                color="r",
+                linestyle="--",
+                label="2e7",
+            )
+            plt.axhline(
+                y=t3,
+                color="b",
+                linestyle="--",
+                label="3e7",
+            )
+            plt.axhline(
+                y=t4,
+                color="r",
+                linestyle="--",
+                label="4e7",
+            )
+            #plt.scatter(min_indices, min_values, color='g', label='Min Values', marker='o')
+            plt.xlabel("Step")
+            plt.ylabel("Temp")
+            plt.legend()
+            plt.show()
+
+        smallest_value_index = min_values.index(min(min_values))
+        assert smallest_value_index == 2, f"The smallest value is not at index 2. Actual index: {smallest_value_index}"
+
+
+

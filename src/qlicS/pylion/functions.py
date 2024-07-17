@@ -65,7 +65,6 @@ def createioncloud(ions, radius, number):
     :param radius: radius of cloud
     :param number: number of atoms
     """
-
     positions = []
 
     for _ind in range(number):

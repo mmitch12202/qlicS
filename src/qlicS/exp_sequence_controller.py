@@ -4,10 +4,10 @@ import re
 
 from .command_mapping import give_command_mapping
 from .config_controller import configur
-from .ion_creation import pylion_cloud
+from .ion_creation import pylion_cloud, cloud_reset
 from .laser_cooling_force import create_cooling_laser
 from .pylion import pylion as pl
-from .remover import remove_by_uid
+from .remover import remove_by_uid, delete_atoms_by_uid
 from .scattering import get_scattering
 from .sim_controller import pylion_dumping
 from .tickle_efield import create_tickle
@@ -81,9 +81,9 @@ def append_iter(s):
         if i is not None:
             stat_type_poses[w] = i
             original_uids[scan_object] = eval(configur.get(scan_object, "uid"))
-    for i, scan_var_val in enumerate(scan_var_seq):  # TODO use scan_var_val
+    for i, scan_var_val in enumerate(scan_var_seq):
         ion_groups = []  # Not sure if this is the best way of handling this
-        i_steps = i + 1
+        i_steps = i #+ 1 by getting rid of the plus one this means the same object in an exp_seq and a iter needs to be two different objects
         configur.set(scan_var[0], scan_var[1], str(scan_var_val))
         com_appending(
             s,
@@ -96,7 +96,11 @@ def append_iter(s):
         )
         for k in list(original_uids.keys()):
             if str(original_uids[k]) not in com_list_str:
-                remove_by_uid(s, original_uids[k] + i_steps)
+                if k[:9] == "ion_cloud":
+                    print('HIT!!')
+                    delete_atoms_by_uid(s, original_uids[k] + i_steps)
+                else:
+                    remove_by_uid(s, original_uids[k] + i_steps)
     return
 
 
@@ -125,7 +129,10 @@ def com_appending(
             raise ValueError(f"Command {command} is not recognized")
         func = command_mapping[command]
         if func == pylion_cloud:
-            pl_cloud = func(type_poses[command])
+            cloud_self_uid = eval(configur.get(f"ion_cloud_{type_poses[command]}", "uid"))
+            if is_iter:
+                cloud_self_uid += iter_step
+            pl_cloud = func(type_poses[command], cloud_self_uid)
             ion_groups.append(pl_cloud)
             s.append(pl_cloud)
         elif func == gen_trap_lammps:
@@ -159,6 +166,9 @@ def com_appending(
             if is_iter:
                 self_uid += iter_step
             s.append(func(type_poses[command], self_uid))
+        elif func == cloud_reset:
+            print(func(type_poses[command]))
+            s.append(func(type_poses[command])) # TODO can prolly merge with below
         else:
             s.append(func(type_poses[command]))
         if not is_iter:

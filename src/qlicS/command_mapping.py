@@ -1,4 +1,4 @@
-from .ion_creation import pylion_cloud
+from .ion_creation import pylion_cloud, cloud_reset
 from .laser_cooling_force import create_cooling_laser
 from .sim_controller import pylion_dumping
 from .tickle_efield import create_tickle
@@ -15,4 +15,5 @@ def give_command_mapping():
         "evolve": evolve,
         "tickle": create_tickle,
         "iter": None,
+        "cloud_reset": cloud_reset,
     }
