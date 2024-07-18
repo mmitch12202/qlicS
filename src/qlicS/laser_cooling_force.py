@@ -50,9 +50,6 @@ def create_cooling_laser(
     F_0 = get_F_0(wave_number, s, decay_rate)
     beta = get_beta(wave_number, laser_info["saturation_paramater"], decay_rate, laser_info["detunning"])
 
-    target_ion_type = configur.get(f"cooling_laser_{type_pos}", "target_ion_type")
-    target_ion_species_info = eval(configur.get("ions", target_ion_type))[0]
-
     # NOTE: We are assuming low saturation.  For high saturation this heating term is too small
     T_d = get_doppler_limit(cycle_info["natural linewidth"], laser_info["detunning"])
     print(f"F_o 1: {str(F_0)}")

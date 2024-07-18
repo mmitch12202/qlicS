@@ -64,12 +64,12 @@ def test_pylion_cloud_happy_path(
     "type_pos, uid, config_values, expected_number, expected_radius, expected_code",
     [
         # Happy path tests
-        ("type1", 1, {"count": "5", "radius": "10"}, 5, 10, 5),
-        ("type2", 2, {"count": "3", "radius": "20"}, 3, 20, 3),
+        ("type1", 1, {"count": "5", "radius": "10", "initial_atom_id": "1"}, 5, 10, 5),
+        ("type2", 2, {"count": "3", "radius": "20", "initial_atom_id": "1"}, 3, 20, 3),
         
         # Edge cases
-        ("type3", 3, {"count": "0", "radius": "5"}, 0, 5, 0),
-        ("type4", 4, {"count": "1", "radius": "0"}, 1, 0, 1),
+        ("type3", 3, {"count": "0", "radius": "5", "initial_atom_id": "100"}, 0, 5, 0),
+        ("type4", 4, {"count": "1", "radius": "0", "initial_atom_id": "0"}, 1, 0, 1),
         
         # Error cases
         ("type5", 5, {"count": "invalid", "radius": "10"}, None, None, None),
@@ -95,9 +95,9 @@ def test_recloud_spherical(type_pos, uid, config_values, expected_number, expect
         # Act
         if expected_number is None or expected_radius is None:
             with pytest.raises((SyntaxError, NameError, TypeError)):
-                recloud_spherical(type_pos, uid)
+                recloud_spherical(uid)
         else:
-            result = recloud_spherical(type_pos, uid)
+            result = recloud_spherical(uid)
             
             # Assert
             assert len(result['code']) == expected_code + 1  # +1 for the initial comment line

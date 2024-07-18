@@ -293,6 +293,7 @@ def run_from_file():
     config_controller.setup_sequence()
 
     type_poses = count_type_pos(loading_configur)
+    print(type_poses)
 
     s_p, d_p = get_sim_skeleton_inputs()
     config_controller.create_sim_skeleton(
@@ -453,6 +454,8 @@ def count_type_pos(loading_configur):
         for i in iter_command_string:
             if i not in command_string:
                 command_string.append(i)
+            elif i[:2] != "r_":
+                type_poses[i] += 1
     for command in command_string:
         if (
             command[:2] != "r_"

@@ -63,11 +63,11 @@ mock_detection_params = [("detect1", "value1"), ("detect2", "value2")]
             mock_detection_params,
             id="happy_path",
         ),
-        pytest.param([], [], [], [], id="empty_params"),
+        pytest.param([], [], [("gpu", False)], [], id="empty_params"),
         pytest.param(
-            [("param1", "value1")],
+            [("gpu", "value1")],
             [("detect1", "value1")],
-            [("param1", "value1")],
+            [("gpu", "value1")],
             [("detect1", "value1")],
             id="single_param",
         ),
@@ -81,11 +81,14 @@ def test_get_sim_skeleton_inputs(
     with patch(
         "qlicS.cl_console.loading_configur.items",
         side_effect=[sim_params, detection_params],
+    ), patch(
+        "qlicS.cl_console.loading_configur.has_section",
+        return_value=True,
     ):
 
         # Act
         result_sim_params, result_detection_params = get_sim_skeleton_inputs()
-
+        
         # Assert
         assert result_sim_params == dict(expected_sim_params)
         assert result_detection_params == dict(expected_detection_params)

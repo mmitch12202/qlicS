@@ -21,10 +21,12 @@ default_laser = [
 ]
 float_pattern = r"[-+]?[0-9]*\.?[0-9]+([eE][-+]?[0-9]+)?"
 expected_pattern = (
-    rf"variable coolx atom \({float_pattern}\+?\({float_pattern}\*vx\)\)\*{float_pattern}\n"
-    rf"variable cooly atom \({float_pattern}\+?{float_pattern}\*vy\)\*{float_pattern}\n"
-    rf"variable coolz atom \({float_pattern}\+?{float_pattern}\*vz\)\*{float_pattern}\n"
-    rf"fix {float_pattern} {float_pattern} addforce v_coolx v_cooly v_coolz"
+    rf"variable coolx atom \({float_pattern}\-?{float_pattern}\*vx\)\*{float_pattern}\n"
+    rf"variable cooly atom \({float_pattern}\-?{float_pattern}\*vy\)\*{float_pattern}\n"
+    rf"variable coolz atom \({float_pattern}\-?{float_pattern}\*vz\)\*{float_pattern}\n"
+    rf"fix {float_pattern} {float_pattern} addforce v_coolx v_cooly v_coolz\n\n"
+    rf"variable targetT equal 1\n"
+    rf"variable curr_temp equal temp\n"
 )
 
 # Fixtures
@@ -107,7 +109,7 @@ def test_total_force_is_sensible(be_cloud: dict, default_laser_fixture: dict, ty
         "qlicS.laser_cooling_force.configur",
         get=configur_side_kick,
         items=lambda x: default_laser_fixture,
-    ):
+    ), mock.patch("qlicS.laser_cooling_force.get_doppler_limit", return_value=1):
         # Test implementation code here
         cooling_force = laser_cooling_force.create_cooling_laser(
             569202603907006,
@@ -118,6 +120,7 @@ def test_total_force_is_sensible(be_cloud: dict, default_laser_fixture: dict, ty
         assert type(cooling_force) is dict
         print("***")
         print("".join(cooling_force["code"]))
+        print(expected_pattern)
         assert (
             check_string_format("".join(cooling_force["code"]), expected_pattern)
             is True
