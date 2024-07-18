@@ -1,6 +1,8 @@
 import ast
 import csv
 import re
+import os
+import sys
 
 from .command_mapping import give_command_mapping
 from .config_controller import configur
@@ -30,7 +32,12 @@ def create_and_run_sim_gen():
     type_poses = {key: 0 for key in command_mapping}
     ion_groups = []
     com_appending(s, commands, command_mapping, type_poses, ion_groups, False)
+
+    #sys.stdout = open(os.devnull, 'w')
+    #sys.stderr = open(os.devnull, 'w')
     s.execute()
+    #sys.stdout = sys.__stdout__
+    #sys.stderr = sys.__stderr__ 
 
     if configur.get("detection", "detector_area") == "null":
         return configur.get("directory", "dump_dir")
@@ -97,10 +104,11 @@ def append_iter(s):
         for k in list(original_uids.keys()):
             if str(original_uids[k]) not in com_list_str:
                 if k[:9] == "ion_cloud":
-                    print('HIT!!')
                     delete_atoms_by_uid(s, original_uids[k] + i_steps)
                 else:
                     remove_by_uid(s, original_uids[k] + i_steps)
+            if k[:12] == "cooling_laser":
+                remove_by_uid(s, "hterm")
     return
 
 
@@ -115,6 +123,7 @@ def separate_word_and_int(input_string):
 def com_appending(
     s, commands, command_mapping, type_poses, ion_groups, is_iter, iter_step=0
 ):
+    evolve_add = [None]
     for command in commands:
         if command == "iter":
             append_iter(s)
@@ -156,11 +165,15 @@ def com_appending(
             target_uid = eval(configur.get(f"ion_cloud_{type_pos}", "uid"))
             if is_iter:
                 self_uid += iter_step
+            l = func(self_uid, ion_cooling_data, target_uid, type_poses[command])
             s.append(
-                func(self_uid, ion_cooling_data, target_uid, type_poses[command])
+                l
             )  # TODO I think there may be a bug here where if an ion cloud is never created and cooling is only done in iter, it tries to run the sim (and obviously failes)
-        elif func in [evolve, pylion_dumping]:
+            evolve_add.append(l["additional_lines"])
+        elif func == pylion_dumping:
             s.append(func())
+        elif func == evolve:
+            s.append(func(evolve_add[-1]))
         elif func == create_tickle:
             self_uid = eval(configur.get(f"modulation_{type_poses[command]}", "uid"))
             if is_iter:

@@ -8,7 +8,7 @@ from InquirerPy.base.control import Choice
 from InquirerPy.validator import EmptyInputValidator
 
 from . import __version__, config_controller, exp_sequence_controller
-from .analysis import create_analysis, create_scat_graph
+from .analysis import create_analysis, create_scat_graph, gen_rmsv_plot
 from .command_mapping import give_command_mapping
 from .console_dialogue import followup_questions_creator
 from .resources import PathStringValidator
@@ -249,23 +249,33 @@ def main():  # sourcery skip: use-named-expression
             ),  # TODO validate that it is also a .txt file
         ).execute()
         if data_file[-4:] == ".txt":
-            click.echo(
-                "### Analysis is Currently only supported for all Atoms### \n### be sure you know which species lines up with which atom index###\n\n"
-            )
-            # TODO we should also include averaging and by species output here
-            # TODO we should also include crystal state at given timestep
-            data_vars = inquirer.checkbox(
-                message="Select the variables you would like to recieve information for (use [Tab] to select and [Enter] to submit):",
-                choices=["Positions", "Velocities"],
-                validate=lambda result: len(result) >= 1,
-                invalid_message="Select at least 1",
+            temp_or_ind = inquirer.select(
+                message="Would you like to generate whole crystal rms velocity data or analyze atoms individually? (use arrows)",
+                choices=["Whole", "Individual"],
+                default=None,
             ).execute()
-            start = inquirer.number(
-                message="Enter graph start log step (=timestep/log_steps):",
-                min_allowed=0,
-                validate=EmptyInputValidator(),
-            ).execute()
-            analysis_root, raw_txt = create_analysis(data_vars, data_file, int(start))
+            if temp_or_ind == "Whole":
+                gen_rmsv_plot(data_file)
+                
+
+            elif temp_or_ind == "Individual":
+                click.echo(
+                    "### Analysis is Currently only supported for all Atoms### \n### be sure you know which species lines up with which atom index###\n\n"
+                )
+                # TODO we should also include averaging and by species output here
+                # TODO we should also include crystal state at given timestep
+                data_vars = inquirer.checkbox(
+                    message="Select the variables you would like to recieve information for (use [Tab] to select and [Enter] to submit):",
+                    choices=["Positions", "Velocities"],
+                    validate=lambda result: len(result) >= 1,
+                    invalid_message="Select at least 1",
+                ).execute()
+                start = inquirer.number(
+                    message="Enter graph start log step (=timestep/log_steps):",
+                    min_allowed=0,
+                    validate=EmptyInputValidator(),
+                ).execute()
+                analysis_root, raw_txt = create_analysis(data_vars, data_file, int(start))
         elif data_file[-4:] == ".csv":
             # Make scattering graph
             create_scat_graph(data_file)
@@ -273,6 +283,7 @@ def main():  # sourcery skip: use-named-expression
             raise ValueError(
                 "The input file extension should be .txt (ion data) or .csv (scattering data)"
             )
+
 
 
 def run_from_file():

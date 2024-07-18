@@ -283,7 +283,7 @@ def test_1_be_steady_state(reload_package):
     # be fixed immediatly, but should be noted in documentation.
 
     # If you want to see the steady state amp, flip to true.
-    show_plot = True
+    show_plot = False
     reload_package
     import matplotlib.pyplot as plt
     import numpy as np
@@ -389,7 +389,7 @@ def test_1_be_steady_state(reload_package):
 def test_laser_cooling_max_rate_cond(reload_package):
     # NOTE: Based on pg. 89 H. Metcalf et al. "Laser Cooling and Trapping"
     reload_package # TODO Why is reload_package here? Remove likely
-    show_plot = True
+    show_plot = False
     import matplotlib.pyplot as plt
     import numpy as np
     from qlicS.pylion.functions import readdump
@@ -416,7 +416,7 @@ def test_laser_cooling_max_rate_cond(reload_package):
         hbar = 6.626e-34/(2*np.pi)
         linewidth = 113097335.52923255
         def convert_rms_to_temp(rms_velocities, mass):
-            temperatures = [(mass * vel**2) / (boltzmann_constant) for vel in rms_velocities]
+            temperatures = [(mass * vel**2) / (3*boltzmann_constant) for vel in rms_velocities]
             return temperatures
 
         rmses = []
@@ -439,13 +439,15 @@ def test_laser_cooling_max_rate_cond(reload_package):
         t1 = analytical_doppler_limit(1e7, 113097335.52923255)
         t2 = analytical_doppler_limit(2.5e7, 113097335.52923255)
         t3 = analytical_doppler_limit(5.65486677646e7, 113097335.52923255)
-        t4 = analytical_doppler_limit(9e7, 113097335.52923255)
+        t4 = analytical_doppler_limit(7.5e7, 113097335.52923255)
+        t5 = analytical_doppler_limit(10e7, 113097335.52923255)
 
 
         print(t1)
         print(t2)
         print(t3)
         print(t4)
+        print(t5)
 
         index_ranges = [(8000, 11000), (18000, 21000), (28000, 31000),
                         (38000, 41000), (48000, 51000)]
@@ -475,19 +477,25 @@ def test_laser_cooling_max_rate_cond(reload_package):
                 y=t2,
                 color="r",
                 linestyle="--",
-                label="2e7",
+                label="2.5e7",
             )
             plt.axhline(
                 y=t3,
                 color="b",
                 linestyle="--",
-                label="3e7",
+                label="5.7e7",
             )
             plt.axhline(
                 y=t4,
                 color="r",
                 linestyle="--",
-                label="4e7",
+                label="7.5e7",
+            )
+            plt.axhline(
+                y=t5,
+                color="r",
+                linestyle="--",
+                label="10e7",
             )
             #plt.scatter(min_indices, min_values, color='g', label='Min Values', marker='o')
             plt.xlabel("Step")
@@ -497,6 +505,7 @@ def test_laser_cooling_max_rate_cond(reload_package):
 
         smallest_value_index = min_values.index(min(min_values))
         assert smallest_value_index == 2, f"The smallest value is not at index 2. Actual index: {smallest_value_index}"
+        # TODO there is probably a good mathematical way of looking at if we are hitting the doppler limit.  For now just look at the graph.
 
 
 

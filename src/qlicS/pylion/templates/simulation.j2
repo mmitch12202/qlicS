@@ -46,8 +46,8 @@ group {{ ions.uid }} type {{ ions.uid }}
 
 # Configuring additional output to flush buffer during simulation...
 thermo 10000
-thermo_style custom step cpu
-thermo_modify flush yes
+thermo_style custom step cpu temp
+thermo_modify flush no
 
 # Time integration...
 {% if rigid.exists %}

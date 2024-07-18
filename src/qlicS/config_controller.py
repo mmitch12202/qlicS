@@ -17,13 +17,14 @@ def dump_dir(setup=True):
     else:
         return configur.get("directory", "dump_dir")
 
-
+# TODO this is hardcoded rn - fix eventually
 def create_universe():
     configur["constants"] = {
         "h": 6.626e-34,
         "c": 299792458,
         "amu": 1.6605402e-27,
         "ele_charge": 1.60217663e-19,
+        "boltzmann": 1.380649e-23,
     }
     # Beryllium as the coolant ion,
     # O2 is cooled sympathetically in our system

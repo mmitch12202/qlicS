@@ -3,7 +3,7 @@ from .config_controller import configur, dump_dir
 from .pylion import functions as pl_func
 
 
-def evolve():
+def evolve(add=None):
 
     time_sequence = get_time_seq()
     print(time_sequence)
@@ -12,7 +12,7 @@ def evolve():
     dt = time_sequence[current_timeblock_num][0]
     Deltat = time_sequence[current_timeblock_num][1]
     set_timestep = [f"timestep {dt}"]
-    evolve = pl_func.evolve(Deltat)
+    evolve = pl_func.evolve(Deltat, add)
     current_timeblock_num += 1
     configur.set("live_vars", "current_timesequence_pos", str(current_timeblock_num))
     with open(f"{dump_dir(setup=False)}config.ini", "w") as configfile:

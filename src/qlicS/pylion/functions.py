@@ -82,7 +82,7 @@ def createioncloud(ions, radius, number):
 
 
 @lammps.command
-def evolve(steps):
+def evolve(steps, additional=None):
     """Evolves the lammps simulation for a certain number of steps.
 
     See Also: http://lammps.sandia.gov/doc/run.html
@@ -93,8 +93,10 @@ def evolve(steps):
 
     :param steps: number of steps
     """
-
-    lines = ["\n# Run simulation", f"run {int(steps):d}\n"]
+    if not additional:
+        lines = ["\n# Run simulation", f"run {int(steps):d}\n"]
+    else:
+        lines = ["\n# Run simulation", f"run {int(steps):d} {additional}\n"]
 
     return {"code": lines}
 
