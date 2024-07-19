@@ -66,6 +66,7 @@ def create_analysis(var_list, raw_data_file, start):
             create_lammps_vars_graphs(graph_dir, raw_copy, vartype, a_i, start)
     return analysis_root, raw_copy
 
+
 def gen_rmsv_plot(raw_data_file):
     analysis_root = (
         f"{os.getcwd()}/data/rms_v" + time.strftime("%Y-%m-%d_%H-%M-%S") + "/"
@@ -74,6 +75,7 @@ def gen_rmsv_plot(raw_data_file):
     raw_copy = f"{analysis_root}raw.txt"
     shutil.copy(raw_data_file, raw_copy)
     steps, data = pl_func.readdump(raw_copy)
+
     def calculate_rms(lst):
         if not lst:
             return 0  # Handle the case of an empty list to avoid division by zero
@@ -81,12 +83,13 @@ def gen_rmsv_plot(raw_data_file):
         mean_squared = sum(squared_values) / len(lst)
         rms = math.sqrt(mean_squared)
         return rms
+
     rmses = []
     for step in data:
         atom_vels = []
         for atom in step:
-            v = np.sqrt(atom[3]**2+atom[4]**2+atom[5]**2)
-                        #v = atom[3]
+            v = np.sqrt(atom[3] ** 2 + atom[4] ** 2 + atom[5] ** 2)
+            # v = atom[3]
             atom_vels.append(v)
         rms_vel = calculate_rms(atom_vels)
         rmses.append(rms_vel)
@@ -95,6 +98,7 @@ def gen_rmsv_plot(raw_data_file):
     plt.xlabel("Step")
     plt.ylabel("RMS V")
     plt.savefig(analysis_root + "RMS_vel_plot.png")
+
 
 def create_scat_graph(raw_data_file):
     analysis_root = (

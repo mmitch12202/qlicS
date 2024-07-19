@@ -256,7 +256,6 @@ def main():  # sourcery skip: use-named-expression
             ).execute()
             if temp_or_ind == "Whole":
                 gen_rmsv_plot(data_file)
-                
 
             elif temp_or_ind == "Individual":
                 click.echo(
@@ -275,7 +274,9 @@ def main():  # sourcery skip: use-named-expression
                     min_allowed=0,
                     validate=EmptyInputValidator(),
                 ).execute()
-                analysis_root, raw_txt = create_analysis(data_vars, data_file, int(start))
+                analysis_root, raw_txt = create_analysis(
+                    data_vars, data_file, int(start)
+                )
         elif data_file[-4:] == ".csv":
             # Make scattering graph
             create_scat_graph(data_file)
@@ -283,7 +284,6 @@ def main():  # sourcery skip: use-named-expression
             raise ValueError(
                 "The input file extension should be .txt (ion data) or .csv (scattering data)"
             )
-
 
 
 def run_from_file():
@@ -315,7 +315,6 @@ def run_from_file():
             cl_reset["radius"],
             cl_reset["count"],
         )
-
 
     for i in range(type_poses["tickle"]):
         m = get_modulation_inputs(i)
@@ -479,8 +478,10 @@ def get_sim_skeleton_inputs():
         sim_params.append(["gpu", False])
     return dict(sim_params), dict(detection_params)
 
+
 def get_cloud_reset(type_pos):
     return dict(loading_configur.items(f"cloud_reset_{type_pos}"))
+
 
 def get_modulation_inputs(type_pos):
     return dict(loading_configur.items(f"modulation_{type_pos}"))

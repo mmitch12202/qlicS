@@ -9,14 +9,13 @@ repository = "https://github.com/mmitch12202/qlicS"
 keywords = ["LAMMPS", "Ion Trap", "Linear Paul Trap"]
 
 [tool.poetry.dependencies]
-python = "^3.8"
+python = ">=3.9,<3.13"
 click = "^8.1.7"
 
-h5py = "2.10.0"
 jinja2 = "2.10.3"
 markupsafe = "2.0.1"
 termcolor = "^2.4.0"
-numpy = "1.23.0"
+numpy = "1.24.3"
 inquirerpy = "^0.3.4"
 matplotlib = "3.6"
 pytest-order = "^1.2.1"

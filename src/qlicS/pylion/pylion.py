@@ -203,10 +203,13 @@ class Simulation(list):
             bufsize=1,
             universal_newlines=True,
         )
+
         def is_empty_or_whitespace(s):
             return not s.strip()
+
         def contains_only_digits_and_dot_and_e(s):
-            return all(char.isdigit() or char == '.' or char == 'e' for char in s)
+            return all(char.isdigit() or char == "." or char == "e" for char in s)
+
         step_counter = 0
         number_counter = 0
         for line in self.process.stdout:
@@ -214,17 +217,16 @@ class Simulation(list):
             if line_stripped.startswith("Step"):
                 step_counter += 1
                 if step_counter % 10000 == 0:
-                    print(line.rstrip('\n'))
+                    print(line.rstrip("\n"))
             elif contains_only_digits_and_dot_and_e(line_stripped):
                 number_counter += 1
                 if number_counter % 1000 == 0:
                     ser = line.strip().split()
                     if ser:
-                        print(ser[0] + '\t' + ser[1] + '\t' + ser[2])
-
+                        print(ser[0] + "\t" + ser[1] + "\t" + ser[2])
 
         self._hasexecuted = True
-        return self.process.returncode 
+        return self.process.returncode
 
     # The user is responsible to attach this to their signal handlers,
     # recommended: https://stackoverflow.com/a/72592788/4935114

@@ -21,9 +21,10 @@ from .trap import gen_trap_lammps
 # doesn't limit us functionally now.
 def create_and_run_sim_gen():
     s = pl.Simulation("test")
-    if configur.has_option("sim_parameters", "gpu") and eval(configur.get("sim_parameters", "gpu")):
+    if configur.has_option("sim_parameters", "gpu") and eval(
+        configur.get("sim_parameters", "gpu")
+    ):
         s.attrs["gpu"] = True
-
 
     commands = configur.get("exp_seq", "com_list").split(
         ","
@@ -33,11 +34,11 @@ def create_and_run_sim_gen():
     ion_groups = []
     com_appending(s, commands, command_mapping, type_poses, ion_groups, False)
 
-    #sys.stdout = open(os.devnull, 'w')
-    #sys.stderr = open(os.devnull, 'w')
+    # sys.stdout = open(os.devnull, 'w')
+    # sys.stderr = open(os.devnull, 'w')
     s.execute()
-    #sys.stdout = sys.__stdout__
-    #sys.stderr = sys.__stderr__ 
+    # sys.stdout = sys.__stdout__
+    # sys.stderr = sys.__stderr__
 
     if configur.get("detection", "detector_area") == "null":
         return configur.get("directory", "dump_dir")
@@ -90,7 +91,7 @@ def append_iter(s):
             original_uids[scan_object] = eval(configur.get(scan_object, "uid"))
     for i, scan_var_val in enumerate(scan_var_seq):
         ion_groups = []  # Not sure if this is the best way of handling this
-        i_steps = i #+ 1 by getting rid of the plus one this means the same object in an exp_seq and a iter needs to be two different objects
+        i_steps = i  # + 1 by getting rid of the plus one this means the same object in an exp_seq and a iter needs to be two different objects
         configur.set(scan_var[0], scan_var[1], str(scan_var_val))
         com_appending(
             s,
@@ -138,7 +139,9 @@ def com_appending(
             raise ValueError(f"Command {command} is not recognized")
         func = command_mapping[command]
         if func == pylion_cloud:
-            cloud_self_uid = eval(configur.get(f"ion_cloud_{type_poses[command]}", "uid"))
+            cloud_self_uid = eval(
+                configur.get(f"ion_cloud_{type_poses[command]}", "uid")
+            )
             if is_iter:
                 cloud_self_uid += iter_step
             pl_cloud = func(type_poses[command], cloud_self_uid)
@@ -181,7 +184,7 @@ def com_appending(
             s.append(func(type_poses[command], self_uid))
         elif func == cloud_reset:
             print(func(type_poses[command]))
-            s.append(func(type_poses[command])) # TODO can prolly merge with below
+            s.append(func(type_poses[command]))  # TODO can prolly merge with below
         else:
             s.append(func(type_poses[command]))
         if not is_iter:

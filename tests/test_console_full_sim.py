@@ -3,6 +3,7 @@ import os
 from unittest.mock import patch, MagicMock
 import math
 
+
 # Did some hacky things to prevent cross-talk between tests, this may just be inherint of full
 # Sim testing though
 @pytest.fixture()
@@ -68,6 +69,7 @@ def test_cool_tickle(reload_package):
             assert False, f"An error occurred: {e}"
         else:
             assert True, "No errors were thrown"
+
 
 @pytest.mark.order(index=-4)
 def test_trap(reload_package):
@@ -367,7 +369,7 @@ def test_1_be_steady_state(reload_package):
 @pytest.mark.order(index=-8)
 def test_laser_cooling_max_rate_cond(reload_package):
     # NOTE: Based on pg. 89 H. Metcalf et al. "Laser Cooling and Trapping"
-    reload_package # TODO Why is reload_package here? Remove likely
+    reload_package  # TODO Why is reload_package here? Remove likely
     show_plot = False
     import matplotlib.pyplot as plt
     import numpy as np
@@ -391,29 +393,33 @@ def test_laser_cooling_max_rate_cond(reload_package):
             mean_squared = sum(squared_values) / len(lst)
             rms = math.sqrt(mean_squared)
             return rms
+
         boltzmann_constant = 1.380649e-23  # Boltzmann constant in J/K
-        hbar = 6.626e-34/(2*np.pi)
+        hbar = 6.626e-34 / (2 * np.pi)
         linewidth = 113097335.52923255
+
         def convert_rms_to_temp(rms_velocities, mass):
-            temperatures = [(mass * vel**2) / (3*boltzmann_constant) for vel in rms_velocities]
+            temperatures = [
+                (mass * vel**2) / (3 * boltzmann_constant) for vel in rms_velocities
+            ]
             return temperatures
 
         rmses = []
         for step in data:
             atom_vels = []
             for atom in step:
-                v = np.sqrt(atom[3]**2+atom[4]**2+atom[5]**2)
-                #v = atom[3]
+                v = np.sqrt(atom[3] ** 2 + atom[4] ** 2 + atom[5] ** 2)
+                # v = atom[3]
                 atom_vels.append(v)
             rms_vel = calculate_rms(atom_vels)
             rmses.append(rms_vel)
 
-        temp = convert_rms_to_temp(rmses, 9*1.6605402e-27)
+        temp = convert_rms_to_temp(rmses, 9 * 1.6605402e-27)
 
         def analytical_doppler_limit(detunning, linewidth):
-            coef = (2*hbar*linewidth)/(boltzmann_constant*8)
-            add_terms = (2*detunning/linewidth)+(linewidth/(2*detunning))
-            return coef*add_terms
+            coef = (2 * hbar * linewidth) / (boltzmann_constant * 8)
+            add_terms = (2 * detunning / linewidth) + (linewidth / (2 * detunning))
+            return coef * add_terms
 
         t1 = analytical_doppler_limit(1e7, 113097335.52923255)
         t2 = analytical_doppler_limit(2.5e7, 113097335.52923255)
@@ -421,15 +427,19 @@ def test_laser_cooling_max_rate_cond(reload_package):
         t4 = analytical_doppler_limit(7.5e7, 113097335.52923255)
         t5 = analytical_doppler_limit(10e7, 113097335.52923255)
 
-
         print(t1)
         print(t2)
         print(t3)
         print(t4)
         print(t5)
 
-        index_ranges = [(8000, 11000), (18000, 21000), (28000, 31000),
-                        (38000, 41000), (48000, 51000)]
+        index_ranges = [
+            (8000, 11000),
+            (18000, 21000),
+            (28000, 31000),
+            (38000, 41000),
+            (48000, 51000),
+        ]
 
         # Initialize lists to store minimum values and their indices
         min_values = []
@@ -437,7 +447,10 @@ def test_laser_cooling_max_rate_cond(reload_package):
 
         # Iterate over the index ranges to find the minimum value and index in each range
         for start_index, end_index in index_ranges:
-            min_index, min_value = min(enumerate(temp[start_index:end_index], start=start_index), key=lambda x: x[1])
+            min_index, min_value = min(
+                enumerate(temp[start_index:end_index], start=start_index),
+                key=lambda x: x[1],
+            )
             min_values.append(min_value)
             min_indices.append(min_index)
         print(min_values)
@@ -476,15 +489,14 @@ def test_laser_cooling_max_rate_cond(reload_package):
                 linestyle="--",
                 label="10e7",
             )
-            #plt.scatter(min_indices, min_values, color='g', label='Min Values', marker='o')
+            # plt.scatter(min_indices, min_values, color='g', label='Min Values', marker='o')
             plt.xlabel("Step")
             plt.ylabel("Temp")
             plt.legend()
             plt.show()
 
         smallest_value_index = min_values.index(min(min_values))
-        assert smallest_value_index == 2, f"The smallest value is not at index 2. Actual index: {smallest_value_index}"
+        assert (
+            smallest_value_index == 2
+        ), f"The smallest value is not at index 2. Actual index: {smallest_value_index}"
         # TODO there is probably a good mathematical way of looking at if we are hitting the doppler limit.  For now just look at the graph.
-
-
-

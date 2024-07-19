@@ -88,7 +88,7 @@ def test_get_sim_skeleton_inputs(
 
         # Act
         result_sim_params, result_detection_params = get_sim_skeleton_inputs()
-        
+
         # Assert
         assert result_sim_params == dict(expected_sim_params)
         assert result_detection_params == dict(expected_detection_params)

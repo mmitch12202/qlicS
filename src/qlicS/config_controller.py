@@ -17,6 +17,7 @@ def dump_dir(setup=True):
     else:
         return configur.get("directory", "dump_dir")
 
+
 # TODO this is hardcoded rn - fix eventually
 def create_universe():
     configur["constants"] = {
@@ -52,7 +53,7 @@ def create_sim_skeleton(
     detector_area,
     detector_effeciency,
     detector_distance,
-    GPU=False
+    GPU=False,
 ):
     configur["sim_parameters"] = {
         "log_steps": log_steps,
@@ -200,12 +201,13 @@ def configur_scattering_laser(
         "frequency": frequency,
     }
 
+
 def configur_cloud_reset(
-        type_pos,
-        initial_atom_id,
-        style,
-        radius,
-        count,
+    type_pos,
+    initial_atom_id,
+    style,
+    radius,
+    count,
 ):
     configur[f"cloud_reset_{type_pos}"] = {
         "initial_atom_id": initial_atom_id,
