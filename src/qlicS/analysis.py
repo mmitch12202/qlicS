@@ -1,12 +1,12 @@
 # For all analysis related tasks, including simply reading the dump file
+import math
 import os
 import shutil
 import time
-import math
 
 import matplotlib.pyplot as plt
-import pandas as pd
 import numpy as np
+import pandas as pd
 
 from .config_controller import configur
 from .pylion import functions as pl_func

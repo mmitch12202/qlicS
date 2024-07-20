@@ -11,8 +11,8 @@ from . import __version__, config_controller, exp_sequence_controller
 from .analysis import create_analysis, create_scat_graph, gen_rmsv_plot
 from .command_mapping import give_command_mapping
 from .console_dialogue import followup_questions_creator
-from .resources import PathStringValidator
 from .mloop_controller import mainmloop
+from .resources import PathStringValidator
 
 loading_configur = ConfigParser()
 
@@ -230,7 +230,7 @@ def main():  # sourcery skip: use-named-expression
     elif mode == "Run Experiment From File":
         run_from_file()
     elif mode == "Optimize Experiment with M-LOOP":
-        print("M-LOOP")
+        mainmloop()
     elif mode == "Edit Existing Experiment":
         config_file = inquirer.filepath(
             message="Enter a configuration (*.ini) file:",

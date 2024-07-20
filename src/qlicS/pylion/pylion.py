@@ -2,9 +2,9 @@ import os
 import signal
 import subprocess
 import sys
+import warnings
 from collections import defaultdict
 from datetime import datetime
-import warnings
 
 import jinja2 as j2
 

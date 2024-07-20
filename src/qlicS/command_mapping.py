@@ -1,4 +1,4 @@
-from .ion_creation import pylion_cloud, cloud_reset
+from .ion_creation import cloud_reset, pylion_cloud
 from .laser_cooling_force import create_cooling_laser
 from .sim_controller import pylion_dumping
 from .tickle_efield import create_tickle
