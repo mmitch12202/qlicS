@@ -8,10 +8,12 @@ __metaclass__ = type
 # Imports for M-LOOP
 
 import time
+import signal
 
 import mloop.controllers as mlc
 import mloop.interfaces as mli
 import mloop.visualizations as mlv
+import mloop.learners as mlr
 import numpy as np
 
 from .cl_console import run_from_file
@@ -20,48 +22,26 @@ from .cl_console import run_from_file
 class CustomInterface(mli.Interface):
     def __init__(self, experiment_dir):
         super(CustomInterface, self).__init__()
-        self.minimum_params = np.array([0, 0.1, -0.1])
         self.experiment_dir = experiment_dir
 
     def get_next_cost_dict(self, params_dict):
         params = params_dict["params"]
 
-        # Here you can include the code to run your experiment given a particular set of parameters
-
-        # Cost calculation (based on scattering info, hardcoded for now) TODO generalize this at some point
-
-        # TODO figure out how to take input parameters
-
-        scat = run_from_file(optimize_mode=True, exp=self.experiment_dir)
+        scat = run_from_file(optimize_mode=True, exp=self.experiment_dir, modulation_0_amp=params[0], cloud_0_count=int(params[1]), scattering_laser_=[0, int(params[1])])
         non_res_list = []
         for s in scat:
-            if s[2] == 710000:
+            if s[2] == 178000:
                 res_count = s[3]
             else:
                 non_res_list.append(s[3])
         avg_off_res = sum(non_res_list)/len(non_res_list)
+        cost = -abs(res_count-avg_off_res)
 
-        cost = res_count/avg_off_res
-
-        # There is no uncertainty in our result
-
+        # For now
         uncer = 0
-
-        # The evaluation will always be a success
-
         bad = False
+        return {"cost": cost, "uncer": uncer, "bad": bad}
 
-        # Add a small time delay to mimic a real experiment
-
-        time.sleep(1)
-
-        # The cost, uncertainty and bad boolean must all be returned as a dictionary
-
-        # You can include other variables you want to record as well if you want
-
-        cost_dict = {"cost": cost, "uncer": uncer, "bad": bad}
-
-        return cost_dict
 
 
 def mainmloop(experiment_dir):
@@ -76,11 +56,11 @@ def mainmloop(experiment_dir):
 
     controller = mlc.create_controller(
         interface,
-        max_num_runs=1000,
-        target_cost=-2.99,
-        num_params=3,
-        min_boundary=[-2, -2, -2],
-        max_boundary=[2, 2, 2],
+        max_num_runs=10,
+        num_params=2,
+        min_boundary=[0, 1],
+        max_boundary=[2, 20],
+        controller_type='neural_net',
     )
 
     # To run M-LOOP and find the optimal parameters just use the controller method optimize

@@ -209,7 +209,20 @@ def run_from_file(optimize_mode=False, **kwargs):
     type_poses = count_type_pos(loading_configur)
     print(type_poses)
 
+    # Helper function to update arguments with overrides from kwargs
+    def get_overridden_args(defaults, prefix):
+        overridden_args = {}
+        for k, v in kwargs.items():
+            if k.startswith(prefix):
+                key_without_prefix = k[len(prefix) + 1:]
+                overridden_args[key_without_prefix] = v
+        return {**defaults, **overridden_args}
+
+
+    # Sim skeleton inputs
     s_p, d_p = get_sim_skeleton_inputs()
+    s_p = get_overridden_args(s_p, 's_p')
+    d_p = get_overridden_args(d_p, 'd_p')
     config_controller.create_sim_skeleton(
         s_p["log_steps"],
         s_p["timesequence"],
@@ -220,8 +233,10 @@ def run_from_file(optimize_mode=False, **kwargs):
         s_p["gpu"],
     )
 
+    # Cloud reset configuration
     for i in range(type_poses["cloud_reset"]):
         cl_reset = get_cloud_reset(i)
+        cl_reset = get_overridden_args(cl_reset, f'cloud_reset_{i}')
         config_controller.configur_cloud_reset(
             i,
             cl_reset["initial_atom_id"],
@@ -230,8 +245,10 @@ def run_from_file(optimize_mode=False, **kwargs):
             cl_reset["count"],
         )
 
+    # Modulation configuration
     for i in range(type_poses["tickle"]):
         m = get_modulation_inputs(i)
+        m = get_overridden_args(m, f'modulation_{i}')
         config_controller.configur_modulation(
             i,
             m["uid"],
@@ -264,14 +281,18 @@ def run_from_file(optimize_mode=False, **kwargs):
             m["static"],
         )
 
+    # Ion cloud configuration
     for i in range(type_poses["cloud"]):
         c = get_cloud_inputs(i)
+        c = get_overridden_args(c, f'cloud_{i}')
         config_controller.configur_ion_cloud(
             i, c["uid"], c["species"], c["radius"], c["count"]
         )
 
+    # Trap configuration
     for i in range(type_poses["trap"]):
         t = get_trap_inputs(i)
+        t = get_overridden_args(t, f'trap_{i}')
         config_controller.configur_trap(
             i,
             t["target_ion_pos"],
@@ -284,8 +305,10 @@ def run_from_file(optimize_mode=False, **kwargs):
             t["pseudo"],
         )
 
+    # Cooling laser configuration
     for i in range(type_poses["cooling_laser"]):
         cl = get_cooling_laser_inputs(i)
+        cl = get_overridden_args(cl, f'cooling_laser_{i}')
         config_controller.configur_cooling_laser(
             cl["uid"],
             i,
@@ -297,8 +320,11 @@ def run_from_file(optimize_mode=False, **kwargs):
             cl["laser_direction"],
             cl["laser_origin_position"],
         )
+
+    # Scattering laser configuration
     if loading_configur.has_section("scattering_laser"):
         sl = get_scattering_laser_inputs()
+        sl = get_overridden_args(sl, 'scattering_laser')
         config_controller.configur_scattering_laser(
             sl["scattered_ion_indices"],
             sl["target_species"],
@@ -306,10 +332,12 @@ def run_from_file(optimize_mode=False, **kwargs):
             sl["saturation_paramater"],
             sl["frequency"],
         )
+
+    # Experiment sequence configuration
     exp_seq = get_exp_seq()
-    # TODO we are assuming only one iter object for now - this could be generalized but I'm not sure how useful it would be to
     if "iter" in exp_seq:
         it = get_iter_inputs()
+        it = get_overridden_args(it, 'iter')
         config_controller.configur_iter(
             it["scan_objects"],
             it["scan_var"],
@@ -322,6 +350,7 @@ def run_from_file(optimize_mode=False, **kwargs):
     config_controller.create_exp_seq(exp_seq)
     # config_controller.commit_changes()
     return exp_sequence_controller.create_and_run_sim_gen()
+
 
 
 def config_file_dialogue():
