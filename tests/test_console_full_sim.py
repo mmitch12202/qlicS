@@ -38,8 +38,8 @@ def test_cotrap(reload_package):
     # sourcery skip: no-loop-in-tests
     reload_package
     file_path = f"{examples_dir}/cotrap_symp_cool.ini"
-    with patch("qlicS.cl_console.mode_dialogue") as mock_m_d, patch(
-        "qlicS.cl_console.config_file_dialogue"
+    with patch("qlicS.console_resources.mode_dialogue") as mock_m_d, patch(
+        "qlicS.console_resources.config_file_dialogue"
     ) as mock_c_f_d:
         mock_m_d.return_value = "Run Experiment From File"
         mock_c_f_d.return_value = file_path
@@ -57,8 +57,8 @@ def test_cool_tickle(reload_package):
     # sourcery skip: no-loop-in-tests
 
     file_path = f"{examples_dir}/cotrap_symp_cool.ini"
-    with patch("qlicS.cl_console.mode_dialogue") as mock_m_d, patch(
-        "qlicS.cl_console.config_file_dialogue"
+    with patch("qlicS.console_resources.mode_dialogue") as mock_m_d, patch(
+        "qlicS.console_resources.config_file_dialogue"
     ) as mock_c_f_d:
         mock_m_d.return_value = "Run Experiment From File"
         mock_c_f_d.return_value = file_path
@@ -77,8 +77,8 @@ def test_trap(reload_package):
     # sourcery skip: no-loop-in-tests
 
     file_path = f"{examples_dir}/iteration_example.ini"
-    with patch("qlicS.cl_console.mode_dialogue") as mock_m_d, patch(
-        "qlicS.cl_console.config_file_dialogue"
+    with patch("qlicS.console_resources.mode_dialogue") as mock_m_d, patch(
+        "qlicS.console_resources.config_file_dialogue"
     ) as mock_c_f_d:
         mock_m_d.return_value = "Run Experiment From File"
         mock_c_f_d.return_value = file_path
@@ -101,12 +101,12 @@ def test_be_chirp(reload_package):
 
     file_path = f"{examples_dir}/pure_be_chirp.ini"
 
-    with patch("qlicS.cl_console.mode_dialogue") as mock_m_d, patch(
-        "qlicS.cl_console.config_file_dialogue"
+    with patch("qlicS.console_resources.mode_dialogue") as mock_m_d, patch(
+        "qlicS.console_resources.config_file_dialogue"
     ) as mock_c_f_d:
         mock_m_d.return_value = "Run Experiment From File"
         mock_c_f_d.return_value = file_path
-        res = qlicS.cl_console.run_from_file()
+        res = qlicS.console_resources.run_from_file()
         smallest_scat_v = res[0][3]
         smallest_scat_f = res[0][2]
         for r in res:
@@ -121,12 +121,12 @@ def test_3_be_freeze_pos(reload_package):
     reload_package
     examples_dir = f"{os.getcwd()}/examples"
     file_path = f"{examples_dir}/3_be_freeze_positions.ini"
-    with patch("qlicS.cl_console.mode_dialogue") as mock_m_d, patch(
-        "qlicS.cl_console.config_file_dialogue"
+    with patch("qlicS.console_resources.mode_dialogue") as mock_m_d, patch(
+        "qlicS.console_resources.config_file_dialogue"
     ) as mock_c_f_d:
         mock_m_d.return_value = "Run Experiment From File"
         mock_c_f_d.return_value = file_path
-        dd = qlicS.cl_console.run_from_file()
+        dd = qlicS.console_resources.run_from_file()
         positions = f"{dd}positions.txt"
         with open(positions, "r") as pos_file:
             last_three = pos_file.readlines()[-3:]
@@ -173,8 +173,8 @@ def test_1_be_cool_ts_switch(reload_package):
 
     examples_dir = f"{os.getcwd()}/examples"
     file_path = f"{examples_dir}/1_be_damp_test.ini"
-    with patch("qlicS.cl_console.mode_dialogue") as mock_m_d, patch(
-        "qlicS.cl_console.config_file_dialogue"
+    with patch("qlicS.console_resources.mode_dialogue") as mock_m_d, patch(
+        "qlicS.console_resources.config_file_dialogue"
     ) as mock_c_f_d:
         mock_m_d.return_value = "Run Experiment From File"
         mock_c_f_d.return_value = file_path
@@ -271,8 +271,8 @@ def test_1_be_steady_state(reload_package):
 
     examples_dir = f"{os.getcwd()}/examples"
     file_path = f"{examples_dir}/1_be_damp_drive.ini"
-    with patch("qlicS.cl_console.mode_dialogue") as mock_m_d, patch(
-        "qlicS.cl_console.config_file_dialogue"
+    with patch("qlicS.console_resources.mode_dialogue") as mock_m_d, patch(
+        "qlicS.console_resources.config_file_dialogue"
     ) as mock_c_f_d:
         mock_m_d.return_value = "Run Experiment From File"
         mock_c_f_d.return_value = file_path
@@ -377,12 +377,12 @@ def test_laser_cooling_max_rate_cond(reload_package):
 
     examples_dir = f"{os.getcwd()}/examples"
     file_path = f"{examples_dir}/laser_cooling_thermal_test.ini"
-    with patch("qlicS.cl_console.mode_dialogue") as mock_m_d, patch(
-        "qlicS.cl_console.config_file_dialogue"
+    with patch("qlicS.console_resources.mode_dialogue") as mock_m_d, patch(
+        "qlicS.console_resources.config_file_dialogue"
     ) as mock_c_f_d:
         mock_m_d.return_value = "Run Experiment From File"
         mock_c_f_d.return_value = file_path
-        dd = qlicS.cl_console.run_from_file()
+        dd = qlicS.console_resources.run_from_file()
         positions = f"{dd}positions.txt"
         steps, data = readdump(positions)
 

@@ -2,8 +2,8 @@ import pytest
 from unittest.mock import MagicMock, patch
 
 # Import the function to be tested
-from qlicS.cl_console import setup_loading_configur
-from qlicS.cl_console import get_sim_skeleton_inputs
+from qlicS.console_resources import setup_loading_configur
+from qlicS.console_resources import get_sim_skeleton_inputs
 
 
 @pytest.mark.parametrize(
@@ -31,7 +31,7 @@ def test_setup_loading_configur(
 ):
 
     # Arrange
-    with patch("qlicS.cl_console.loading_configur.read") as mock_read:
+    with patch("qlicS.console_resources.loading_configur.read") as mock_read:
         mock_read.return_value = mock_read_call
 
         # Act
@@ -79,10 +79,10 @@ def test_get_sim_skeleton_inputs(
 
     # Arrange
     with patch(
-        "qlicS.cl_console.loading_configur.items",
+        "qlicS.console_resources.loading_configur.items",
         side_effect=[sim_params, detection_params],
     ), patch(
-        "qlicS.cl_console.loading_configur.has_section",
+        "qlicS.console_resources.loading_configur.has_section",
         return_value=True,
     ):
 
@@ -104,7 +104,9 @@ def test_get_sim_skeleton_inputs(
 def test_get_sim_skeleton_inputs_errors(side_effect, expected_exception):
 
     # Arrange
-    with patch("qlicS.cl_console.loading_configur.items", side_effect=side_effect):
+    with patch(
+        "qlicS.console_resources.loading_configur.items", side_effect=side_effect
+    ):
 
         # Act / Assert
         with pytest.raises(expected_exception):
