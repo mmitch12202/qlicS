@@ -27,7 +27,7 @@ class CustomInterface(mli.Interface):
     def get_next_cost_dict(self, params_dict):
         params = params_dict["params"]
 
-        scat = run_from_file(optimize_mode=True, exp=self.experiment_dir, modulation_0_amp=params[0], cloud_0_count=int(params[1]), scattering_laser_=[0, int(params[1])])
+        """scat = run_from_file(optimize_mode=True, exp=self.experiment_dir, modulation_0_amp=params[0], cloud_0_count=int(params[1]), scattering_laser_=[0, int(params[1])])
         non_res_list = []
         for s in scat:
             if s[2] == 178000:
@@ -35,7 +35,9 @@ class CustomInterface(mli.Interface):
             else:
                 non_res_list.append(s[3])
         avg_off_res = sum(non_res_list)/len(non_res_list)
-        cost = -abs(res_count-avg_off_res)
+        cost = -abs(res_count-avg_off_res) """
+
+        cost = -np.sum(np.sinc(params[0] - 10)+np.sinc(params[1] + 15))
 
         # For now
         uncer = 0
@@ -53,14 +55,16 @@ def mainmloop(experiment_dir):
     interface = CustomInterface(experiment_dir=experiment_dir)
 
     # Next create the controller. Provide it with your interface and any options you want to set
-
+    # NOTE:
     controller = mlc.create_controller(
         interface,
-        max_num_runs=10,
+        "neural_net",
+        max_num_runs=25,
+        param_names=['x','y'],
         num_params=2,
-        min_boundary=[0, 1],
-        max_boundary=[2, 20],
-        controller_type='neural_net',
+        min_boundary=[-20, -20],
+        max_boundary=[20, 20],
+        no_delay=False,
     )
 
     # To run M-LOOP and find the optimal parameters just use the controller method optimize
@@ -75,4 +79,32 @@ def mainmloop(experiment_dir):
 
     # You can also run the default sets of visualizations for the controller with one command
 
-    mlv.show_all_default_visualizations(controller)
+    #mlv.show_all_default_visualizations(controller)
+    #mlv.NeuralNetVisualizer()
+    c_arch = controller.total_archive_filename
+    def swap_controller_to_archive(input_string):
+        # Find the last index of "controller" in the string
+        last_index = input_string.rfind("controller")
+
+        if last_index != -1:
+            # Replace the last instance of "controller" with "learner"
+            modified_string = (
+                f"{input_string[:last_index]}learner"
+                + input_string[last_index + len("controller") :]
+            )
+            return modified_string
+        else:
+            return input_string  # Return the original string if "controller" is not found
+
+    l_arch = swap_controller_to_archive(c_arch)
+    print(c_arch + '\n' + l_arch)
+    # TODO check here that l_arch dir exists for safety
+    best_vis = False
+    try:
+        mlv.show_all_default_visualizations(controller)
+        best_vis = True
+    except Exception as e:
+        print('Likely just not enough runs')
+    if not best_vis:
+        print('trying')
+        mlv.create_controller_visualizations(c_arch)
