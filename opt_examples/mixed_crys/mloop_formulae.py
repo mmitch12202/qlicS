@@ -30,8 +30,8 @@ def return_controller(interface):
     return mlc.create_controller(
         interface,
         "neural_net",
-        max_num_runs=50,
-        param_names=['Tickle amp', '# O2+', '# Be+'],
+        max_num_runs=12,
+        param_names=['Tickle amp', 'Num O2+', 'Num Be+'],
         num_params=3,
         min_boundary=[0, 1, 1],
         max_boundary=[1, 20, 20],

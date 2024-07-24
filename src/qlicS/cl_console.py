@@ -231,7 +231,14 @@ def main():  # sourcery skip: use-named-expression
         run_from_file()
     elif mode == "Optimize Experiment with M-LOOP":
         config_file = config_file_dialogue()
-        mainmloop(config_file)
+        mloop_formulae = inquirer.filepath(
+            message="Enter a mloop_formulae (.py) file per the docs:",
+            validate=PathStringValidator(
+                is_file=True,
+                message="Input is not a valid filpath.  Make sure input is not a string.",
+            ), # TODO validate that it is also a .py file
+        ).execute()
+        mainmloop(config_file, mloop_formulae)
     elif mode == "Edit Existing Experiment":
         config_file = inquirer.filepath(
             message="Enter a configuration (*.ini) file:",

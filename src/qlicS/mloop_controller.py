@@ -4,11 +4,10 @@ from __future__ import absolute_import, division, print_function
 
 __metaclass__ = type
 
-
-# Imports for M-LOOP
-
 import time
 import signal
+import importlib.util
+
 
 import mloop.controllers as mlc
 import mloop.interfaces as mli
@@ -18,16 +17,29 @@ import numpy as np
 
 from .cl_console import run_from_file
 
+def get_function_from_file(file_path, function_name):
+    # Load the module from the file path
+    spec = importlib.util.spec_from_file_location("module_name", file_path)
+    module = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(module)
+
+    # Access the function from the module
+    if hasattr(module, function_name):
+        return getattr(module, function_name)
+    else:
+        raise AttributeError(f"Function '{function_name}' not found in the module")
+
 
 class CustomInterface(mli.Interface):
-    def __init__(self, experiment_dir):
+    def __init__(self, experiment_dir, formulae_filepath):
         super(CustomInterface, self).__init__()
         self.experiment_dir = experiment_dir
+        self.get_run_info = get_function_from_file(formulae_filepath, "get_run_info")
 
     def get_next_cost_dict(self, params_dict):
         params = params_dict["params"]
 
-        scat = run_from_file(
+        """ scat = run_from_file(
             optimize_mode=True, 
             exp=self.experiment_dir,
             scattering_laser_scattered_ion_indices=[0, int(round(params[0]))],
@@ -48,22 +60,23 @@ class CustomInterface(mli.Interface):
 
         # For now
         uncer = 0
-        bad = False
-        return {"cost": cost, "uncer": uncer, "bad": bad}
+        bad = False """
+
+        return self.get_run_info(self.experiment_dir, params)
 
 
 
-def mainmloop(experiment_dir):
+def mainmloop(experiment_dir, mloop_formulae_file):
 
     # M-LOOP can be run with three commands
 
     # First create your interface
 
-    interface = CustomInterface(experiment_dir=experiment_dir)
+    interface = CustomInterface(experiment_dir=experiment_dir, formulae_filepath=mloop_formulae_file)
 
     # Next create the controller. Provide it with your interface and any options you want to set
     # NOTE:
-    controller = mlc.create_controller(
+    """ controller = mlc.create_controller(
         interface,
         "neural_net",
         max_num_runs=50,
@@ -72,7 +85,9 @@ def mainmloop(experiment_dir):
         min_boundary=[1, 0],
         max_boundary=[20, 2.5],
         no_delay=False,
-    )
+    ) """
+    return_controller = get_function_from_file(mloop_formulae_file, "return_controller")
+    controller = return_controller(interface)
 
     # To run M-LOOP and find the optimal parameters just use the controller method optimize
 
