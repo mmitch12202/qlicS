@@ -217,11 +217,11 @@ class Simulation(list):
             line_stripped = "".join(line.split())
             if line_stripped.startswith("Step"):
                 step_counter += 1
-                if step_counter % 10000 == 0:
+                if step_counter % 100000 == 0:
                     print(line.rstrip("\n"))
             elif contains_only_digits_and_dot_and_e(line_stripped):
                 number_counter += 1
-                if number_counter % 1000 == 0:
+                if number_counter % 10000 == 0:
                     ser = line.strip().split()
                     if ser:
                         print(ser[0] + "\t" + ser[1] + "\t" + ser[2])

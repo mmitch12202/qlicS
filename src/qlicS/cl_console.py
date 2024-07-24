@@ -4,7 +4,7 @@ from InquirerPy import inquirer
 from InquirerPy.validator import EmptyInputValidator
 
 from . import __version__, config_controller, exp_sequence_controller
-from .analysis import create_analysis, create_scat_graph, gen_rmsv_plot
+from .analysis import create_analysis, create_scat_graph, gen_rmsv_plot, create_crystal_image_scat
 from .command_mapping import give_command_mapping
 from .console_resources import (
     config_file_dialogue,
@@ -242,7 +242,7 @@ def main():  # sourcery skip: use-named-expression
         ).execute()
         setup_loading_configur(config_file)
         click.echo(
-            "Editing existing experiments in the app will be supported at some later date."
+            "Editing existing experiments in the app will be supported at some later date.  For now, just edit the .ini file directly."
         )
     elif mode == "Analyze Completed Experiment":
         data_file = inquirer.filepath(
@@ -253,15 +253,14 @@ def main():  # sourcery skip: use-named-expression
             ),  # TODO validate that it is also a .txt file
         ).execute()
         if data_file[-4:] == ".txt":
-            temp_or_ind = inquirer.select(
-                message="Would you like to generate whole crystal rms velocity data or analyze atoms individually? (use arrows)",
-                choices=["Whole", "Individual"],
+            txt_choice = inquirer.select(
+                message="Would you like to generate whole crystal rms velocity data, analyze atoms individually, or take a crystal snapshot? (use arrows)",
+                choices=["Whole", "Individual", "Crystal Image"],
                 default=None,
             ).execute()
-            if temp_or_ind == "Whole":
+            if txt_choice == "Whole":
                 gen_rmsv_plot(data_file)
-
-            elif temp_or_ind == "Individual":
+            elif txt_choice == "Individual":
                 click.echo(
                     "### Analysis is Currently only supported for all Atoms### \n### be sure you know which species lines up with which atom index###\n\n"
                 )
@@ -281,6 +280,21 @@ def main():  # sourcery skip: use-named-expression
                 analysis_root, raw_txt = create_analysis(
                     data_vars, data_file, int(start)
                 )
+            elif txt_choice == "Crystal Image":
+                image_index = inquirer.number(
+                    message="Enter the index of the crystal image you want to take (target_timestep/log_steps).\n  If you want the crystal at the end of the simulation enter -1.",
+                    validate=EmptyInputValidator(),
+                ).execute()
+                spec_cutoff = inquirer.number(
+                    message="Enter the atom index of the species cutoff (for coloring.  Ex: if there are 10 of species 1 and 5 of species 2, enter 9)",
+                    validate=EmptyInputValidator(),
+                ).execute()
+                show = inquirer.select(
+                    message="Would you like to show a 3D plot as well as the orthogonal projection?",
+                    choices=["Yes", "No"],
+                    transformer = lambda input_string: True if input_string == "Yes" else False
+                ).execute()
+                create_crystal_image_scat(data_file, int(image_index), int(spec_cutoff), show)
         elif data_file[-4:] == ".csv":
             # Make scattering graph
             create_scat_graph(data_file)

@@ -27,7 +27,14 @@ class CustomInterface(mli.Interface):
     def get_next_cost_dict(self, params_dict):
         params = params_dict["params"]
 
-        """scat = run_from_file(optimize_mode=True, exp=self.experiment_dir, modulation_0_amp=params[0], cloud_0_count=int(params[1]), scattering_laser_=[0, int(params[1])])
+        scat = run_from_file(
+            optimize_mode=True, 
+            exp=self.experiment_dir,
+            scattering_laser_scattered_ion_indices=[0, int(round(params[0]))],
+            cloud_0_count=int(round(params[0])), 
+            trap_0_endcapvoltage=params[1], 
+            trap_1_endcapvoltage=params[1]
+            )
         non_res_list = []
         for s in scat:
             if s[2] == 178000:
@@ -35,9 +42,9 @@ class CustomInterface(mli.Interface):
             else:
                 non_res_list.append(s[3])
         avg_off_res = sum(non_res_list)/len(non_res_list)
-        cost = -abs(res_count-avg_off_res) """
+        cost = -abs(res_count-avg_off_res)
 
-        cost = -np.sum(np.sinc(params[0] - 10)+np.sinc(params[1] + 15))
+        #cost = -np.sum(np.sinc(params[0] - 10)+np.sinc(params[1] + 15))
 
         # For now
         uncer = 0
@@ -59,11 +66,11 @@ def mainmloop(experiment_dir):
     controller = mlc.create_controller(
         interface,
         "neural_net",
-        max_num_runs=25,
-        param_names=['x','y'],
+        max_num_runs=50,
+        param_names=['Num of Be', 'V_DC'],
         num_params=2,
-        min_boundary=[-20, -20],
-        max_boundary=[20, 20],
+        min_boundary=[1, 0],
+        max_boundary=[20, 2.5],
         no_delay=False,
     )
 
@@ -104,7 +111,9 @@ def mainmloop(experiment_dir):
         mlv.show_all_default_visualizations(controller)
         best_vis = True
     except Exception as e:
-        print('Likely just not enough runs')
+        print(e)
+        print("A possible problem I have had in the past is using # or other special characters in param names.")
     if not best_vis:
         print('trying')
-        mlv.create_controller_visualizations(c_arch)
+        mlv.create_controller_visualizations(c_arch) # TODO this is not working
+    
