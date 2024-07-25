@@ -167,7 +167,7 @@ def test_1_be_cool_ts_switch(reload_package):
     # results in some physics issues.  (py)LIon defaults to 20, but I think closer to 50 is necessary. More is better
     # but balance this against runtime.
     # If you want to see the projected envelop, flip to true.
-    show_plot = False
+    show_plot = True
     reload_package
     import matplotlib.pyplot as plt
 
