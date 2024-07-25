@@ -7,10 +7,10 @@ def get_run_info(experiment_dir, params) -> dict:
     scat = run_from_file(
         optimize_mode=True,
         exp=experiment_dir, 
-        modulation_0_amp=params[0], 
-        cloud_1_count=int(params[1]), 
-        cloud_0_count=int(params[2]), 
-        scattering_laser_scattered_ion_indices=[0, int(params[2])]
+        cloud_0_count=int(round(params[0])), 
+        trap_0_endcapvoltage=params[1], 
+        trap_1_endcapvoltage=params[1],
+        scattering_laser_scattered_ion_indices=[0, int(round(params[0]))]
         )
     non_res_list = []
     for s in scat:
@@ -31,9 +31,9 @@ def return_controller(interface):
         interface,
         "neural_net",
         max_num_runs=12,
-        param_names=['Tickle amp', 'Num O2+', 'Num Be+'],
-        num_params=3,
-        min_boundary=[0, 1, 1],
-        max_boundary=[1, 20, 20],
+        param_names=['Num Be+', 'V_DC'],
+        num_params=2,
+        min_boundary=[1, 0],
+        max_boundary=[20, 2.5],
         no_delay=False,
     )
