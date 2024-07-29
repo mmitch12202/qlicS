@@ -89,9 +89,9 @@ def append_iter(s, ion_groups):
         if i is not None:
             if w not in stat_type_poses or stat_type_poses[w] == [None]:
                 stat_type_poses[w] = [i] # FIXME We currently overwrite and dont account for iter objects of the same type
-                original_uids[scan_object] = eval(configur.get(scan_object, "uid"))
             else:
                 stat_type_poses[w].append(i)
+            original_uids[scan_object] = eval(configur.get(scan_object, "uid"))
     for key, value in stat_type_poses.items():
         if value == [None]:
             stat_type_poses[key] = [0]
