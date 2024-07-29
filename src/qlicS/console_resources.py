@@ -392,8 +392,8 @@ def count_type_pos(loading_configur):
     command_mapping = give_command_mapping()
     type_poses = {key: 0 for key in command_mapping}
     command_string = loading_configur.get("exp_seq", "com_list").split(",")
-    # Check if there are commands from the iter
-    if loading_configur.has_option("iter", "com_list"):
+    # Check if iter is used
+    if "iter" in command_string:
         iter_command_string = loading_configur.get("iter", "com_list").split(",")
         for i in iter_command_string:
             if i not in command_string:
