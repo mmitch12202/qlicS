@@ -30,7 +30,7 @@ def create_and_run_sim_gen():
         ","
     )  # Assuming commands are separated by commas
     command_mapping = give_command_mapping()
-    type_poses = {key: 0 for key in command_mapping}
+    type_poses = {key: [0] for key in command_mapping}
     ion_groups = []
     com_appending(s, commands, command_mapping, type_poses, ion_groups, False)
 
@@ -72,7 +72,7 @@ def create_and_run_sim_gen():
 # TODO basically a function that takes s as input and appends appropriatly based on the [iter] information
 
 
-def append_iter(s):
+def append_iter(s, ion_groups):
     config_dict = dict(configur.items("iter"))
     scan_objects = ast.literal_eval(config_dict["scan_objects"])
     scan_var = ast.literal_eval(config_dict["scan_var"])
@@ -82,15 +82,20 @@ def append_iter(s):
     com_list_str = config_dict["com_list"]
     com_list = com_list_str.split(",")
     command_mapping = give_command_mapping()
-    stat_type_poses = {key: 0 for key in command_mapping}
+    stat_type_poses = {key: [None] for key in command_mapping}
     original_uids = {}
     for scan_object in scan_objects:
         w, i = separate_word_and_int(scan_object)
         if i is not None:
-            stat_type_poses[w] = i
-            original_uids[scan_object] = eval(configur.get(scan_object, "uid"))
+            if w not in stat_type_poses or stat_type_poses[w] == [None]:
+                stat_type_poses[w] = [i] # FIXME We currently overwrite and dont account for iter objects of the same type
+                original_uids[scan_object] = eval(configur.get(scan_object, "uid"))
+            else:
+                stat_type_poses[w].append(i)
+    for key, value in stat_type_poses.items():
+        if value == [None]:
+            stat_type_poses[key] = [0]
     for i, scan_var_val in enumerate(scan_var_seq):
-        ion_groups = []  # Not sure if this is the best way of handling this
         i_steps = i  # + 1 by getting rid of the plus one this means the same object in an exp_seq and a iter needs to be two different objects
         configur.set(scan_var[0], scan_var[1], str(scan_var_val))
         com_appending(
@@ -125,9 +130,10 @@ def com_appending(
     s, commands, command_mapping, type_poses, ion_groups, is_iter, iter_step=0
 ):
     evolve_add = [None]
+    i_object_num_record = {key: 0 for key in type_poses}
     for command in commands:
         if command == "iter":
-            append_iter(s)
+            append_iter(s, ion_groups)
             continue
         elif command[:2] == "r_":
             r_uid = int(command[2:])
@@ -140,55 +146,68 @@ def com_appending(
         func = command_mapping[command]
         if func == pylion_cloud:
             cloud_self_uid = eval(
-                configur.get(f"ion_cloud_{type_poses[command]}", "uid")
+                configur.get(f"ion_cloud_{type_poses[command][i_object_num_record[command]]}", "uid")
             )
             if is_iter:
                 cloud_self_uid += iter_step
-            pl_cloud = func(type_poses[command], cloud_self_uid)
+            pl_cloud = func(type_poses[command][i_object_num_record[command]], cloud_self_uid)
             ion_groups.append(pl_cloud)
             s.append(pl_cloud)
+            if is_iter:
+                i_object_num_record[command] += 1
         elif func == gen_trap_lammps:
-            if not ion_groups:
+            if not ion_groups and not is_iter:
                 raise SyntaxError("Trap must come after ion creation")
             type_pos = eval(
-                configur.get(f"trap_{type_poses[command]}", "target_ion_pos")
+                configur.get(f"trap_{type_poses[command][i_object_num_record[command]]}", "target_ion_pos")
             )
             self_uid = eval(
-                configur.get(f"trap_{type_poses[command]}", "uid")
+                configur.get(f"trap_{type_poses[command][i_object_num_record[command]]}", "uid")
             )
-            s.append(func(self_uid, ion_groups[type_pos], type_poses[command]))
+            if is_iter:
+                self_uid += iter_step
+            s.append(func(self_uid, ion_groups[type_pos], type_poses[command][i_object_num_record[command]]))
+            if is_iter:
+                i_object_num_record[command] += 1
         elif func == create_cooling_laser:
             if not ion_groups and not is_iter:
                 raise SyntaxError("Laser cooling must come after ion creation")
             type_pos = eval(
-                configur.get(f"cooling_laser_{type_poses[command]}", "target_ion_pos")
+                configur.get(f"cooling_laser_{type_poses[command][i_object_num_record[command]]}", "target_ion_pos")
             )
             cooling_ion_name = configur.get(
-                f"cooling_laser_{type_poses[command]}", "target_ion_type"
+                f"cooling_laser_{type_poses[command][i_object_num_record[command]]}", "target_ion_type"
             )
-            self_uid = eval(configur.get(f"cooling_laser_{type_poses[command]}", "uid"))
+            self_uid = eval(configur.get(f"cooling_laser_{type_poses[command][i_object_num_record[command]]}", "uid"))
             ion_cooling_data = eval(configur.get("ions", cooling_ion_name))[1]
             target_uid = eval(configur.get(f"ion_cloud_{type_pos}", "uid"))
             if is_iter:
                 self_uid += iter_step
-            l = func(self_uid, ion_cooling_data, target_uid, type_poses[command])
+            l = func(self_uid, ion_cooling_data, target_uid, type_poses[command][i_object_num_record[command]])
             s.append(
                 l
             )  # TODO I think there may be a bug here where if an ion cloud is never created and cooling is only done in iter, it tries to run the sim (and obviously failes)
             evolve_add.append(l["additional_lines"])
+            if is_iter:
+                i_object_num_record[command] += 1
         elif func == pylion_dumping:
             s.append(func())
         elif func == evolve:
             s.append(func(evolve_add[-1]))
-        elif func == create_tickle:
-            self_uid = eval(configur.get(f"modulation_{type_poses[command]}", "uid"))
+        elif func == create_tickle: # TODO this is a little sketchy how it has both a 'tickle' and 'modulation' key
+            self_uid = eval(configur.get(f"modulation_{type_poses['modulation'][i_object_num_record['modulation']]}", "uid"))
             if is_iter:
                 self_uid += iter_step
-            s.append(func(type_poses[command], self_uid))
+            s.append(func(type_poses['modulation'][i_object_num_record['modulation']], self_uid))
+            if is_iter:
+                i_object_num_record['modulation'] += 1
         elif func == cloud_reset:
-            print(func(type_poses[command]))
-            s.append(func(type_poses[command]))  # TODO can prolly merge with below
+            s.append(func(type_poses[command][i_object_num_record[command]]))  # TODO can prolly merge with below
+            if is_iter:
+                i_object_num_record[command] += 1
         else:
-            s.append(func(type_poses[command]))
+            s.append(func(type_poses[command][i_object_num_record[command]]))
+            if is_iter:
+                i_object_num_record[command] += 1
         if not is_iter:
-            type_poses[command] += 1
+            type_poses[command][0] += 1

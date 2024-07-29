@@ -32,6 +32,8 @@ def get_current_dt():  # Make it clear that this is only for simulation generati
 
 def get_time_seq():
     time_sequence = eval(configur.get("sim_parameters", "timesequence"))
+    main_com_evolve_count = configur.get("exp_seq", "com_list").count("evolve")
+    time_sequence = time_sequence[:main_com_evolve_count]
     if configur.has_option("iter", "iter_timesequence"):
         time_sequence = iter_correction(time_sequence)
     return time_sequence

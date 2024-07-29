@@ -81,9 +81,11 @@ def iter_correction(detection_seq):
     steps_per_iter = sum(l_steps_per_iter)
     iterations = eval(configur.get("iter", "scan_var_seq"))
     iter_detection_seq = eval(configur.get("iter", "iter_detection_seq"))
-    pre_iter_steps = sum(
-        k[1] for k in eval(configur.get("sim_parameters", "timesequence"))
-    )  # assuming evolves have been called and iter is last
+    pre_iter_seq = eval(configur.get("sim_parameters", "timesequence"))
+    # Correcting the pre_iter_seq TODO this is copied code from time_controller
+    main_com_evolve_count = configur.get("exp_seq", "com_list").count("evolve")
+    time_sequence = pre_iter_seq[:main_com_evolve_count]
+    pre_iter_steps = 0 if time_sequence == [] else sum(k[1] for k in time_sequence)
     for its in range(len(iterations)):
         for iter_detection_event in iter_detection_seq:
             shift = (its * steps_per_iter) + pre_iter_steps
