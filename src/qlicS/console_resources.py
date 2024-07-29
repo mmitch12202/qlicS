@@ -295,6 +295,7 @@ def run_from_file(optimize_mode=False, **kwargs):
         t = get_overridden_args(t, f'trap_{i}')
         config_controller.configur_trap(
             i,
+            t["uid"],
             t["target_ion_pos"],
             t["radius"],
             t["length"],

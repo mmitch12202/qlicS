@@ -153,7 +153,10 @@ def com_appending(
             type_pos = eval(
                 configur.get(f"trap_{type_poses[command]}", "target_ion_pos")
             )
-            s.append(func(ion_groups[type_pos], type_poses[command]))
+            self_uid = eval(
+                configur.get(f"trap_{type_poses[command]}", "uid")
+            )
+            s.append(func(self_uid, ion_groups[type_pos], type_poses[command]))
         elif func == create_cooling_laser:
             if not ion_groups and not is_iter:
                 raise SyntaxError("Laser cooling must come after ion creation")

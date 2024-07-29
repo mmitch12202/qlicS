@@ -142,6 +142,7 @@ def configur_ion_cloud(type_pos, uid, species, radius, count):
 
 def configur_trap(
     type_pos,
+    uid,
     target_ion_pos,
     radius,
     length,
@@ -152,6 +153,7 @@ def configur_trap(
     pseudo,
 ):
     configur[f"trap_{type_pos}"] = {
+        "uid": uid,
         "target_ion_pos": target_ion_pos,
         "radius": radius,
         "length": length,

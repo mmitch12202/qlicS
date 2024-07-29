@@ -349,7 +349,7 @@ def _pseudotrap(uid, k, group="all"):
     return {"code": lines}
 
 
-@lammps.fix
+#@lammps.fix NOTE temporary fix: removed decorator to allow for explicit uid definition
 def linearpaultrap(uid, trap, ions=None, all=True):
     """Applies an oscillating electric field to atoms. The
     characterisation of the trap follows Berkeland et al. (1998).
