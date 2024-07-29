@@ -14,7 +14,7 @@ def get_run_info(experiment_dir, params) -> dict:
     ):
         non_res_list = []
         for s in scat:
-            if s[2] == 204000: #FIXME
+            if s[2] == 204000: 
                 res_count = s[3]
             else:
                 non_res_list.append(s[3])
@@ -34,7 +34,7 @@ def return_controller(interface):
     return mlc.create_controller(
         interface,
         "neural_net",
-        max_duration=300,
+        max_duration=50400,
         param_names=['Num Be+', 'Num O2+'],
         num_params=2,
         min_boundary=[1, 1,],
