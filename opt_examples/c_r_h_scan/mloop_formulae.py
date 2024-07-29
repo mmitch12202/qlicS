@@ -5,13 +5,14 @@ import numpy as np
 
 
 def get_run_info(experiment_dir, params) -> dict:
-    if scat := run_from_file(
+    try:
+        scat = run_from_file(
         optimize_mode=True,
         exp=experiment_dir,
         cloud_0_count=int(round(params[0])),
         cloud_1_count=int(round(params[1])),
         scattering_laser_scattered_ion_indices=[0, int(round(params[0]))]
-    ):
+    )
         non_res_list = []
         for s in scat:
             if s[2] == 204000: 
@@ -22,9 +23,10 @@ def get_run_info(experiment_dir, params) -> dict:
         avg_diff = sum(res_diffs)/len(res_diffs)
         cost = -(avg_diff)
         bad = False
-    else:
-        bad = True
+    except Exception as e:
+        print(e)
         cost = 0
+        bad = True
     uncer = 0
     return {"cost": cost, "uncer": uncer, "bad": bad}
 
