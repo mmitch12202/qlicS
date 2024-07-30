@@ -195,12 +195,14 @@ def com_appending(
         elif func == evolve:
             s.append(func(evolve_add[-1]))
         elif func == create_tickle: # TODO this is a little sketchy how it has both a 'tickle' and 'modulation' key
-            self_uid = eval(configur.get(f"modulation_{type_poses['modulation'][i_object_num_record['modulation']]}", "uid"))
             if is_iter:
+                self_uid = eval(configur.get(f"modulation_{type_poses['modulation'][i_object_num_record['modulation']]}", "uid"))
                 self_uid += iter_step
-            s.append(func(type_poses['modulation'][i_object_num_record['modulation']], self_uid))
-            if is_iter:
+                s.append(func(type_poses['modulation'][i_object_num_record['modulation']], self_uid))
                 i_object_num_record['modulation'] += 1
+            else:
+                self_uid = eval(configur.get(f"modulation_{type_poses[command][0]}", "uid"))
+                s.append(func(type_poses[command][0], self_uid))
         elif func == cloud_reset:
             s.append(func(type_poses[command][i_object_num_record[command]]))  # TODO can prolly merge with below
             if is_iter:
