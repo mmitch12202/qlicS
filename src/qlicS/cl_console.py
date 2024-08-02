@@ -12,6 +12,7 @@ from .console_resources import (
     mode_dialogue,
     run_from_file,
     setup_loading_configur,
+    run_from_batch,
 )
 from .mloop_controller import mainmloop
 from .resources import PathStringValidator
@@ -229,6 +230,9 @@ def main():  # sourcery skip: use-named-expression
         click.echo("Create New Experiment")
     elif mode == "Run Experiment From File":
         run_from_file()
+    elif mode == "Run Experiment Batch From Directory":
+        # TODO untested!
+        run_from_batch()
     elif mode == "Optimize Experiment with M-LOOP":
         config_file = config_file_dialogue()
         mloop_formulae = inquirer.filepath(

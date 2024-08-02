@@ -10,6 +10,8 @@ from .command_mapping import give_command_mapping
 from .config_controller import get_ions
 from .resources import PathStringValidator
 
+import os
+
 loading_configur = ConfigParser()
 
 
@@ -196,6 +198,7 @@ def followup_questions_creator():
 
 
 def run_from_file(optimize_mode=False, **kwargs):
+    # TODO "optimize_mode" is being used in non-optimize cases.  Clean up this notation
     if not optimize_mode:
         config_file = config_file_dialogue()
     elif exp := kwargs.get("exp", None):
@@ -352,6 +355,14 @@ def run_from_file(optimize_mode=False, **kwargs):
     # config_controller.commit_changes()
     return exp_sequence_controller.create_and_run_sim_gen()
 
+def run_from_batch(**kwargs):
+    # TODO arguments are for the future implementation of an "optimize from batch" mode.  This optimize mode is different from the optimize_mode arg of run_from_file()
+    # TODO maybe at some point should make the data naming more helpful
+    b_parent = batch_config_dialogue()
+    # Get a list of paths to each .ini file in b_parent
+    ini_files = [os.path.join(b_parent, file) for file in os.listdir(b_parent) if file.endswith(".ini")]
+    for ini_file in ini_files:
+        run_from_file(optimize_mode=True, exp=ini_file)
 
 
 def config_file_dialogue():
@@ -363,6 +374,12 @@ def config_file_dialogue():
         ),  # TODO validate that it is also a .ini file
     ).execute()
 
+def batch_config_dialogue():
+    return inquirer.filepath(
+        message="Enter the parent directory of .ini files to submit as a batch.  Be sure to prime the data folder.",
+        validate=PathStringValidator(is_dir=True, message="Input is not a directory"),
+        only_directories=True,
+    ).execute()
 
 def mode_dialogue():
     return inquirer.select(
@@ -370,6 +387,7 @@ def mode_dialogue():
         choices=[
             "Create New Experiment",
             "Run Experiment From File",
+            "Run Experiment Batch From Directory",
             "Optimize Experiment with M-LOOP",
             "Edit Existing Experiment",
             "Analyze Completed Experiment",
