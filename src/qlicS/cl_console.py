@@ -1,18 +1,25 @@
+"""Command-line interface."""
+
 import click
 import numpy as np
 from InquirerPy import inquirer
 from InquirerPy.validator import EmptyInputValidator
 
 from . import __version__, config_controller, exp_sequence_controller
-from .analysis import create_analysis, create_scat_graph, gen_rmsv_plot, create_crystal_image_scat
+from .analysis import (
+    create_analysis,
+    create_crystal_image_scat,
+    create_scat_graph,
+    gen_rmsv_plot,
+)
 from .command_mapping import give_command_mapping
 from .console_resources import (
     config_file_dialogue,
     followup_questions_creator,
     mode_dialogue,
+    run_from_batch,
     run_from_file,
     setup_loading_configur,
-    run_from_batch,
 )
 from .mloop_controller import mainmloop
 from .resources import PathStringValidator
@@ -240,7 +247,7 @@ def main():  # sourcery skip: use-named-expression
             validate=PathStringValidator(
                 is_file=True,
                 message="Input is not a valid filpath.  Make sure input is not a string.",
-            ), # TODO validate that it is also a .py file
+            ),  # TODO validate that it is also a .py file
         ).execute()
         mainmloop(config_file, mloop_formulae)
     elif mode == "Edit Existing Experiment":
@@ -303,9 +310,13 @@ def main():  # sourcery skip: use-named-expression
                 show = inquirer.select(
                     message="Would you like to show a 3D plot as well as the orthogonal projection?",
                     choices=["Yes", "No"],
-                    transformer = lambda input_string: True if input_string == "Yes" else False
+                    transformer=lambda input_string: (
+                        True if input_string == "Yes" else False
+                    ),
                 ).execute()
-                create_crystal_image_scat(data_file, int(image_index), int(spec_cutoff), show)
+                create_crystal_image_scat(
+                    data_file, int(image_index), int(spec_cutoff), show
+                )
         elif data_file[-4:] == ".csv":
             # Make scattering graph
             create_scat_graph(data_file)

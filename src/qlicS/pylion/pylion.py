@@ -188,8 +188,8 @@ class Simulation(list):
         self._writeinputfile()
 
         # NOTE commenting out here because this needs to be 'in the main thread'
-        #signal.signal(signal.SIGINT, self.signal_handler)
-        #signal.signal(signal.SIGTERM, self.signal_handler)
+        # signal.signal(signal.SIGINT, self.signal_handler)
+        # signal.signal(signal.SIGTERM, self.signal_handler)
 
         cmd = self.attrs["executable"].split() + [
             "-log",

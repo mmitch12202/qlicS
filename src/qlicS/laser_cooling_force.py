@@ -86,7 +86,7 @@ def create_cooling_laser(
     f_cool = f"fix {uid} {gid} addforce v_coolx v_cooly v_coolz\n\n"
     f_heat_prep = f"variable targetT equal {T_d}\n" f"variable curr_temp equal temp\n"
 
-    #f_heat_add = f"every 1 \"if '${{curr_temp}} < ${{targetT}}' then 'fix hterm {gid} temp/rescale 1 ${{targetT}} ${{targetT}} 0 0' else 'fix hterm {gid} temp/rescale 1 ${{targetT}} ${{targetT}} 0 0'\"\n"  # NOTE some of these values are a bit arbitrary (the doppler correction speed and tolerance), the flipping temperture move rate to 0 is a bit hacky
-    f_heat_add = "" #FIXME this reheating may not be working properly, especially for multi-species systems.  It also slows things a ton.  This should definetly become a toggelable option
+    # f_heat_add = f"every 1 \"if '${{curr_temp}} < ${{targetT}}' then 'fix hterm {gid} temp/rescale 1 ${{targetT}} ${{targetT}} 0 0' else 'fix hterm {gid} temp/rescale 1 ${{targetT}} ${{targetT}} 0 0'\"\n"  # NOTE some of these values are a bit arbitrary (the doppler correction speed and tolerance), the flipping temperture move rate to 0 is a bit hacky
+    f_heat_add = ""  # FIXME this reheating may not be working properly, especially for multi-species systems.  It also slows things a ton.  This should definetly become a toggelable option
     lines = [f_cool_x + f_cool_y + f_cool_z + f_cool + f_heat_prep]
     return {"uid": uid, "code": lines, "additional_lines": f_heat_add}

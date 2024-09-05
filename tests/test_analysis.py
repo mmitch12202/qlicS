@@ -172,6 +172,7 @@ def test_velocities_custom_params(
     ids=["happy_path_1"],
 )
 def test_velocities_default_params(mock_configur, mock_readdump, mock_data, expected):
+    """It compares velocities() to correct velocities"""
     # Arrange
     mock_configur.get.return_value = "/mock/directory/"
     mock_readdump.return_value = mock_data

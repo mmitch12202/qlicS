@@ -1,3 +1,4 @@
+import os
 from configparser import ConfigParser
 from pathlib import Path
 
@@ -9,8 +10,6 @@ from . import config_controller, exp_sequence_controller
 from .command_mapping import give_command_mapping
 from .config_controller import get_ions
 from .resources import PathStringValidator
-
-import os
 
 loading_configur = ConfigParser()
 
@@ -217,15 +216,14 @@ def run_from_file(optimize_mode=False, **kwargs):
         overridden_args = {}
         for k, v in kwargs.items():
             if k.startswith(prefix):
-                key_without_prefix = k[len(prefix) + 1:]
+                key_without_prefix = k[len(prefix) + 1 :]
                 overridden_args[key_without_prefix] = v
         return {**defaults, **overridden_args}
 
-
     # Sim skeleton inputs
     s_p, d_p = get_sim_skeleton_inputs()
-    s_p = get_overridden_args(s_p, 's_p')
-    d_p = get_overridden_args(d_p, 'd_p')
+    s_p = get_overridden_args(s_p, "s_p")
+    d_p = get_overridden_args(d_p, "d_p")
     config_controller.create_sim_skeleton(
         s_p["log_steps"],
         s_p["timesequence"],
@@ -239,7 +237,7 @@ def run_from_file(optimize_mode=False, **kwargs):
     # Cloud reset configuration
     for i in range(type_poses["cloud_reset"]):
         cl_reset = get_cloud_reset(i)
-        cl_reset = get_overridden_args(cl_reset, f'cloud_reset_{i}')
+        cl_reset = get_overridden_args(cl_reset, f"cloud_reset_{i}")
         config_controller.configur_cloud_reset(
             i,
             cl_reset["initial_atom_id"],
@@ -251,7 +249,7 @@ def run_from_file(optimize_mode=False, **kwargs):
     # Modulation configuration
     for i in range(type_poses["tickle"]):
         m = get_modulation_inputs(i)
-        m = get_overridden_args(m, f'modulation_{i}')
+        m = get_overridden_args(m, f"modulation_{i}")
         config_controller.configur_modulation(
             i,
             m["uid"],
@@ -287,7 +285,7 @@ def run_from_file(optimize_mode=False, **kwargs):
     # Ion cloud configuration
     for i in range(type_poses["cloud"]):
         c = get_cloud_inputs(i)
-        c = get_overridden_args(c, f'cloud_{i}')
+        c = get_overridden_args(c, f"cloud_{i}")
         config_controller.configur_ion_cloud(
             i, c["uid"], c["species"], c["radius"], c["count"]
         )
@@ -295,7 +293,7 @@ def run_from_file(optimize_mode=False, **kwargs):
     # Trap configuration
     for i in range(type_poses["trap"]):
         t = get_trap_inputs(i)
-        t = get_overridden_args(t, f'trap_{i}')
+        t = get_overridden_args(t, f"trap_{i}")
         config_controller.configur_trap(
             i,
             t["uid"],
@@ -312,7 +310,7 @@ def run_from_file(optimize_mode=False, **kwargs):
     # Cooling laser configuration
     for i in range(type_poses["cooling_laser"]):
         cl = get_cooling_laser_inputs(i)
-        cl = get_overridden_args(cl, f'cooling_laser_{i}')
+        cl = get_overridden_args(cl, f"cooling_laser_{i}")
         config_controller.configur_cooling_laser(
             cl["uid"],
             i,
@@ -328,7 +326,7 @@ def run_from_file(optimize_mode=False, **kwargs):
     # Scattering laser configuration
     if loading_configur.has_section("scattering_laser"):
         sl = get_scattering_laser_inputs()
-        sl = get_overridden_args(sl, 'scattering_laser')
+        sl = get_overridden_args(sl, "scattering_laser")
         config_controller.configur_scattering_laser(
             sl["scattered_ion_indices"],
             sl["target_species"],
@@ -341,7 +339,7 @@ def run_from_file(optimize_mode=False, **kwargs):
     exp_seq = get_exp_seq()
     if "iter" in exp_seq:
         it = get_iter_inputs()
-        it = get_overridden_args(it, 'iter')
+        it = get_overridden_args(it, "iter")
         config_controller.configur_iter(
             it["scan_objects"],
             it["scan_var"],
@@ -355,12 +353,17 @@ def run_from_file(optimize_mode=False, **kwargs):
     # config_controller.commit_changes()
     return exp_sequence_controller.create_and_run_sim_gen()
 
+
 def run_from_batch(**kwargs):
     # TODO arguments are for the future implementation of an "optimize from batch" mode.  This optimize mode is different from the optimize_mode arg of run_from_file()
     # TODO maybe at some point should make the data naming more helpful
     b_parent = batch_config_dialogue()
     # Get a list of paths to each .ini file in b_parent
-    ini_files = [os.path.join(b_parent, file) for file in os.listdir(b_parent) if file.endswith(".ini")]
+    ini_files = [
+        os.path.join(b_parent, file)
+        for file in os.listdir(b_parent)
+        if file.endswith(".ini")
+    ]
     for ini_file in ini_files:
         run_from_file(optimize_mode=True, exp=ini_file)
 
@@ -374,12 +377,14 @@ def config_file_dialogue():
         ),  # TODO validate that it is also a .ini file
     ).execute()
 
+
 def batch_config_dialogue():
     return inquirer.filepath(
         message="Enter the parent directory of .ini files to submit as a batch.  Be sure to prime the data folder.",
         validate=PathStringValidator(is_dir=True, message="Input is not a directory"),
         only_directories=True,
     ).execute()
+
 
 def mode_dialogue():
     return inquirer.select(

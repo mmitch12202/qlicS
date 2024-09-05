@@ -1,4 +1,5 @@
-# For all analysis related tasks, including simply reading the dump file
+"""For all analysis related tasks, including simply reading the dump file """
+
 import math
 import os
 import shutil
@@ -47,6 +48,21 @@ def velocities(atom_range=None, step_range=None, velocity_indices=None):
 
 
 def get_number_atoms(raw_data_copy):
+    """Retrieve the number of atoms from the provided raw data.
+
+    This function reads the raw data from a specified source and returns the count of atoms present in the data. It utilizes a helper function to process the raw data and extract the relevant information.
+
+    Args:
+        raw_data_copy: The source of the raw data to be analyzed.
+
+    Returns:
+        int: The number of atoms found in the raw data.
+
+    Examples:
+        >>> count = get_number_atoms("path/to/raw_data.txt")
+        >>> int(count)
+        True
+    """
     _, data = pl_func.readdump(raw_data_copy)
     return len(data[1])
 
@@ -146,6 +162,7 @@ def create_lammps_vars_graphs(directory, raw_data, vartype, atom_num, start=0):
     _extracted_from_create_lammps_vars_graphs_15(steps[start:], z, directory, "/z.png")
     return
 
+
 def create_crystal_image_scat(raw_data_file, index, species_cutoff, show):
     analysis_root = (
         f"{os.getcwd()}/data/crystal_snap" + time.strftime("%Y-%m-%d_%H-%M-%S") + "/"
@@ -165,35 +182,43 @@ def create_crystal_image_scat(raw_data_file, index, species_cutoff, show):
     fig_flat = plt.figure()
     ax1 = fig_flat.add_subplot(122)
     ax1.scatter(x_1, z_1)
-    ax1.scatter(x_2, z_2, c='r')
-    ax1.set_xlabel('x (m)')
-    ax1.set_ylabel('z (m)')
+    ax1.scatter(x_2, z_2, c="r")
+    ax1.set_xlabel("x (m)")
+    ax1.set_ylabel("z (m)")
 
     ax2 = fig_flat.add_subplot(121)
     ax2.scatter(x_1, y_1)
-    ax2.scatter(x_2, y_2, c='r')
-    ax2.set_xlabel('x (m)')
-    ax2.set_ylabel('y (m)')
+    ax2.scatter(x_2, y_2, c="r")
+    ax2.set_xlabel("x (m)")
+    ax2.set_ylabel("y (m)")
 
     ratio = 1
     x_left, x_right = ax1.get_xlim()
     y_low, y_high = ax1.get_ylim()
-    ax2.set_aspect(abs((x_right-x_left)/(y_low-y_high))*ratio)
+    ax2.set_aspect(abs((x_right - x_left) / (y_low - y_high)) * ratio)
     x_left, x_right = ax2.get_xlim()
     y_low, y_high = ax2.get_ylim()
-    ax2.set_aspect(abs((x_right-x_left)/(y_low-y_high))*ratio)
+    ax2.set_aspect(abs((x_right - x_left) / (y_low - y_high)) * ratio)
 
     if show:
         fig3d = plt.figure()
-        ax = fig3d.add_subplot(111, projection='3d')
-        p1 = ax.scatter(data[index, :species_cutoff, 0], data[index, :species_cutoff, 1], data[index, :species_cutoff, 2])
-        p2 = ax.scatter(data[index, species_cutoff:, 0], data[index, species_cutoff:, 1], data[index, species_cutoff:, 2], c='r')
-        ax.set_xlabel('x (m)')
-        ax.set_ylabel('y (m)')
-        ax.set_zlabel('z (m)')
+        ax = fig3d.add_subplot(111, projection="3d")
+        p1 = ax.scatter(
+            data[index, :species_cutoff, 0],
+            data[index, :species_cutoff, 1],
+            data[index, :species_cutoff, 2],
+        )
+        p2 = ax.scatter(
+            data[index, species_cutoff:, 0],
+            data[index, species_cutoff:, 1],
+            data[index, species_cutoff:, 2],
+            c="r",
+        )
+        ax.set_xlabel("x (m)")
+        ax.set_ylabel("y (m)")
+        ax.set_zlabel("z (m)")
 
     plt.show()
-    
 
 
 # TODO Rename this here and in `create_lammps_vars_graphs`
