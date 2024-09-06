@@ -5,6 +5,7 @@ from qlicS.exp_sequence_controller import append_iter
 
 
 # TODO also check that we are scanning the variables correctly
+# FIXME this is a broken test that needs to be fixed carefully
 @pytest.mark.parametrize(
     "iter_config, config_ids, expected_calls",
     [

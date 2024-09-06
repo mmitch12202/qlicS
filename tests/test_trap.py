@@ -51,7 +51,7 @@ def test_gen_trap_lammps_happy_path(ions, trap_pos, trap_config, expected_result
     # Arrange
     with patch("qlicS.trap.configur.items", return_value=trap_config):
         # Act
-        result = gen_trap_lammps(ions, trap_pos)
+        result = gen_trap_lammps(1000001, ions, trap_pos) #NOTE hardcoded uid and possible abuse by saying trap_pos = type_pos
         print(type(result["code"][0]))
         print(expected_result)
         print("".join(result["code"]))

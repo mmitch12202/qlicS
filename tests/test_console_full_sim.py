@@ -366,6 +366,7 @@ def test_1_be_steady_state(reload_package):
 
 
 # More complex Physics tests
+# FIXME the check conditions on this test need to be fixed
 @pytest.mark.order(index=-8)
 def test_laser_cooling_max_rate_cond(reload_package):
     # NOTE: Based on pg. 89 H. Metcalf et al. "Laser Cooling and Trapping"

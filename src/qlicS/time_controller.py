@@ -8,7 +8,7 @@ def evolve(add=None):
     time_sequence = get_time_seq()
     print(time_sequence)
     current_timeblock_num = eval(configur.get("live_vars", "current_timesequence_pos"))
-
+    print(current_timeblock_num)
     dt = time_sequence[current_timeblock_num][0]
     Deltat = time_sequence[current_timeblock_num][1]
     set_timestep = [f"timestep {dt}"]

@@ -14,6 +14,7 @@ def generate_side_effect(time_sequence, current_timeblock_num, dump_dir):
         ("sim_parameters", "timesequence"): time_sequence,
         ("live_vars", "current_timesequence_pos"): current_timeblock_num,
         ("directory", "dump_dir"): dump_dir,
+        ("exp_seq", "com_list"): "evolveevolveevolve", # NOTE we just need the evolve count to be higher than largest current time block num
     }[(section, key)]
 
 
