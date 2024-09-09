@@ -10,7 +10,7 @@ repository = "https://github.com/mmitch12202/qlicS"
 keywords = ["LAMMPS", "Ion Trap", "Linear Paul Trap"]
 
 [tool.poetry.dependencies]
-python = ">=3.9,<3.13"
+python = "=3.9.13"
 click = "^8.1.7"
 
 jinja2 = "2.10.3"
