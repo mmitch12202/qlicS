@@ -15,6 +15,7 @@ from .sim_controller import pylion_dumping
 from .tickle_efield import create_tickle
 from .time_controller import evolve
 from .trap import gen_trap_lammps
+from .arbitrary_static_efield import create_static_field
 
 
 # TODO at some point want evolve to follow the pattern of the rest and the if statement to not exist. But
@@ -247,6 +248,27 @@ def com_appending(
             else:
                 self_uid = eval(
                     configur.get(f"modulation_{type_poses[command][0]}", "uid")
+                )
+                s.append(func(type_poses[command][0], self_uid))
+        elif func == create_static_field: # NOTE I blindly copied much of the logic from the modulation block, if errors check here
+            if is_iter:
+                self_uid = eval(
+                    configur.get(
+                        f"static_efield_{type_poses['static_efield'][i_object_num_record['static_efield']]}",
+                        "uid",
+                    )
+                )
+                self_uid += iter_step
+                s.append(
+                    func(
+                        type_poses["static_efield"][i_object_num_record["static_efield"]],
+                        self_uid,
+                    )
+                )
+                i_object_num_record["static_efield"] += 1
+            else:
+                self_uid = eval(
+                    configur.get(f"static_efield_{type_poses[command][0]}", "uid")
                 )
                 s.append(func(type_poses[command][0], self_uid))
         elif func == cloud_reset:

@@ -70,7 +70,7 @@ def create_tickle(type_pos, uid):
 
     e_field = f"fix {uid} all efield v_Ex v_Ey v_Ez"
 
-    # Static field support
+    # Uniform field support TODO using statics is confusing because its really 'uniform'
 
     e_magx = f"variable E equal {statics[0]}\n"
     e_magy = f"variable B equal {statics[1]}\n"

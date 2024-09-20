@@ -282,6 +282,43 @@ def run_from_file(optimize_mode=False, **kwargs):
             m["static"],
         )
 
+    # Static efield configuration
+    for i in range(type_poses["static_efield"]):
+        s = get_static_efield_inputs(i)
+        s = get_overridden_args(s, f"static_efield_{i}")
+        config_controller.configur_static_efield(
+            i,
+            s["uid"],
+            s["amp"],
+            s["x_bound"],
+            s["y_bound"],
+            s["z_bound"],
+            s["ex0"],
+            s["exx1"],
+            s["exx2"],
+            s["exy1"],
+            s["exy2"],
+            s["exz1"],
+            s["exz2"],
+            s["ey0"],
+            s["eyx1"],
+            s["eyx2"],
+            s["eyy1"],
+            s["eyy2"],
+            s["eyz1"],
+            s["eyz2"],
+            s["ez0"],
+            s["ezx1"],
+            s["ezx2"],
+            s["ezy1"],
+            s["ezy2"],
+            s["ezz1"],
+            s["ezz2"],
+            s["x_shift"],
+            s["y_shift"],
+            s["z_shift"],
+        )
+
     # Ion cloud configuration
     for i in range(type_poses["cloud"]):
         c = get_cloud_inputs(i)
@@ -335,7 +372,7 @@ def run_from_file(optimize_mode=False, **kwargs):
             sl["frequency"],
         )
 
-    # Experiment sequence configuration
+    # Experiment sequence configuration FIXME: there should be some way of identifying and throwing error / warning if there is no evolve object
     exp_seq = get_exp_seq()
     if "iter" in exp_seq:
         it = get_iter_inputs()
@@ -454,6 +491,8 @@ def get_cloud_reset(type_pos):
 def get_modulation_inputs(type_pos):
     return dict(loading_configur.items(f"modulation_{type_pos}"))
 
+def get_static_efield_inputs(type_pos):
+    return dict(loading_configur.items(f"static_efield_{type_pos}"))
 
 def get_cloud_inputs(type_pos):
     return dict(loading_configur.items(f"ion_cloud_{type_pos}"))

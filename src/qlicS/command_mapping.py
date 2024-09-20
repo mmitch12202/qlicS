@@ -4,6 +4,7 @@ from .sim_controller import pylion_dumping
 from .tickle_efield import create_tickle
 from .time_controller import evolve
 from .trap import gen_trap_lammps
+from .arbitrary_static_efield import create_static_field
 
 
 def give_command_mapping():
@@ -16,4 +17,5 @@ def give_command_mapping():
         "tickle": create_tickle,
         "iter": None,
         "cloud_reset": cloud_reset,
+        "static_efield": create_static_field
     }
