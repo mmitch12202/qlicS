@@ -211,6 +211,12 @@ def run_from_file(optimize_mode=False, **kwargs):
     type_poses = count_type_pos(loading_configur)
     print(type_poses)
 
+    constants = get_constants()
+    config_controller.configur_constants(constants['h'], constants['c'], constants['amu'], constants['ele_charge'], constants['boltzmann'])
+
+    ions = get_ions_inputs()
+    config_controller.configur_ions(ions)
+
     # Helper function to update arguments with overrides from kwargs
     def get_overridden_args(defaults, prefix):
         overridden_args = {}
@@ -483,10 +489,15 @@ def get_sim_skeleton_inputs():
         sim_params.append(["gpu", False])
     return dict(sim_params), dict(detection_params)
 
+def get_ions_inputs():
+    return dict(loading_configur.items("ions"))
+
+def get_constants():
+    return dict(loading_configur.items("constants"))
+    # TODO maybe a check that all the necessary constant values are assigned
 
 def get_cloud_reset(type_pos):
     return dict(loading_configur.items(f"cloud_reset_{type_pos}"))
-
 
 def get_modulation_inputs(type_pos):
     return dict(loading_configur.items(f"modulation_{type_pos}"))

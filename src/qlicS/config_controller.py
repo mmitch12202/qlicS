@@ -194,6 +194,17 @@ def configur_static_efield(
         "z_shift": z_shift,
     }
 
+def configur_constants(h, c, amu, ele_charge, kb):
+    configur["constants"] = {
+        "h": h,
+        "c": c,
+        "amu": amu,
+        "ele_charge": ele_charge,
+        "boltzmann": kb,
+    }
+
+def configur_ions(ions):
+    configur["ions"] = ions
 
 def configur_ion_cloud(type_pos, uid, species, radius, count):
     configur[f"ion_cloud_{type_pos}"] = {
@@ -311,7 +322,7 @@ def create_config(dump_dir):
     # Normally Un-changing Content
     configur["directory"] = {"dump_dir": dump_dir}
     configur["live_vars"] = {"current_timesequence_pos": 0}
-    create_universe()
+    #create_universe() No longer using this hardcode crutch
 
 
 def commit_changes():

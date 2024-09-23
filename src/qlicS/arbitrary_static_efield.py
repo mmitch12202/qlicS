@@ -1,7 +1,7 @@
 from numpy import pi
 
 from .config_controller import configur
-
+# TODO make tests of this
 def create_static_field(type_pos, uid):
     # uid = eval(configur.get(f"static_efield_{type_pos}", "uid"))
     amp_coeff = eval(configur.get(f"static_efield_{type_pos}", "amp"))
