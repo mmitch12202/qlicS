@@ -374,7 +374,7 @@ def test_laser_cooling_max_rate_cond(reload_package):
     show_plot = False
     import matplotlib.pyplot as plt
     import numpy as np
-    from qlicS.pylion.functions import readdump
+    from qlicS.pylion.functions import readdump_inhomogenous
 
     examples_dir = f"{os.getcwd()}/examples"
     file_path = f"{examples_dir}/laser_cooling_thermal_test.ini"
@@ -385,7 +385,7 @@ def test_laser_cooling_max_rate_cond(reload_package):
         mock_c_f_d.return_value = file_path
         dd = qlicS.console_resources.run_from_file()
         positions = f"{dd}positions.txt"
-        steps, data = readdump(positions)
+        steps, data = readdump_inhomogenous(positions)
 
         def calculate_rms(lst):
             if not lst:

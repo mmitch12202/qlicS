@@ -27,6 +27,17 @@ def create_and_run_sim_gen():
     ):
         s.attrs["gpu"] = True
 
+    if configur.has_option("sim_parameters", "lammps_boundary_style"):
+        boundary_style_input = eval(configur.get("sim_parameters", "lammps_boundary_style"))
+        s.attrs["domain_type"] = [boundary_style_input[0], boundary_style_input[1], boundary_style_input[2]]
+
+    if configur.has_option("sim_parameters", "lammps_boundary_locations"):
+        boundary_loc_input = eval(configur.get("sim_parameters", "lammps_boundary_locations"))
+        s.attrs["domain"] = [boundary_loc_input[0][1], boundary_loc_input[1][1], boundary_loc_input[2][1]] # TODO we can clean this up for non-centered boxes (or at least don't pretend like we support them)
+
+    if configur.has_option("sim_parameters", "lammps_allow_lost"):
+        s.attrs["allow_lost"] = eval(configur.get("sim_parameters", "lammps_allow_lost"))
+
     commands = configur.get("exp_seq", "com_list").split(
         ","
     )  # Assuming commands are separated by commas

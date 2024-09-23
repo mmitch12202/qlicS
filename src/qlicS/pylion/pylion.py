@@ -34,6 +34,7 @@ class Simulation(list):
         self.attrs["executable"] = "lmp_serial"
         self.attrs["thermo_styles"] = ["step", "cpu"]
         self.attrs["timestep"] = 1e-6
+        self.attrs["domain_type"] = ['m', 'm', 'm']
         self.attrs["domain"] = [1e-3, 1e-3, 1e-3]  # length, width, height
         self.attrs["name"] = name
         self.attrs["neighbour"] = {"skin": 1, "list": "nsq"}
@@ -41,6 +42,7 @@ class Simulation(list):
         self.attrs["template"] = "simulation.j2"
         self.attrs["version"] = __version__
         self.attrs["rigid"] = {"exists": False}
+        self.attrs["allow_lost"] = False
 
     def __contains__(self, this):
         """Check if an item exists in the simulation using its ``uid``."""

@@ -19,7 +19,7 @@ units si
 atom_style charge
 
 # Creating simulation box...
-boundary m m m
+boundary {{ domain_type[0] }} {{ domain_type[1] }} {{ domain_type[2] }}
 region simulationDomain block {{ -domain[0] }}  {{ domain[0] }} {{ -domain[1] }} {{ domain[1] }} {{ -domain[2] }} {{ domain[2] }} units box
 create_box {{ species|length }} simulationDomain
 
@@ -48,6 +48,9 @@ group {{ ions.uid }} type {{ ions.uid }}
 thermo 10000
 thermo_style custom step cpu temp
 thermo_modify flush no
+{% if allow_lost %}
+thermo_modify lost warn
+{% endif %}
 
 # Time integration...
 {% if rigid.exists %}

@@ -15,8 +15,8 @@ def mock_configur():
 
 
 @pytest.fixture
-def mock_readdump():
-    with patch("qlicS.analysis.pl_func.readdump") as mock:
+def mock_readdump_inhomogenous():
+    with patch("qlicS.analysis.pl_func.readdump_inhomogenous") as mock:
         yield mock
 
 
@@ -96,7 +96,7 @@ mock_data_array = np.array(
 )
 def test_velocities_custom_params(
     mock_configur,
-    mock_readdump,
+    mock_readdump_inhomogenous,
     atom_range,
     step_range,
     velocity_indices,
@@ -105,7 +105,7 @@ def test_velocities_custom_params(
 ):
     # Arrange
     mock_configur.get.return_value = "/mock/directory/"
-    mock_readdump.return_value = mock_data
+    mock_readdump_inhomogenous.return_value = mock_data
 
     # Act
     result = velocities(atom_range, step_range, velocity_indices)
@@ -171,11 +171,11 @@ def test_velocities_custom_params(
     ],
     ids=["happy_path_1"],
 )
-def test_velocities_default_params(mock_configur, mock_readdump, mock_data, expected):
+def test_velocities_default_params(mock_configur, mock_readdump_inhomogenous, mock_data, expected):
     """It compares velocities() to correct velocities"""
     # Arrange
     mock_configur.get.return_value = "/mock/directory/"
-    mock_readdump.return_value = mock_data
+    mock_readdump_inhomogenous.return_value = mock_data
 
     # Act
     result = velocities()

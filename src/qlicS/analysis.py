@@ -12,7 +12,7 @@ import pandas as pd
 from .config_controller import configur
 from .pylion import functions as pl_func
 
-
+# TODO make it so we can color many species in images if we want
 def velocities(atom_range=None, step_range=None, velocity_indices=None):
     """
     Retrieves the velocities of atoms from a dump file and
@@ -34,7 +34,7 @@ def velocities(atom_range=None, step_range=None, velocity_indices=None):
         velocity_indices = [3, 6]
 
     dump_dir = configur.get("directory", "dump_dir")
-    _, data = pl_func.readdump(f"{dump_dir}positions.txt")
+    _, data = pl_func.readdump_inhomogenous(f"{dump_dir}positions.txt")
     return dict(
         zip(
             _,
@@ -63,7 +63,7 @@ def get_number_atoms(raw_data_copy):
         >>> int(count)
         True
     """
-    _, data = pl_func.readdump(raw_data_copy)
+    _, data = pl_func.readdump_inhomogenous(raw_data_copy)
     return len(data[1])
 
 
@@ -90,7 +90,7 @@ def gen_rmsv_plot(raw_data_file):
     os.makedirs(analysis_root)
     raw_copy = f"{analysis_root}raw.txt"
     shutil.copy(raw_data_file, raw_copy)
-    steps, data = pl_func.readdump(raw_copy)
+    steps, data = pl_func.readdump_inhomogenous(raw_copy)
 
     def calculate_rms(lst):
         if not lst:
@@ -147,7 +147,7 @@ def create_lammps_vars_graphs(directory, raw_data, vartype, atom_num, start=0):
         var_indices = [0, 3]
     elif vartype == "Velocities":
         var_indices = [3, 6]
-    steps, data = pl_func.readdump(raw_data)
+    steps, data = pl_func.readdump_inhomogenous(raw_data)
     sel_d = data[start:, atom_num, var_indices[0] : var_indices[1]]
     x = []
     y = []
@@ -170,7 +170,7 @@ def create_crystal_image_scat(raw_data_file, index, species_cutoff, show):
     os.makedirs(analysis_root)
     raw_copy = f"{analysis_root}raw.txt"
     shutil.copy(raw_data_file, raw_copy)
-    steps, data = pl_func.readdump(raw_copy)
+    steps, data = pl_func.readdump_inhomogenous(raw_copy)
 
     x_1 = list(data[index, :species_cutoff, 0])
     x_2 = list(data[index, species_cutoff:, 0])

@@ -527,3 +527,60 @@ def readdump(filename):
     steps = np.array(steps, dtype=np.float)
     data = np.array(data, dtype=np.float)  # shape=(steps, ions, (x,y,z))
     return steps, data
+
+def readdump_inhomogenous(filename):
+    """Very similar to readdump_inhomogenous but updated to handle inhomogenous data
+    and out of order atoms, works by reording them based on the lammps output id
+
+    :param filename: name of input file
+    :return: a tuple of (steps, data).
+      The shape of data is (steps, ions (explictly controlled), (x, y, z)).
+    """
+    # TODO unit tests for this - but I think it is working well
+    steps = []
+    data = []
+    atom_counts = []
+    with open(filename, "r") as f:
+        for line in f:
+            if line[6:9] == "NUM":
+                atom_counts.append(int(next(f)))
+        max_atoms = max(atom_counts)
+        f.seek(0)
+        for line in f:
+            if line[6:9] == "TIM":
+                steps.append(int(next(f)))
+            elif line[6:9] == "NUM":
+                ions = int(next(f))
+            elif line[6:9] == "ATO":
+                if line[12:14] != "id":
+                    raise TypeError
+                unsorted_block = []
+                for _ in range(ions):
+                    line = next(f).split()  # Read the next line and split it into parts
+                    first_value = int(line[0])  # Convert the first value to int
+                    remaining_values = line[1:]  # Get the remaining values without typecasting
+                    unsorted_block.append([first_value] + remaining_values)  # Append the new sublist
+
+                # Initialize the result list
+                sorted_block = [[None] * (len(unsorted_block[0]) - 1) for _ in range(max_atoms)]
+                
+                # Iterate through the input list
+                for sublist in unsorted_block:
+                    if sublist:  # Check if the sublist is not empty
+                        index = sublist[0]  # Get the first item as the index
+                        if 1 <= index <= max_atoms:  # Check if it's within the valid range
+                            sorted_block[index - 1] = sublist  # Fill the corresponding index in result
+                        else:
+                            raise TypeError
+
+                # Replace None entries with new sublists containing the index
+                for i in range(max_atoms):
+                    if sorted_block[i] is None or sorted_block[i][0] is None:
+                        sorted_block[i] = [i + 1] + [None] * (len(unsorted_block[0]) - 1)  # Create a new sublist
+
+                unindexed_sorted_block = [sublist[1:] for sublist in sorted_block]
+
+                data.append(unindexed_sorted_block)
+    steps = np.array(steps, dtype=np.float)
+    data = np.array(data, dtype=np.float)  # shape=(steps, ions, (x,y,z))
+    return steps, data

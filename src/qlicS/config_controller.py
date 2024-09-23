@@ -49,6 +49,9 @@ def create_universe():
 def create_sim_skeleton(
     log_steps,
     timesequence,
+    lammps_boundary_style,
+    lammps_boundary_locations,
+    lammps_allow_lost,
     detection_timestep_seq,
     detector_area,
     detector_effeciency,
@@ -58,6 +61,9 @@ def create_sim_skeleton(
     configur["sim_parameters"] = {
         "log_steps": log_steps,
         "timesequence": timesequence,
+        "lammps_boundary_style": lammps_boundary_style,
+        "lammps_boundary_locations": lammps_boundary_locations,
+        "lammps_allow_lost": lammps_allow_lost,
         "gpu": GPU,
     }
     configur["detection"] = {

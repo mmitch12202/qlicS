@@ -230,9 +230,18 @@ def run_from_file(optimize_mode=False, **kwargs):
     s_p, d_p = get_sim_skeleton_inputs()
     s_p = get_overridden_args(s_p, "s_p")
     d_p = get_overridden_args(d_p, "d_p")
+    if not s_p["lammps_boundary_style"]:
+        s_p["lammps_boundary_style"] = ['m', 'm', 'm']
+    if not s_p["lammps_boundary_locations"]:
+        s_p["lammps_boundary_locations"] = [[-0.001, 0.001],[-0.001, 0.001],[-0.001, 0.001]]
+    if not s_p["lammps_allow_lost"]:
+        s_p["lammps_allow_lost"] = False
     config_controller.create_sim_skeleton(
         s_p["log_steps"],
         s_p["timesequence"],
+        s_p["lammps_boundary_style"],
+        s_p["lammps_boundary_locations"],
+        s_p["lammps_allow_lost"],
         d_p["detection_timestep_seq"],
         d_p["detector_area"],
         d_p["detector_effeciency"],
