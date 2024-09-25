@@ -34,9 +34,9 @@ def tests(session):
     session.run("poetry", "install", external=True)
     session.run("pytest", "-cov")
 
-@nox.session(python="3.8")
+@nox.session(python=["3.9.13"])  # Use the current environment
 def docs(session: Session) -> None:
     """Build the documentation."""
-    session.run("poetry", "install", "--no-dev", external=True)
+    session.run("poetry", "install", external=False)
     session.install("sphinx", "sphinx-autodoc-typehints")
     session.run("sphinx-build", "docs", "docs/_build")

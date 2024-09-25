@@ -12,3 +12,4 @@ extensions = [
     "sphinx.ext.napoleon",
     "sphinx_autodoc_typehints",
 ]
+autodoc_mock_imports = ["sphinx-autodoc-typehints", "click", "matplotlib", "InquirerPy", "pandas", "termcolor", "mloop", "numpy", "prompt_toolkit"]
