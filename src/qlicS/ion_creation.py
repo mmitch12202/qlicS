@@ -19,14 +19,13 @@ def pylion_cloud(type_pos, uid_override=None):
 
 
 # Pulling heavily from the pylion cloud func, but not tied to the jinja template (so we have control over when they are added)
-# TODO I am moving away from using this, maybe should remove
 def lammps_append_sph_cloud(type_pos, uid):
     positions = []
     species = eval(
-        configur.get("ions", configur.get(f"ion_cloud_{type_pos}", "species"))
+        configur.get("ions", configur.get(f"late_cloud_{type_pos}", "species"))
     )[0]
-    number = eval(configur.get(f"ion_cloud_{type_pos}", "count"))
-    radius = eval(configur.get(f"ion_cloud_{type_pos}", "radius"))
+    number = eval(configur.get(f"late_cloud_{type_pos}", "count"))
+    radius = eval(configur.get(f"late_cloud_{type_pos}", "radius"))
     for _ind in range(number):
         d = np.random.random() * radius
         a = np.pi * np.random.random()
@@ -46,12 +45,13 @@ def lammps_append_sph_cloud(type_pos, uid):
         f"set type {uid} charge {eval(configur.get('constants', 'ele_charge')) * species['charge']}\n",
         f"group {uid} type {uid}\n",
     ]
+    t_int = ["\nfix timeIntegrator nonRigidBody nve\n"]
+
     return {
-        "code": lines + species_prep,
+        "code": lines+t_int,
         "type": "live ion append",
         "mass": species["mass"],
         "charge": species["charge"],
-        "uid": uid,
     }
 
 
@@ -81,3 +81,9 @@ def cloud_reset(type_pos):
     style = configur.get(f"cloud_reset_{type_pos}", "style")
     if style == "sphere":
         return recloud_spherical(type_pos)
+
+# For chemical reaction modeling, probably doesn't belong in ion_creation
+def mass_change(uid, new_mass):
+    lines = [f"\nmass {uid} {new_mass}\n"]
+    return {"code": lines}
+

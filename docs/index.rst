@@ -19,7 +19,7 @@ run this command in your terminal:
 
 .. code-block:: console
 
-   $ pip install qlicS
+   $ do something to install qlicS
 
 
 Usage

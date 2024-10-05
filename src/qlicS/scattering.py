@@ -1,4 +1,5 @@
 # TODO: Clean up the evals and datatypes in this file
+# TODO: I also think a significant amount of time is spent on this calculation - try and improve performance somehow
 import numpy as np
 
 from .analysis import velocities

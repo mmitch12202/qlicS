@@ -1,0 +1,32 @@
+2024-10-04 21:03:23,128 mloop                INFO     M-LOOP version 3.3.4
+2024-10-04 21:03:23,128 mloop                DEBUG    M-LOOP Logger configured.
+2024-10-04 21:03:23,128 mloop.interfaces     DEBUG    Creating interface.
+2024-10-04 21:03:23,153 mloop.controllers    DEBUG    Controller init completed.
+2024-10-04 21:03:23,155 mloop.learners.1     DEBUG    Learner init completed.
+2024-10-04 21:03:23,157 mloop.learners.2     DEBUG    Learner init completed.
+2024-10-04 21:03:23,158 mloop.controllers    INFO     Optimization started.
+2024-10-04 21:03:23,160 mloop.interfaces     DEBUG    Entering main loop of interface.
+2024-10-04 21:03:23,161 mloop.controllers    DEBUG    ML learner started.
+2024-10-04 21:03:23,171 mloop.controllers    DEBUG    Starting training optimization.
+2024-10-04 21:03:23,173 mloop.controllers    INFO     Run: 0 (training)
+2024-10-04 21:03:23,178 mloop.controllers    INFO     params [441.92994635   2.48575954]
+2024-10-04 21:06:03,513 mloop.controllers    INFO     bad run
+2024-10-04 21:06:03,515 mloop.controllers    INFO     Run: 1 (training)
+2024-10-04 21:06:03,519 mloop.controllers    INFO     params [365.00870012   1.43201725]
+2024-10-04 21:08:41,558 mloop.controllers    INFO     bad run
+2024-10-04 21:08:41,559 mloop.controllers    INFO     Run: 2 (training)
+2024-10-04 21:08:41,561 mloop.controllers    INFO     params [2.66880336e+02 2.39604980e-01]
+2024-10-04 21:11:19,034 mloop.controllers    INFO     bad run
+2024-10-04 21:11:19,035 mloop.controllers    INFO     Run: 3 (training)
+2024-10-04 21:11:19,037 mloop.controllers    INFO     params [118.61272025   2.2425521 ]
+2024-10-04 21:14:08,640 mloop.controllers    INFO     bad run
+2024-10-04 21:14:08,641 mloop.controllers    INFO     Run: 4 (training)
+2024-10-04 21:14:08,643 mloop.controllers    INFO     params [8.15709486 1.81683369]
+2024-10-04 21:17:00,637 mloop.controllers    INFO     bad run
+2024-10-04 21:17:00,638 mloop.controllers    INFO     Run: 5 (training)
+2024-10-04 21:17:00,640 mloop.controllers    INFO     params [18.35260881  2.01334577]
+2024-10-04 21:17:22,831 mloop.controllers    WARNING  !!! Do not give the interrupt signal again !!! 
+ M-LOOP stopped with keyboard interupt or system exit. Please wait at least 1 minute for the threads to safely shut down. 
+ 
+2024-10-04 21:17:22,834 mloop.controllers    WARNING  Closing down controller.
+2024-10-04 21:17:22,834 mloop.controllers    DEBUG    ML learner end set.

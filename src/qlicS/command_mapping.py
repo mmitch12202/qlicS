@@ -1,4 +1,4 @@
-from .ion_creation import cloud_reset, pylion_cloud
+from .ion_creation import cloud_reset, pylion_cloud, mass_change, lammps_append_sph_cloud
 from .laser_cooling_force import create_cooling_laser
 from .sim_controller import pylion_dumping
 from .tickle_efield import create_tickle
@@ -17,5 +17,7 @@ def give_command_mapping():
         "tickle": create_tickle,
         "iter": None,
         "cloud_reset": cloud_reset,
-        "static_efield": create_static_field
+        "static_efield": create_static_field,
+        "mass_change": mass_change, # TODO mass change is not currently working
+        "late_cloud": lammps_append_sph_cloud
     }

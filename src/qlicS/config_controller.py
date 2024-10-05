@@ -220,6 +220,13 @@ def configur_ion_cloud(type_pos, uid, species, radius, count):
         "count": count,
     }
 
+def configur_late_cloud(type_pos, uid, species, radius, count):
+    configur[f"late_cloud_{type_pos}"] = {
+        "uid": uid,
+        "species": species,
+        "radius": radius,
+        "count": count,
+    }
 
 def configur_trap(
     type_pos,
@@ -299,6 +306,11 @@ def configur_cloud_reset(
         "count": count,
     }
 
+def configur_mass_change(type_pos, uid, new_mass):
+    configur[f"mass_change_{type_pos}"] = {
+        "target_cloud_id": uid,
+        "new_mass": new_mass,
+    }
 
 def configur_iter(
     scan_objects,

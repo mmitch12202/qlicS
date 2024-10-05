@@ -217,6 +217,10 @@ def run_from_file(optimize_mode=False, **kwargs):
     ions = get_ions_inputs()
     config_controller.configur_ions(ions)
 
+    for i in range(type_poses["mass_change"]):
+        mass_change = get_mass_change_inputs(i)
+        config_controller.configur_mass_change(i, mass_change["target_cloud_id"], mass_change["new_mass"])
+
     # Helper function to update arguments with overrides from kwargs
     def get_overridden_args(defaults, prefix):
         overridden_args = {}
@@ -340,6 +344,14 @@ def run_from_file(optimize_mode=False, **kwargs):
         c = get_overridden_args(c, f"cloud_{i}")
         config_controller.configur_ion_cloud(
             i, c["uid"], c["species"], c["radius"], c["count"]
+        )
+
+    # Late Ion Clouds
+    for i in range(type_poses["late_cloud"]):
+        lc = get_late_cloud_inputs(i)
+        lc = get_overridden_args(lc, f"late_cloud_{i}")
+        config_controller.configur_late_cloud(
+            i, lc["uid"], lc["species"], lc["radius"], lc["count"]
         )
 
     # Trap configuration
@@ -477,7 +489,7 @@ def count_type_pos(loading_configur):
                 type_poses[i] += 1
     for command in command_string:
         if (
-            command[:2] != "r_"
+            command[:2] != "r_" and command[:2] != "d_"
         ):  # this is fine since the removers are a fundamentally different type of command
             type_poses[command] += 1
     return type_poses
@@ -501,6 +513,9 @@ def get_sim_skeleton_inputs():
 def get_ions_inputs():
     return dict(loading_configur.items("ions"))
 
+def get_mass_change_inputs(type_pos):
+    return dict(loading_configur.items(f"mass_change_{type_pos}"))
+
 def get_constants():
     return dict(loading_configur.items("constants"))
     # TODO maybe a check that all the necessary constant values are assigned
@@ -517,6 +532,8 @@ def get_static_efield_inputs(type_pos):
 def get_cloud_inputs(type_pos):
     return dict(loading_configur.items(f"ion_cloud_{type_pos}"))
 
+def get_late_cloud_inputs(type_pos):
+    return dict(loading_configur.items(f"late_cloud_{type_pos}"))
 
 def get_trap_inputs(type_pos):
     return dict(loading_configur.items(f"trap_{type_pos}"))

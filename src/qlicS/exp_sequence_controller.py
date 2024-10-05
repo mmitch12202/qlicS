@@ -6,7 +6,7 @@ import sys
 
 from .command_mapping import give_command_mapping
 from .config_controller import configur
-from .ion_creation import cloud_reset, pylion_cloud
+from .ion_creation import cloud_reset, pylion_cloud, mass_change, lammps_append_sph_cloud
 from .laser_cooling_force import create_cooling_laser
 from .pylion import pylion as pl
 from .remover import delete_atoms_by_uid, remove_by_uid
@@ -155,6 +155,12 @@ def com_appending(
                 r_uid += iter_step
             remove_by_uid(s, str(r_uid))
             continue
+        elif command[:2] == "d_":
+            d_uid = int(command[2:])
+            if is_iter:
+                d_uid += iter_step
+            delete_atoms_by_uid(s, str(d_uid))
+            continue
         elif command not in command_mapping:
             raise ValueError(f"Command {command} is not recognized")
         func = command_mapping[command]
@@ -172,6 +178,21 @@ def com_appending(
             )
             ion_groups.append(pl_cloud)
             s.append(pl_cloud)
+            if is_iter:
+                i_object_num_record[command] += 1
+        elif func == lammps_append_sph_cloud:
+            late_cloud_self_uid = eval(
+                configur.get(
+                    f"late_cloud_{type_poses[command][i_object_num_record[command]]}",
+                    "uid",
+                )
+            )
+            if is_iter:
+                late_cloud_self_uid += iter_step
+            l_cloud = func(
+                type_poses[command][i_object_num_record[command]], late_cloud_self_uid
+            )
+            s.append(l_cloud)
             if is_iter:
                 i_object_num_record[command] += 1
         elif func == gen_trap_lammps:
