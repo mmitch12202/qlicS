@@ -33,13 +33,13 @@ def get_run_info(experiment_dir, params) -> dict:
         modulation_3_frequency=beh2_res,
         )
 
-        offresavg = (scat[0] + scat[-1])/2
-        offressig = np.sqrt(((scat[0]-offresavg)**2 + (scat[1]-offresavg)**2)/2)
+        offresavg = (scat[0][2] + scat[-1][2])/2
+        offressig = np.sqrt(((scat[0][2]-offresavg)**2 + (scat[1][2]-offresavg)**2)/2)
         uncer = offressig
 
-        remove_sig = abs(scat[3] - scat[1]) / offresavg
+        remove_sig = abs(scat[3][2] - scat[1][2]) / offresavg
         # why diff and not standard deev?
-        be_loss = abs(scat[0] - scat[4]) / offresavg
+        be_loss = abs(scat[0][2] - scat[4][2]) / offresavg
 
         # arbitrarily decided weights
         c1 = 1
@@ -47,10 +47,11 @@ def get_run_info(experiment_dir, params) -> dict:
 
         cost = c1*(-remove_sig) + c2*be_loss
         bad = False
-    except Exception:
+    except Exception as e:
         bad = True
         cost = 0
         uncer = 0
+        print(e)
     return {"cost": cost, "uncer": uncer, "bad": bad}
 
 def return_controller(interface):
