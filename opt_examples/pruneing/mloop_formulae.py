@@ -19,7 +19,6 @@ def get_run_info(experiment_dir, params) -> dict:
     amu = 1.6605402e-27
 
     beh2_res = f_r(11*amu, params[1])
-    o_res = f_r(11*amu, params[1])
 
     try:
         scat = run_from_file(
@@ -59,7 +58,7 @@ def return_controller(interface):
     return mlc.create_controller(
         interface,
         "neural_net",
-        max_num_runs=100,
+        max_num_runs=70,
         param_names=['Tickle_Amp', 'V_DC'],
         num_params=2,
         min_boundary=[0.1, 0,],
