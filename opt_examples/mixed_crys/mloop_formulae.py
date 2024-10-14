@@ -5,6 +5,7 @@ import numpy as np
 
 
 def get_run_info(experiment_dir, params) -> dict:
+<<<<<<< HEAD
 
     def f_r(mass, ev, charge=1.60217663e-19, kappa=0.17, length=1.5e-3, freq=11.04e6, voltage=66.4, radius=1.25e-3): # defaults based on mass_selective_pruneing.ini
         ar = -4 * charge * kappa * ev / (mass * length**2 * (2 * np.pi * freq) ** 2)
@@ -20,6 +21,32 @@ def get_run_info(experiment_dir, params) -> dict:
 
     try:
         scat = run_from_file(
+=======
+    """
+    Retrieves run information and calculates the cost based on simulation results.
+
+    This function executes a simulation using the specified experiment directory and 
+    parameters, then analyzes the results to compute a cost value based on the 
+    differences between reference and non-reference counts. It returns a dictionary 
+    containing the calculated cost, uncertainty, and a flag indicating if the run 
+    was successful.
+
+    Args:
+        experiment_dir (str): The directory where the experiment data is located.
+        params (list): A list of parameters used for the run, where the first two 
+            elements represent cloud counts and endcap voltages.
+
+    Returns:
+        dict: A dictionary containing the following keys:
+            - cost (float): The calculated cost based on the run results.
+            - uncer (int): The uncertainty value, currently set to 0.
+            - bad (bool): A flag indicating if an error occurred during execution.
+
+    Raises:
+        KeyError: If the required parameters are not found in the configuration.
+    """
+    if scat := run_from_file(
+>>>>>>> 114d41d (docstrings)
         optimize_mode=True,
         exp=experiment_dir,
         cloud_0_count=int(round(params[0])),
@@ -48,6 +75,23 @@ def get_run_info(experiment_dir, params) -> dict:
 
 # TODO probably a better way of dealing with this
 def return_controller(interface):
+    """
+    Creates and returns a controller object for the simulation.
+
+    This function initializes a controller using the specified interface and 
+    predefined parameters for a neural network. It sets various configuration 
+    options such as the maximum number of runs, parameter names, and boundaries 
+    for the parameters, facilitating the control of the simulation process.
+
+    Args:
+        interface: The interface to be used for creating the controller.
+
+    Returns:
+        Controller: The created controller object configured with the specified parameters.
+
+    Raises:
+        ValueError: If the provided interface is invalid or if required parameters are missing.
+    """
     # For now just dont touch interface
     return mlc.create_controller(
         interface,

@@ -5,6 +5,26 @@ from .time_controller import get_current_dt
 
 
 def create_tickle(type_pos, uid):
+    """
+    Generates the configuration for a tickle electric field in the simulation.
+
+    This function constructs the necessary parameters and commands for a tickle 
+    electric field based on the provided configuration and type position. It calculates 
+    the oscillating electric field components and prepares the commands to apply the 
+    tickle effect to the specified ions in the simulation.
+
+    Args:
+        type_pos (str): The type or position of the tickle electric field being configured.
+        uid (str): A unique identifier for the tickle configuration.
+
+    Returns:
+        dict: A dictionary containing the UID and generated commands for the tickle 
+        electric field.
+
+    Raises:
+        KeyError: If the required configuration parameters are not found.
+    """
+
     frequency = eval(configur.get(f"modulation_{type_pos}", "frequency"))
     # uid = eval(configur.get(f"modulation_{type_pos}", "uid"))
     tickleamp = eval(configur.get(f"modulation_{type_pos}", "amp"))

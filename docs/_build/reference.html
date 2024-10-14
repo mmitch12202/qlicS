@@ -36,17 +36,148 @@
 <h1>Reference<a class="headerlink" href="#reference" title="Link to this heading">¶</a></h1>
 <nav class="contents local" id="contents">
 <ul class="simple">
-<li><p><a class="reference internal" href="#module-qlicS.cl_console" id="id1">qlicS.cl_console</a></p></li>
-<li><p><a class="reference internal" href="#module-qlicS.analysis" id="id2">qlicS.analysis</a></p></li>
+<li><p><a class="reference internal" href="#module-qlicS.analysis" id="id1">qlicS.analysis</a></p></li>
+<li><p><a class="reference internal" href="#qlics-arbitrary-static-efield" id="id2">qlicS.arbitrary_static_efield</a></p></li>
+<li><p><a class="reference internal" href="#module-qlicS.cl_console" id="id3">qlicS.cl_console</a></p></li>
+<li><p><a class="reference internal" href="#module-qlicS.command_mapping" id="id4">qlicS.command_mapping</a></p></li>
+<li><p><a class="reference internal" href="#module-qlicS.config_controller" id="id5">qlicS.config_controller</a></p></li>
+<li><p><a class="reference internal" href="#module-qlicS.console_resources" id="id6">qlicS.console_resources</a></p></li>
+<li><p><a class="reference internal" href="#qlics-exp-sequence-controller" id="id7">qlicS.exp_sequence_controller</a></p></li>
+<li><p><a class="reference internal" href="#module-qlicS.ion_creation" id="id8">qlicS.ion_creation</a></p></li>
+<li><p><a class="reference internal" href="#module-qlicS.laser_cooling_force" id="id9">qlicS.laser_cooling_force</a></p></li>
+<li><p><a class="reference internal" href="#module-qlicS.mloop_controller" id="id10">qlicS.mloop_controller</a></p></li>
+<li><p><a class="reference internal" href="#module-qlicS.remover" id="id11">qlicS.remover</a></p></li>
+<li><p><a class="reference internal" href="#module-qlicS.resources" id="id12">qlicS.resources</a></p></li>
+<li><p><a class="reference internal" href="#module-qlicS.scattering" id="id13">qlicS.scattering</a></p></li>
+<li><p><a class="reference internal" href="#module-qlicS.sim_controller" id="id14">qlicS.sim_controller</a></p></li>
+<li><p><a class="reference internal" href="#module-qlicS.tickle_efield" id="id15">qlicS.tickle_efield</a></p></li>
+<li><p><a class="reference internal" href="#module-qlicS.time_controller" id="id16">qlicS.time_controller</a></p></li>
+<li><p><a class="reference internal" href="#module-qlicS.trap" id="id17">qlicS.trap</a></p></li>
 </ul>
 </nav>
-<section id="module-qlicS.cl_console">
-<span id="qlics-cl-console"></span><h2>qlicS.cl_console<a class="headerlink" href="#module-qlicS.cl_console" title="Link to this heading">¶</a></h2>
-<p>Command-line interface.</p>
-</section>
 <section id="module-qlicS.analysis">
 <span id="qlics-analysis"></span><h2>qlicS.analysis<a class="headerlink" href="#module-qlicS.analysis" title="Link to this heading">¶</a></h2>
 <p>For all analysis related tasks, including simply reading the dump file</p>
+<dl class="py function">
+<dt class="sig sig-object py" id="qlicS.analysis.create_analysis">
+<span class="sig-prename descclassname"><span class="pre">qlicS.analysis.</span></span><span class="sig-name descname"><span class="pre">create_analysis</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">var_list</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">raw_data_file</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">start</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#qlicS.analysis.create_analysis" title="Link to this definition">¶</a></dt>
+<dd><p>Creates an analysis directory and generates graphs for specified variables from raw data.</p>
+<p>This function sets up a structured directory for analysis, copies the provided raw data file,
+and generates graphs for each atom based on the specified variable types. The resulting
+directory structure is organized by atom and variable type.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>var_list</strong> (<em>list</em>) – A list of variable types for which graphs will be generated.</p></li>
+<li><p><strong>raw_data_file</strong> (<em>str</em>) – The path to the raw data file to be analyzed.</p></li>
+<li><p><strong>start</strong> (<em>int</em>) – The starting index or parameter for graph generation.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><dl class="simple">
+<dt>A tuple containing the path to the analysis root directory and the path to the</dt><dd><p>copied raw data file.</p>
+</dd>
+</dl>
+</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>tuple</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="qlicS.analysis.create_crystal_image_scat">
+<span class="sig-prename descclassname"><span class="pre">qlicS.analysis.</span></span><span class="sig-name descname"><span class="pre">create_crystal_image_scat</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">raw_data_file</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">index</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">species_cutoff</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">show</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#qlicS.analysis.create_crystal_image_scat" title="Link to this definition">¶</a></dt>
+<dd><p>Generates scatter plots of crystal structures from raw data.</p>
+<p>This function creates a directory for analysis, copies the provided raw data file,
+and generates 2D scatter plots of crystal positions based on specified species.
+Optionally, it can also display a 3D scatter plot of the crystal structure.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>raw_data_file</strong> (<em>str</em>) – The path to the raw data file to be analyzed.</p></li>
+<li><p><strong>index</strong> (<em>int</em>) – The index of the time step to visualize.</p></li>
+<li><p><strong>species_cutoff</strong> (<em>int</em>) – The cutoff index to separate different species in the data.</p></li>
+<li><p><strong>show</strong> (<em>bool</em>) – A flag indicating whether to display the 3D plot.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The function saves the generated plots and displays them if requested.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="qlicS.analysis.create_lammps_vars_graphs">
+<span class="sig-prename descclassname"><span class="pre">qlicS.analysis.</span></span><span class="sig-name descname"><span class="pre">create_lammps_vars_graphs</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">directory</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">raw_data</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">vartype</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">atom_num</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">start</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#qlicS.analysis.create_lammps_vars_graphs" title="Link to this definition">¶</a></dt>
+<dd><p>Generates graphs for specified variable types of a given atom from LAMMPS data.</p>
+<p>This function reads raw data from a LAMMPS dump file and extracts the specified
+variable type (either positions or velocities) for a particular atom. It then
+generates separate graphs for each component (x, y, z) and saves them in the
+specified directory.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>directory</strong> (<em>str</em>) – The path to the directory where the graphs will be saved.</p></li>
+<li><p><strong>raw_data</strong> (<em>str</em>) – The path to the raw data file to be analyzed.</p></li>
+<li><p><strong>vartype</strong> (<em>str</em>) – The type of variable to graph, either “Positions” or “Velocities”.</p></li>
+<li><p><strong>atom_num</strong> (<em>int</em>) – The index of the atom for which to generate the graphs.</p></li>
+<li><p><strong>start</strong> (<em>int</em><em>, </em><em>optional</em>) – The starting index for data extraction. Defaults to 0.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The function saves the generated graphs to the specified directory.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="qlicS.analysis.create_scat_graph">
+<span class="sig-prename descclassname"><span class="pre">qlicS.analysis.</span></span><span class="sig-name descname"><span class="pre">create_scat_graph</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">raw_data_file</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#qlicS.analysis.create_scat_graph" title="Link to this definition">¶</a></dt>
+<dd><p>Generates a scatter plot of photon counts from raw data.</p>
+<p>This function creates a directory for analysis, copies the provided raw data file,
+and generates a scatter plot of photon counts against a specified variable. The plot
+is saved as a PNG file in the analysis directory.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>raw_data_file</strong> (<em>str</em>) – The path to the raw data file in CSV format to be analyzed.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The function saves the scatter plot to the analysis directory.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="qlicS.analysis.gen_rmsv_plot">
+<span class="sig-prename descclassname"><span class="pre">qlicS.analysis.</span></span><span class="sig-name descname"><span class="pre">gen_rmsv_plot</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">raw_data_file</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#qlicS.analysis.gen_rmsv_plot" title="Link to this definition">¶</a></dt>
+<dd><p>Generates a plot of the root mean square velocity (RMS V) from raw data.</p>
+<p>This function creates a directory for analysis, copies the provided raw data file,
+and calculates the RMS velocity for each step in the data. It then generates a plot
+of the RMS velocity over time and saves it as a PNG file.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>raw_data_file</strong> (<em>str</em>) – The path to the raw data file to be analyzed.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The function saves the RMS velocity plot to the analysis directory.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
 <dl class="py function">
 <dt class="sig sig-object py" id="qlicS.analysis.get_number_atoms">
 <span class="sig-prename descclassname"><span class="pre">qlicS.analysis.</span></span><span class="sig-name descname"><span class="pre">get_number_atoms</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">raw_data_copy</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#qlicS.analysis.get_number_atoms" title="Link to this definition">¶</a></dt>
@@ -74,19 +205,2050 @@
 <dl class="py function">
 <dt class="sig sig-object py" id="qlicS.analysis.velocities">
 <span class="sig-prename descclassname"><span class="pre">qlicS.analysis.</span></span><span class="sig-name descname"><span class="pre">velocities</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">atom_range</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">step_range</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">velocity_indices</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#qlicS.analysis.velocities" title="Link to this definition">¶</a></dt>
-<dd><p>Retrieves the velocities of atoms from a dump file and
-returns a dictionary mapping atom names to their velocity components.</p>
+<dd><p>Retrieves the velocities of atoms from a dump file and returns a dictionary
+mapping atom names to their corresponding velocity components.</p>
+<p>This function reads atom velocity data from a specified dump file, allowing
+the user to define ranges for atoms and steps, as well as which velocity
+components to extract. The resulting dictionary contains atom names as keys
+and their velocity components as values.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>atom_range</strong> (<em>tuple</em><em>, </em><em>optional</em>) – A tuple specifying the range of atoms to consider.</p></li>
-<li><p><strong>None.</strong> (<em>Defaults to</em>)</p></li>
-<li><p><strong>step_range</strong> (<em>tuple</em><em>, </em><em>optional</em>) – A tuple specifying the range of steps to consider.</p></li>
-<li><p><strong>None.</strong></p></li>
-<li><p><strong>velocity_indices</strong> (<em>list</em><em>, </em><em>optional</em>) – A list specifying the indices of velocity</p></li>
-<li><p><strong>[</strong><strong>3</strong> (<em>components to extract. Defaults to</em>)</p></li>
-<li><p><strong>6</strong><strong>]</strong><strong>.</strong></p></li>
+<li><p><strong>atom_range</strong> (<em>tuple</em><em>, </em><em>optional</em>) – A tuple specifying the range of atoms to consider.
+Defaults to (None, None).</p></li>
+<li><p><strong>step_range</strong> (<em>tuple</em><em>, </em><em>optional</em>) – A tuple specifying the range of steps to consider.
+Defaults to (None, None).</p></li>
+<li><p><strong>velocity_indices</strong> (<em>list</em><em>, </em><em>optional</em>) – A list specifying the indices of velocity
+components to extract. Defaults to [3, 6].</p></li>
 </ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A dictionary mapping atom names to their velocity components.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>dict</p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+<section id="qlics-arbitrary-static-efield">
+<h2>qlicS.arbitrary_static_efield<a class="headerlink" href="#qlics-arbitrary-static-efield" title="Link to this heading">¶</a></h2>
+<dl class="py function" id="module-qlicS.arbitrary_static_efield">
+<dt class="sig sig-object py" id="qlicS.arbitrary_static_efield.create_static_field">
+<span class="sig-prename descclassname"><span class="pre">qlicS.arbitrary_static_efield.</span></span><span class="sig-name descname"><span class="pre">create_static_field</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">type_pos</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">uid</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#qlicS.arbitrary_static_efield.create_static_field" title="Link to this definition">¶</a></dt>
+<dd><p>Generates the configuration for a static electric field in the simulation.</p>
+<p>This function constructs the necessary parameters and commands for a static
+electric field based on the provided configuration and type position. It calculates
+the electric field components and prepares the commands to apply the static
+field effect to the specified region in the simulation.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>type_pos</strong> (<em>str</em>) – The type or position of the static electric field being configured.</p></li>
+<li><p><strong>uid</strong> (<em>str</em>) – A unique identifier for the static field configuration.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A dictionary containing the UID and generated commands for the static
+electric field.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>dict</p>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>KeyError</strong> – If the required configuration parameters are not found.</p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+<section id="module-qlicS.cl_console">
+<span id="qlics-cl-console"></span><h2>qlicS.cl_console<a class="headerlink" href="#module-qlicS.cl_console" title="Link to this heading">¶</a></h2>
+<p>Command-line interface.</p>
+</section>
+<section id="module-qlicS.command_mapping">
+<span id="qlics-command-mapping"></span><h2>qlicS.command_mapping<a class="headerlink" href="#module-qlicS.command_mapping" title="Link to this heading">¶</a></h2>
+<dl class="py function">
+<dt class="sig sig-object py" id="qlicS.command_mapping.give_command_mapping">
+<span class="sig-prename descclassname"><span class="pre">qlicS.command_mapping.</span></span><span class="sig-name descname"><span class="pre">give_command_mapping</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#qlicS.command_mapping.give_command_mapping" title="Link to this definition">¶</a></dt>
+<dd><p>Returns a mapping of command names to their corresponding functions.</p>
+<p>This function provides a dictionary that associates specific command names used
+in the Quantum Logic Ion Control Simulator with their respective function
+implementations. This mapping facilitates the dynamic execution of commands
+based on user input or configuration.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>A dictionary mapping command names (str) to their corresponding
+function implementations.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>dict</p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+<section id="module-qlicS.config_controller">
+<span id="qlics-config-controller"></span><h2>qlicS.config_controller<a class="headerlink" href="#module-qlicS.config_controller" title="Link to this heading">¶</a></h2>
+<dl class="py function">
+<dt class="sig sig-object py" id="qlicS.config_controller.commit_changes">
+<span class="sig-prename descclassname"><span class="pre">qlicS.config_controller.</span></span><span class="sig-name descname"><span class="pre">commit_changes</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#qlicS.config_controller.commit_changes" title="Link to this definition">¶</a></dt>
+<dd><p>Writes the current configuration to a file.</p>
+<p>This function saves the global configuration dictionary to a specified
+INI file, ensuring that all changes made to the configuration are
+persisted. It opens the file in write mode and uses the <cite>configur</cite>
+object to write the current settings.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>None</strong> – This function does not take any arguments.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>This function does not return a value; it performs a file
+write operation to save the configuration.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="qlicS.config_controller.configur_cloud_reset">
+<span class="sig-prename descclassname"><span class="pre">qlicS.config_controller.</span></span><span class="sig-name descname"><span class="pre">configur_cloud_reset</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">type_pos</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">initial_atom_id</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">style</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">radius</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">count</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#qlicS.config_controller.configur_cloud_reset" title="Link to this definition">¶</a></dt>
+<dd><p>Configures the reset parameters for an ion cloud in the simulation.</p>
+<p>This function updates the global configuration dictionary with the parameters
+defining how an ion cloud should be reset, including the initial atom ID,
+style of the reset, radius, and the number of atoms in the cloud. This allows
+for detailed specification of cloud reset behavior in the Quantum Logic Ion
+Control Simulator.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>type_pos</strong> (<em>str</em>) – The type or position of the ion cloud being reset.</p></li>
+<li><p><strong>initial_atom_id</strong> (<em>int</em>) – The ID of the atom from which the reset will start.</p></li>
+<li><p><strong>style</strong> (<em>str</em>) – The style of the reset operation.</p></li>
+<li><p><strong>radius</strong> (<em>float</em>) – The radius of the ion cloud.</p></li>
+<li><p><strong>count</strong> (<em>int</em>) – The number of ions in the cloud after the reset.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>This function does not return a value; it modifies the global configuration
+dictionary directly.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="qlicS.config_controller.configur_constants">
+<span class="sig-prename descclassname"><span class="pre">qlicS.config_controller.</span></span><span class="sig-name descname"><span class="pre">configur_constants</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">h</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">c</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">amu</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ele_charge</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">kb</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#qlicS.config_controller.configur_constants" title="Link to this definition">¶</a></dt>
+<dd><p>Sets the physical constants in the configuration.</p>
+<p>This function updates the global configuration dictionary with fundamental
+physical constants such as Planck’s constant, the speed of light, atomic mass
+unit, elementary charge, and Boltzmann’s constant. This allows for easy access
+to these constants throughout the Quantum Logic Ion Control Simulator.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>h</strong> (<em>float</em>) – Planck’s constant.</p></li>
+<li><p><strong>c</strong> (<em>float</em>) – The speed of light in vacuum.</p></li>
+<li><p><strong>amu</strong> (<em>float</em>) – Atomic mass unit.</p></li>
+<li><p><strong>ele_charge</strong> (<em>float</em>) – Elementary charge.</p></li>
+<li><p><strong>kb</strong> (<em>float</em>) – Boltzmann’s constant.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>This function does not return a value; it modifies the global configuration
+dictionary directly.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="qlicS.config_controller.configur_cooling_laser">
+<span class="sig-prename descclassname"><span class="pre">qlicS.config_controller.</span></span><span class="sig-name descname"><span class="pre">configur_cooling_laser</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">uid</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">type_pos</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">target_ion_pos</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">target_ion_type</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">beam_radius</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">saturation_paramater</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">detunning</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">laser_direction</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">laser_origin_position</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#qlicS.config_controller.configur_cooling_laser" title="Link to this definition">¶</a></dt>
+<dd><p>Configures the properties of a cooling laser in the simulation.</p>
+<p>This function updates the global configuration dictionary with the parameters
+defining a cooling laser, including its unique identifier, target ion position,
+and various operational characteristics. This allows for detailed specification
+of cooling lasers used in the Quantum Logic Ion Control Simulator.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>uid</strong> (<em>str</em>) – A unique identifier for the cooling laser configuration.</p></li>
+<li><p><strong>type_pos</strong> (<em>str</em>) – The type or position of the cooling laser being configured.</p></li>
+<li><p><strong>target_ion_pos</strong> (<em>tuple</em>) – The position of the target ion for the cooling laser.</p></li>
+<li><p><strong>target_ion_type</strong> (<em>str</em>) – The type of the target ion being cooled.</p></li>
+<li><p><strong>beam_radius</strong> (<em>float</em>) – The radius of the cooling laser beam.</p></li>
+<li><p><strong>saturation_paramater</strong> (<em>float</em>) – The saturation parameter for the laser.</p></li>
+<li><p><strong>detunning</strong> (<em>float</em>) – The detuning of the laser frequency from the target ion transition.</p></li>
+<li><p><strong>laser_direction</strong> (<em>tuple</em>) – The direction vector of the laser beam.</p></li>
+<li><p><strong>laser_origin_position</strong> (<em>tuple</em>) – The origin position of the laser in the simulation.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>This function does not return a value; it modifies the global configuration
+dictionary directly.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="qlicS.config_controller.configur_ion_cloud">
+<span class="sig-prename descclassname"><span class="pre">qlicS.config_controller.</span></span><span class="sig-name descname"><span class="pre">configur_ion_cloud</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">type_pos</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">uid</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">species</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">radius</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">count</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#qlicS.config_controller.configur_ion_cloud" title="Link to this definition">¶</a></dt>
+<dd><p>Configures the properties of an ion cloud in the simulation.</p>
+<p>This function updates the global configuration dictionary with the parameters
+defining an ion cloud, including its unique identifier, species, radius, and
+the number of ions. This allows for detailed specification of ion clouds used
+in the Quantum Logic Ion Control Simulator.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>type_pos</strong> (<em>str</em>) – The type or position of the ion cloud being configured.</p></li>
+<li><p><strong>uid</strong> (<em>str</em>) – A unique identifier for the ion cloud configuration.</p></li>
+<li><p><strong>species</strong> (<em>str</em>) – The species of the ions in the cloud.</p></li>
+<li><p><strong>radius</strong> (<em>float</em>) – The radius of the ion cloud.</p></li>
+<li><p><strong>count</strong> (<em>int</em>) – The number of ions in the cloud.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>This function does not return a value; it modifies the global configuration
+dictionary directly.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="qlicS.config_controller.configur_ions">
+<span class="sig-prename descclassname"><span class="pre">qlicS.config_controller.</span></span><span class="sig-name descname"><span class="pre">configur_ions</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ions</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#qlicS.config_controller.configur_ions" title="Link to this definition">¶</a></dt>
+<dd><p>Sets the ion configurations in the global configuration.</p>
+<p>This function updates the global configuration dictionary with the provided
+ion definitions, allowing the simulation to utilize the specified ions.
+This facilitates the management of ion properties within the Quantum Logic
+Ion Control Simulator.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>ions</strong> (<em>dict</em>) – A dictionary containing the definitions and properties of the ions.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>This function does not return a value; it modifies the global configuration
+dictionary directly.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="qlicS.config_controller.configur_iter">
+<span class="sig-prename descclassname"><span class="pre">qlicS.config_controller.</span></span><span class="sig-name descname"><span class="pre">configur_iter</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">scan_objects</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">scan_var</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">scan_var_seq</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">iter_timesequence</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">iter_detection_seq</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">com_list</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#qlicS.config_controller.configur_iter" title="Link to this definition">¶</a></dt>
+<dd><p>Configures the iteration parameters for the simulation.</p>
+<p>This function updates the global configuration dictionary with the parameters
+related to the iteration process, including scan objects, scan variables,
+time sequences, and command lists. This allows for detailed specification of
+iteration behavior in the Quantum Logic Ion Control Simulator.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>scan_objects</strong> (<em>list</em>) – A list of objects to be scanned during the iteration.</p></li>
+<li><p><strong>scan_var</strong> (<em>str</em>) – The variable that will be scanned.</p></li>
+<li><p><strong>scan_var_seq</strong> (<em>list</em>) – The sequence of values for the scan variable.</p></li>
+<li><p><strong>iter_timesequence</strong> (<em>list</em>) – The time sequence for the iteration.</p></li>
+<li><p><strong>iter_detection_seq</strong> (<em>list</em>) – The sequence of detection events during the iteration.</p></li>
+<li><p><strong>com_list</strong> (<em>list</em>) – A list of commands to be executed during the iteration.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>This function does not return a value; it modifies the global configuration
+dictionary directly.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="qlicS.config_controller.configur_modulation">
+<span class="sig-prename descclassname"><span class="pre">qlicS.config_controller.</span></span><span class="sig-name descname"><span class="pre">configur_modulation</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">type_pos</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">uid</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">amp</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">frequency</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Ex0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Exx1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Exx2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Exy1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Exy2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Exz1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Exz2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Ey0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Eyx1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Eyx2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Eyy1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Eyy2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Eyz1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Eyz2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Ez0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Ezx1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Ezx2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Ezy1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Ezy2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Ezz1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Ezz2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">x_shift</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y_shift</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">z_shift</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">static</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#qlicS.config_controller.configur_modulation" title="Link to this definition">¶</a></dt>
+<dd><p>Configures the modulation parameters for a specified type of modulation.</p>
+<p>This function updates the global configuration dictionary with modulation parameters
+based on the provided values. It includes settings for electric field components,
+shifts, and other modulation characteristics, allowing for detailed control over the
+modulation process in the simulation.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>type_pos</strong> (<em>str</em>) – The type of modulation being configured.</p></li>
+<li><p><strong>uid</strong> (<em>str</em>) – A unique identifier for the modulation configuration.</p></li>
+<li><p><strong>amp</strong> (<em>float</em>) – The amplitude of the modulation.</p></li>
+<li><p><strong>frequency</strong> (<em>float</em>) – The frequency of the modulation.</p></li>
+<li><p><strong>Ex0</strong> (<em>float</em>) – Electric field components in the x-direction.</p></li>
+<li><p><strong>Exx1</strong> (<em>float</em>) – Electric field components in the x-direction.</p></li>
+<li><p><strong>Exx2</strong> (<em>float</em>) – Electric field components in the x-direction.</p></li>
+<li><p><strong>Exy1</strong> (<em>float</em>) – Electric field components in the x-direction.</p></li>
+<li><p><strong>Exy2</strong> (<em>float</em>) – Electric field components in the x-direction.</p></li>
+<li><p><strong>Exz1</strong> (<em>float</em>) – Electric field components in the x-direction.</p></li>
+<li><p><strong>Exz2</strong> (<em>float</em>) – Electric field components in the x-direction.</p></li>
+<li><p><strong>Ey0</strong> (<em>float</em>) – Electric field components in the y-direction.</p></li>
+<li><p><strong>Eyx1</strong> (<em>float</em>) – Electric field components in the y-direction.</p></li>
+<li><p><strong>Eyx2</strong> (<em>float</em>) – Electric field components in the y-direction.</p></li>
+<li><p><strong>Eyy1</strong> (<em>float</em>) – Electric field components in the y-direction.</p></li>
+<li><p><strong>Eyy2</strong> (<em>float</em>) – Electric field components in the y-direction.</p></li>
+<li><p><strong>Eyz1</strong> (<em>float</em>) – Electric field components in the y-direction.</p></li>
+<li><p><strong>Eyz2</strong> (<em>float</em>) – Electric field components in the y-direction.</p></li>
+<li><p><strong>Ez0</strong> (<em>float</em>) – Electric field components in the z-direction.</p></li>
+<li><p><strong>Ezx1</strong> (<em>float</em>) – Electric field components in the z-direction.</p></li>
+<li><p><strong>Ezx2</strong> (<em>float</em>) – Electric field components in the z-direction.</p></li>
+<li><p><strong>Ezy1</strong> (<em>float</em>) – Electric field components in the z-direction.</p></li>
+<li><p><strong>Ezy2</strong> (<em>float</em>) – Electric field components in the z-direction.</p></li>
+<li><p><strong>Ezz1</strong> (<em>float</em>) – Electric field components in the z-direction.</p></li>
+<li><p><strong>Ezz2</strong> (<em>float</em>) – Electric field components in the z-direction.</p></li>
+<li><p><strong>x_shift</strong> (<em>float</em>) – The shift in the x-direction.</p></li>
+<li><p><strong>y_shift</strong> (<em>float</em>) – The shift in the y-direction.</p></li>
+<li><p><strong>z_shift</strong> (<em>float</em>) – The shift in the z-direction.</p></li>
+<li><p><strong>static</strong> (<em>bool</em>) – A flag indicating whether the modulation is static.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>This function does not return a value; it modifies the global configuration
+dictionary directly.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="qlicS.config_controller.configur_scattering_laser">
+<span class="sig-prename descclassname"><span class="pre">qlicS.config_controller.</span></span><span class="sig-name descname"><span class="pre">configur_scattering_laser</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">scattered_ion_indices</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">target_species</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">laser_direction</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">saturation_paramater</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">frequency</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#qlicS.config_controller.configur_scattering_laser" title="Link to this definition">¶</a></dt>
+<dd><p>Configures the properties of a scattering laser in the simulation.</p>
+<p>This function updates the global configuration dictionary with the parameters
+defining a scattering laser, including the indices of scattered ions, the target
+species, and various operational characteristics. This allows for detailed
+specification of scattering lasers used in the Quantum Logic Ion Control Simulator.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>scattered_ion_indices</strong> (<em>list</em>) – A list of indices for the ions that will be scattered.</p></li>
+<li><p><strong>target_species</strong> (<em>str</em>) – The species of the target ions for the scattering process.</p></li>
+<li><p><strong>laser_direction</strong> (<em>tuple</em>) – The direction vector of the scattering laser.</p></li>
+<li><p><strong>saturation_paramater</strong> (<em>float</em>) – The saturation parameter for the laser.</p></li>
+<li><p><strong>frequency</strong> (<em>float</em>) – The frequency of the scattering laser.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>This function does not return a value; it modifies the global configuration
+dictionary directly.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="qlicS.config_controller.configur_static_efield">
+<span class="sig-prename descclassname"><span class="pre">qlicS.config_controller.</span></span><span class="sig-name descname"><span class="pre">configur_static_efield</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">type_pos</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">uid</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">amp</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">x_bound</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y_bound</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">z_bound</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Ex0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Exx1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Exx2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Exy1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Exy2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Exz1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Exz2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Ey0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Eyx1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Eyx2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Eyy1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Eyy2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Eyz1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Eyz2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Ez0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Ezx1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Ezx2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Ezy1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Ezy2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Ezz1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Ezz2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">x_shift</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y_shift</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">z_shift</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#qlicS.config_controller.configur_static_efield" title="Link to this definition">¶</a></dt>
+<dd><p>Configures the parameters for a static electric field in the simulation.</p>
+<p>This function updates the global configuration dictionary with the parameters
+defining a static electric field, including its unique identifier, amplitude,
+bounds, and electric field components. This allows for detailed specification
+of static electric fields used in the Quantum Logic Ion Control Simulator.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>type_pos</strong> (<em>str</em>) – The type or position of the static electric field being configured.</p></li>
+<li><p><strong>uid</strong> (<em>str</em>) – A unique identifier for the static electric field configuration.</p></li>
+<li><p><strong>amp</strong> (<em>float</em>) – The amplitude of the electric field.</p></li>
+<li><p><strong>x_bound</strong> (<em>list</em>) – The bounds for the electric field in the x-direction.</p></li>
+<li><p><strong>y_bound</strong> (<em>list</em>) – The bounds for the electric field in the y-direction.</p></li>
+<li><p><strong>z_bound</strong> (<em>list</em>) – The bounds for the electric field in the z-direction.</p></li>
+<li><p><strong>Ex0</strong> (<em>float</em>) – Electric field components in the x-direction.</p></li>
+<li><p><strong>Exx1</strong> (<em>float</em>) – Electric field components in the x-direction.</p></li>
+<li><p><strong>Exx2</strong> (<em>float</em>) – Electric field components in the x-direction.</p></li>
+<li><p><strong>Exy1</strong> (<em>float</em>) – Electric field components in the x-direction.</p></li>
+<li><p><strong>Exy2</strong> (<em>float</em>) – Electric field components in the x-direction.</p></li>
+<li><p><strong>Exz1</strong> (<em>float</em>) – Electric field components in the x-direction.</p></li>
+<li><p><strong>Exz2</strong> (<em>float</em>) – Electric field components in the x-direction.</p></li>
+<li><p><strong>Ey0</strong> (<em>float</em>) – Electric field components in the y-direction.</p></li>
+<li><p><strong>Eyx1</strong> (<em>float</em>) – Electric field components in the y-direction.</p></li>
+<li><p><strong>Eyx2</strong> (<em>float</em>) – Electric field components in the y-direction.</p></li>
+<li><p><strong>Eyy1</strong> (<em>float</em>) – Electric field components in the y-direction.</p></li>
+<li><p><strong>Eyy2</strong> (<em>float</em>) – Electric field components in the y-direction.</p></li>
+<li><p><strong>Eyz1</strong> (<em>float</em>) – Electric field components in the y-direction.</p></li>
+<li><p><strong>Eyz2</strong> (<em>float</em>) – Electric field components in the y-direction.</p></li>
+<li><p><strong>Ez0</strong> (<em>float</em>) – Electric field components in the z-direction.</p></li>
+<li><p><strong>Ezx1</strong> (<em>float</em>) – Electric field components in the z-direction.</p></li>
+<li><p><strong>Ezx2</strong> (<em>float</em>) – Electric field components in the z-direction.</p></li>
+<li><p><strong>Ezy1</strong> (<em>float</em>) – Electric field components in the z-direction.</p></li>
+<li><p><strong>Ezy2</strong> (<em>float</em>) – Electric field components in the z-direction.</p></li>
+<li><p><strong>Ezz1</strong> (<em>float</em>) – Electric field components in the z-direction.</p></li>
+<li><p><strong>Ezz2</strong> (<em>float</em>) – Electric field components in the z-direction.</p></li>
+<li><p><strong>x_shift</strong> (<em>float</em>) – The shift in the x-direction.</p></li>
+<li><p><strong>y_shift</strong> (<em>float</em>) – The shift in the y-direction.</p></li>
+<li><p><strong>z_shift</strong> (<em>float</em>) – The shift in the z-direction.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>This function does not return a value; it modifies the global configuration
+dictionary directly.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="qlicS.config_controller.configur_trap">
+<span class="sig-prename descclassname"><span class="pre">qlicS.config_controller.</span></span><span class="sig-name descname"><span class="pre">configur_trap</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">type_pos</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">uid</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">target_ion_pos</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">radius</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">length</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">kappa</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">frequency</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">voltage</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">endcapvoltage</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pseudo</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#qlicS.config_controller.configur_trap" title="Link to this definition">¶</a></dt>
+<dd><p>Configures the properties of a trap in the simulation.</p>
+<p>This function updates the global configuration dictionary with the parameters
+defining a trap, including its unique identifier, target ion position, dimensions,
+and operational characteristics. This allows for detailed specification of traps
+used in the Quantum Logic Ion Control Simulator.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>type_pos</strong> (<em>str</em>) – The type or position of the trap being configured.</p></li>
+<li><p><strong>uid</strong> (<em>str</em>) – A unique identifier for the trap configuration.</p></li>
+<li><p><strong>target_ion_pos</strong> (<em>tuple</em>) – The position of the target ion in the trap.</p></li>
+<li><p><strong>radius</strong> (<em>float</em>) – The radius of the trap.</p></li>
+<li><p><strong>length</strong> (<em>float</em>) – The length of the trap.</p></li>
+<li><p><strong>kappa</strong> (<em>float</em>) – The parameter related to the trap’s field configuration.</p></li>
+<li><p><strong>frequency</strong> (<em>float</em>) – The operating frequency of the trap.</p></li>
+<li><p><strong>voltage</strong> (<em>float</em>) – The voltage applied to the trap.</p></li>
+<li><p><strong>endcapvoltage</strong> (<em>float</em>) – The voltage applied to the endcaps of the trap.</p></li>
+<li><p><strong>pseudo</strong> (<em>bool</em>) – A flag indicating whether the trap is a pseudo trap.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>This function does not return a value; it modifies the global configuration
+dictionary directly.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="qlicS.config_controller.create_config">
+<span class="sig-prename descclassname"><span class="pre">qlicS.config_controller.</span></span><span class="sig-name descname"><span class="pre">create_config</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dump_dir</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#qlicS.config_controller.create_config" title="Link to this definition">¶</a></dt>
+<dd><p>Initializes the configuration settings for the simulation.</p>
+<p>This function sets up the initial configuration parameters, including the
+directory for data dumps and the current position in the time sequence.
+It also calls the <cite>create_universe</cite> function to establish the necessary
+physical constants and ion configurations for the simulation.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>dump_dir</strong> (<em>str</em>) – The directory path where data dumps will be stored.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>This function does not return a value; it modifies the global
+configuration dictionary directly.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="qlicS.config_controller.create_exp_seq">
+<span class="sig-prename descclassname"><span class="pre">qlicS.config_controller.</span></span><span class="sig-name descname"><span class="pre">create_exp_seq</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">exp_seq</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#qlicS.config_controller.create_exp_seq" title="Link to this definition">¶</a></dt>
+<dd><p>Creates and stores the experimental sequence in the configuration.</p>
+<p>This function updates the global configuration dictionary with the experimental
+sequence provided as a string. This allows for the storage and retrieval of
+the command list used in the Quantum Logic Ion Control Simulator.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>exp_seq</strong> (<em>str</em>) – A string representing the experimental sequence of commands.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>This function does not return a value; it modifies the global configuration
+dictionary directly.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="qlicS.config_controller.create_sim_skeleton">
+<span class="sig-prename descclassname"><span class="pre">qlicS.config_controller.</span></span><span class="sig-name descname"><span class="pre">create_sim_skeleton</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">log_steps</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">timesequence</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lammps_boundary_style</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lammps_boundary_locations</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lammps_allow_lost</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">detection_timestep_seq</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">detector_area</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">detector_effeciency</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">detector_distance</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">GPU</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#qlicS.config_controller.create_sim_skeleton" title="Link to this definition">¶</a></dt>
+<dd><p>Sets up the simulation parameters and detection configuration.</p>
+<p>This function initializes the simulation parameters and detection settings
+by populating the global configuration dictionary with the provided values.
+It includes parameters such as logging steps, time sequences, and detector
+specifications, which are essential for running the simulation.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>log_steps</strong> (<em>int</em>) – The number of steps between log events in the simulation.</p></li>
+<li><p><strong>timesequence</strong> (<em>list</em>) – A list defining the duration and sequence of timesteps.</p></li>
+<li><p><strong>detection_timestep_seq</strong> (<em>list</em>) – A sequence of timesteps for detection events.</p></li>
+<li><p><strong>detector_area</strong> (<em>float</em>) – The area of the detector in square meters.</p></li>
+<li><p><strong>detector_effeciency</strong> (<em>float</em>) – The efficiency of the detector (0 to 1).</p></li>
+<li><p><strong>detector_distance</strong> (<em>float</em>) – The distance of the detector from the source in meters.</p></li>
+<li><p><strong>GPU</strong> (<em>bool</em><em>, </em><em>optional</em>) – A flag indicating whether to use GPU for the simulation. Defaults to False.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>This function does not return a value; it modifies the global configuration
+dictionary directly.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="qlicS.config_controller.create_universe">
+<span class="sig-prename descclassname"><span class="pre">qlicS.config_controller.</span></span><span class="sig-name descname"><span class="pre">create_universe</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#qlicS.config_controller.create_universe" title="Link to this definition">¶</a></dt>
+<dd><p>Initializes the physical constants and ion configurations for the simulation.</p>
+<p>This function sets up the necessary physical constants and defines the properties
+of ions used in the Quantum Logic Ion Control Simulator. It populates the configuration
+with constants such as Planck’s constant, speed of light, and properties for Beryllium
+and O2 ions, which are essential for the simulation’s calculations.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>This function does not return a value; it modifies the global configuration
+dictionary directly.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="qlicS.config_controller.dump_dir">
+<span class="sig-prename descclassname"><span class="pre">qlicS.config_controller.</span></span><span class="sig-name descname"><span class="pre">dump_dir</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">setup</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#qlicS.config_controller.dump_dir" title="Link to this definition">¶</a></dt>
+<dd><p>Generates or retrieves the directory for dumping data.</p>
+<p>This function creates a timestamped directory for storing data dumps based on
+the current working directory. If the <cite>setup</cite> parameter is set to True, it
+creates the directory; otherwise, it retrieves the existing dump directory
+from the configuration.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>setup</strong> (<em>bool</em><em>, </em><em>optional</em>) – A flag indicating whether to create a new dump
+directory. Defaults to True.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The path to the dump directory.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="qlicS.config_controller.get_ions">
+<span class="sig-prename descclassname"><span class="pre">qlicS.config_controller.</span></span><span class="sig-name descname"><span class="pre">get_ions</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#qlicS.config_controller.get_ions" title="Link to this definition">¶</a></dt>
+<dd><p>Retrieves a list of ion types from the configuration.</p>
+<p>This function extracts the keys representing different ion types from the
+configuration dictionary and returns them as a list. It allows for easy
+access to the defined ions in the Quantum Logic Ion Control Simulator.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>None</strong> – This function does not take any arguments.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A list of strings representing the ion types defined in the configuration.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>list</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="qlicS.config_controller.get_sections">
+<span class="sig-prename descclassname"><span class="pre">qlicS.config_controller.</span></span><span class="sig-name descname"><span class="pre">get_sections</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#qlicS.config_controller.get_sections" title="Link to this definition">¶</a></dt>
+<dd><p>Retrieves a list of sections from the configuration.</p>
+<p>This function accesses the configuration dictionary and returns a list of
+all defined sections. It provides a convenient way to obtain the structure
+of the configuration used in the Quantum Logic Ion Control Simulator.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>None</strong> – This function does not take any arguments.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A list of strings representing the names of the sections in the configuration.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>list</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="qlicS.config_controller.setup_sequence">
+<span class="sig-prename descclassname"><span class="pre">qlicS.config_controller.</span></span><span class="sig-name descname"><span class="pre">setup_sequence</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#qlicS.config_controller.setup_sequence" title="Link to this definition">¶</a></dt>
+<dd><p>Initializes the directory and configuration for the simulation.</p>
+<p>This function sets up the necessary directory for data dumps and initializes
+the configuration settings by calling the <cite>create_config</cite> function. It also
+prepares the environment for the simulation by defining the global directory
+variable.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>None</strong> – This function does not take any arguments.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>This function does not return a value; it modifies the global
+variable and configuration directly.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+<section id="module-qlicS.console_resources">
+<span id="qlics-console-resources"></span><h2>qlicS.console_resources<a class="headerlink" href="#module-qlicS.console_resources" title="Link to this heading">¶</a></h2>
+<dl class="py function">
+<dt class="sig sig-object py" id="qlicS.console_resources.batch_config_dialogue">
+<span class="sig-prename descclassname"><span class="pre">qlicS.console_resources.</span></span><span class="sig-name descname"><span class="pre">batch_config_dialogue</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#qlicS.console_resources.batch_config_dialogue" title="Link to this definition">¶</a></dt>
+<dd><p>Prompts the user to enter a directory containing batch configuration files.</p>
+<p>This function uses an interactive prompt to request the user to provide
+the path to a parent directory that contains <cite>.ini</cite> files for batch processing.
+It validates the input to ensure that it is a valid directory, facilitating
+the setup of batch configurations in the Quantum Logic Ion Control Simulator.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>None</strong> – This function does not take any arguments.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The path to the directory entered by the user.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>ValueError</strong> – If the input is not a valid directory.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="qlicS.console_resources.config_file_dialogue">
+<span class="sig-prename descclassname"><span class="pre">qlicS.console_resources.</span></span><span class="sig-name descname"><span class="pre">config_file_dialogue</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#qlicS.console_resources.config_file_dialogue" title="Link to this definition">¶</a></dt>
+<dd><p>Prompts the user to enter a configuration file path.</p>
+<p>This function uses an interactive prompt to request the user to provide
+the path to a configuration file with a <cite>.ini</cite> extension. It validates
+the input to ensure that it is a valid file path, allowing for proper
+configuration loading in the Quantum Logic Ion Control Simulator.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>None</strong> – This function does not take any arguments.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The path to the configuration file entered by the user.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>ValueError</strong> – If the input is not a valid file path.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="qlicS.console_resources.count_type_pos">
+<span class="sig-prename descclassname"><span class="pre">qlicS.console_resources.</span></span><span class="sig-name descname"><span class="pre">count_type_pos</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">loading_configur</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#qlicS.console_resources.count_type_pos" title="Link to this definition">¶</a></dt>
+<dd><p>Counts the occurrences of command types in the experimental sequence.</p>
+<p>This function analyzes the command sequence defined in the provided
+configuration and counts how many times each command type appears.
+It also checks for the presence of iteration commands and updates the
+counts accordingly, returning a dictionary that reflects the number of
+each command type used in the experiment.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>loading_configur</strong> (<em>ConfigParser</em>) – The configuration object containing
+the experimental sequence and iteration commands.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A dictionary mapping command types (str) to their respective
+counts (int).</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>dict</p>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>KeyError</strong> – If the expected keys are not found in the configuration.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="qlicS.console_resources.followup_questions_creator">
+<span class="sig-prename descclassname"><span class="pre">qlicS.console_resources.</span></span><span class="sig-name descname"><span class="pre">followup_questions_creator</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#qlicS.console_resources.followup_questions_creator" title="Link to this definition">¶</a></dt>
+<dd><p>Creates a mapping of follow-up questions for different simulation components.</p>
+<p>This function generates a dictionary that contains lists of follow-up questions
+tailored for various components of the Quantum Logic Ion Control Simulator, such
+as ion clouds, traps, cooling lasers, and modulation settings. Each component has
+specific questions that guide the user in providing necessary parameters for the
+simulation setup.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>A dictionary mapping component types (str) to their corresponding
+lists of follow-up questions (list).</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>dict</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="qlicS.console_resources.get_cloud_inputs">
+<span class="sig-prename descclassname"><span class="pre">qlicS.console_resources.</span></span><span class="sig-name descname"><span class="pre">get_cloud_inputs</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">type_pos</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#qlicS.console_resources.get_cloud_inputs" title="Link to this definition">¶</a></dt>
+<dd><p>Retrieves the configuration for a specified ion cloud type.</p>
+<p>This function extracts and returns the parameters defined for a specific
+ion cloud type from the loading configuration. It provides easy access to
+the ion cloud settings necessary for managing ion clouds in the Quantum
+Logic Ion Control Simulator.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>type_pos</strong> (<em>str</em>) – The type or position of the ion cloud for which to
+retrieve the configuration.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A dictionary containing the ion cloud parameters for the specified
+type.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>dict</p>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>KeyError</strong> – If the specified ion cloud configuration is not found in</p></li>
+<li><p><strong>the loading configuration.</strong> – </p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="qlicS.console_resources.get_cloud_reset">
+<span class="sig-prename descclassname"><span class="pre">qlicS.console_resources.</span></span><span class="sig-name descname"><span class="pre">get_cloud_reset</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">type_pos</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#qlicS.console_resources.get_cloud_reset" title="Link to this definition">¶</a></dt>
+<dd><p>Retrieves the reset configuration for a specified ion cloud type.</p>
+<p>This function extracts and returns the parameters defined for resetting
+a specific ion cloud type from the loading configuration. It provides
+easy access to the reset settings necessary for managing ion clouds in
+the Quantum Logic Ion Control Simulator.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>type_pos</strong> (<em>str</em>) – The type or position of the ion cloud for which to
+retrieve the reset configuration.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A dictionary containing the reset parameters for the specified
+ion cloud type.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>dict</p>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>KeyError</strong> – If the specified cloud reset configuration is not found</p></li>
+<li><p><strong>in the loading configuration.</strong> – </p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="qlicS.console_resources.get_constants">
+<span class="sig-prename descclassname"><span class="pre">qlicS.console_resources.</span></span><span class="sig-name descname"><span class="pre">get_constants</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#qlicS.console_resources.get_constants" title="Link to this definition">¶</a></dt>
+<dd><p>Retrieves the physical constants from the loading configuration.</p>
+<p>This function extracts and returns the constants defined in the loading
+configuration as a dictionary. It provides easy access to the fundamental
+physical constants used throughout the Quantum Logic Ion Control Simulator.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>None</strong> – This function does not take any arguments.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A dictionary containing the physical constants from the loading
+configuration.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>dict</p>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>KeyError</strong> – If the “constants” section is not found in the loading configuration.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="qlicS.console_resources.get_cooling_laser_inputs">
+<span class="sig-prename descclassname"><span class="pre">qlicS.console_resources.</span></span><span class="sig-name descname"><span class="pre">get_cooling_laser_inputs</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">type_pos</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#qlicS.console_resources.get_cooling_laser_inputs" title="Link to this definition">¶</a></dt>
+<dd><p>Retrieves the configuration for a specified cooling laser type.</p>
+<p>This function extracts and returns the parameters defined for a specific
+cooling laser type from the loading configuration. It provides easy access
+to the cooling laser settings necessary for managing cooling lasers in the
+Quantum Logic Ion Control Simulator.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>type_pos</strong> (<em>str</em>) – The type or position of the cooling laser for which to
+retrieve the configuration.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A dictionary containing the cooling laser parameters for the specified
+type.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>dict</p>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>KeyError</strong> – If the specified cooling laser configuration is not found in</p></li>
+<li><p><strong>the loading configuration.</strong> – </p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="qlicS.console_resources.get_exp_seq">
+<span class="sig-prename descclassname"><span class="pre">qlicS.console_resources.</span></span><span class="sig-name descname"><span class="pre">get_exp_seq</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#qlicS.console_resources.get_exp_seq" title="Link to this definition">¶</a></dt>
+<dd><p>Retrieves the experimental sequence from the loading configuration.</p>
+<p>This function accesses the loading configuration to obtain the list of
+commands that define the experimental sequence for the simulation. It
+provides a straightforward way to access the sequence of operations to be
+executed in the Quantum Logic Ion Control Simulator.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>None</strong> – This function does not take any arguments.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The experimental sequence command list retrieved from the loading configuration.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>KeyError</strong> – If the “exp_seq” section is not found in the loading configuration.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="qlicS.console_resources.get_ions_inputs">
+<span class="sig-prename descclassname"><span class="pre">qlicS.console_resources.</span></span><span class="sig-name descname"><span class="pre">get_ions_inputs</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#qlicS.console_resources.get_ions_inputs" title="Link to this definition">¶</a></dt>
+<dd><p>Retrieves the ion configurations from the loading configuration.</p>
+<p>This function extracts and returns the ion-related parameters defined in
+the loading configuration as a dictionary. It provides easy access to the
+properties of the ions used in the Quantum Logic Ion Control Simulator.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>None</strong> – This function does not take any arguments.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A dictionary containing the ion configurations from the loading
+configuration.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>dict</p>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>KeyError</strong> – If the “ions” section is not found in the loading configuration.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="qlicS.console_resources.get_iter_inputs">
+<span class="sig-prename descclassname"><span class="pre">qlicS.console_resources.</span></span><span class="sig-name descname"><span class="pre">get_iter_inputs</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#qlicS.console_resources.get_iter_inputs" title="Link to this definition">¶</a></dt>
+<dd><p>Retrieves the configuration for iteration parameters.</p>
+<p>This function extracts and returns the parameters defined for iterations
+from the loading configuration. It provides easy access to the settings
+necessary for managing iteration behavior in the Quantum Logic Ion Control
+Simulator.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>None</strong> – This function does not take any arguments.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A dictionary containing the iteration parameters from the loading
+configuration.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>dict</p>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>KeyError</strong> – If the “iter” section is not found in the loading configuration.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="qlicS.console_resources.get_modulation_inputs">
+<span class="sig-prename descclassname"><span class="pre">qlicS.console_resources.</span></span><span class="sig-name descname"><span class="pre">get_modulation_inputs</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">type_pos</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#qlicS.console_resources.get_modulation_inputs" title="Link to this definition">¶</a></dt>
+<dd><p>Retrieves the modulation configuration for a specified type.</p>
+<p>This function extracts and returns the parameters defined for a specific
+modulation type from the loading configuration. It provides easy access to
+the modulation settings necessary for managing the modulation process in
+the Quantum Logic Ion Control Simulator.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>type_pos</strong> (<em>str</em>) – The type or position of the modulation for which to
+retrieve the configuration.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A dictionary containing the modulation parameters for the specified
+type.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>dict</p>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>KeyError</strong> – If the specified modulation configuration is not found</p></li>
+<li><p><strong>in the loading configuration.</strong> – </p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="qlicS.console_resources.get_scattering_laser_inputs">
+<span class="sig-prename descclassname"><span class="pre">qlicS.console_resources.</span></span><span class="sig-name descname"><span class="pre">get_scattering_laser_inputs</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#qlicS.console_resources.get_scattering_laser_inputs" title="Link to this definition">¶</a></dt>
+<dd><p>Retrieves the configuration for the scattering laser.</p>
+<p>This function extracts and returns the parameters defined for the scattering
+laser from the loading configuration. It provides easy access to the scattering
+laser settings necessary for managing the laser in the Quantum Logic Ion Control
+Simulator.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>None</strong> – This function does not take any arguments.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A dictionary containing the scattering laser parameters from the
+loading configuration.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>dict</p>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>KeyError</strong> – If the “scattering_laser” section is not found in the loading configuration.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="qlicS.console_resources.get_sim_skeleton_inputs">
+<span class="sig-prename descclassname"><span class="pre">qlicS.console_resources.</span></span><span class="sig-name descname"><span class="pre">get_sim_skeleton_inputs</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#qlicS.console_resources.get_sim_skeleton_inputs" title="Link to this definition">¶</a></dt>
+<dd><p>Retrieves simulation and detection parameters from the configuration.</p>
+<p>This function extracts the simulation parameters and detection settings
+from the provided configuration. If the detection section is not present,
+it initializes default values, ensuring that all necessary parameters are
+available for the simulation skeleton.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>None</strong> – This function does not take any arguments.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><dl class="simple">
+<dt>A tuple containing two dictionaries:</dt><dd><ul class="simple">
+<li><p>sim_params (dict): A dictionary of simulation parameters.</p></li>
+<li><p>detection_params (dict): A dictionary of detection parameters.</p></li>
+</ul>
+</dd>
+</dl>
+</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>tuple</p>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>KeyError</strong> – If expected keys are not found in the configuration.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="qlicS.console_resources.get_static_efield_inputs">
+<span class="sig-prename descclassname"><span class="pre">qlicS.console_resources.</span></span><span class="sig-name descname"><span class="pre">get_static_efield_inputs</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">type_pos</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#qlicS.console_resources.get_static_efield_inputs" title="Link to this definition">¶</a></dt>
+<dd><p>Retrieves the static electric field configuration for a specified type.</p>
+<p>This function extracts and returns the parameters defined for a specific
+static electric field type from the loading configuration. It provides easy
+access to the static electric field settings necessary for managing the
+electric field in the Quantum Logic Ion Control Simulator.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>type_pos</strong> (<em>str</em>) – The type or position of the static electric field for which
+to retrieve the configuration.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A dictionary containing the static electric field parameters for the
+specified type.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>dict</p>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>KeyError</strong> – If the specified static electric field configuration is not found</p></li>
+<li><p><strong>in the loading configuration.</strong> – </p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="qlicS.console_resources.get_trap_inputs">
+<span class="sig-prename descclassname"><span class="pre">qlicS.console_resources.</span></span><span class="sig-name descname"><span class="pre">get_trap_inputs</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">type_pos</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#qlicS.console_resources.get_trap_inputs" title="Link to this definition">¶</a></dt>
+<dd><p>Retrieves the configuration for a specified trap type.</p>
+<p>This function extracts and returns the parameters defined for a specific
+trap type from the loading configuration. It provides easy access to the
+trap settings necessary for managing traps in the Quantum Logic Ion Control
+Simulator.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>type_pos</strong> (<em>str</em>) – The type or position of the trap for which to
+retrieve the configuration.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A dictionary containing the trap parameters for the specified
+type.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>dict</p>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>KeyError</strong> – If the specified trap configuration is not found in</p></li>
+<li><p><strong>the loading configuration.</strong> – </p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="qlicS.console_resources.mode_dialogue">
+<span class="sig-prename descclassname"><span class="pre">qlicS.console_resources.</span></span><span class="sig-name descname"><span class="pre">mode_dialogue</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#qlicS.console_resources.mode_dialogue" title="Link to this definition">¶</a></dt>
+<dd><p>Prompts the user to select an operational mode for the simulator.</p>
+<p>This function presents a list of available modes for the Quantum Logic Ion Control
+Simulator and allows the user to select one. The selected mode determines the
+subsequent actions and configurations for the simulation.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>None</strong> – This function does not take any arguments.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The mode selected by the user from the available options.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>ValueError</strong> – If the user input is invalid or not recognized.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="qlicS.console_resources.run_from_batch">
+<span class="sig-prename descclassname"><span class="pre">qlicS.console_resources.</span></span><span class="sig-name descname"><span class="pre">run_from_batch</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#qlicS.console_resources.run_from_batch" title="Link to this definition">¶</a></dt>
+<dd><p>Executes simulations based on a batch of configuration files.</p>
+<p>This function retrieves a list of <cite>.ini</cite> configuration files from a specified
+batch directory and runs simulations for each configuration file using the
+<cite>run_from_file</cite> function in optimization mode. It is designed to facilitate
+batch processing of experiments in the Quantum Logic Ion Control Simulator.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>**kwargs</strong> – Additional keyword arguments that may be used for future
+enhancements related to batch optimization.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>This function does not return a value; it executes simulations
+based on the configurations found in the batch directory.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>None</p>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>ValueError</strong> – If the batch directory does not contain any <cite>.ini</cite> files.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="qlicS.console_resources.run_from_file">
+<span class="sig-prename descclassname"><span class="pre">qlicS.console_resources.</span></span><span class="sig-name descname"><span class="pre">run_from_file</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">optimize_mode</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#qlicS.console_resources.run_from_file" title="Link to this definition">¶</a></dt>
+<dd><p>Runs a simulation based on the configuration provided in a file.</p>
+<p>This function initializes the simulation by loading configuration settings
+from a specified file or user input, setting up the necessary parameters
+for various components such as ion clouds, traps, and lasers. It also
+allows for optional optimization of the experiment based on provided
+arguments.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>optimize_mode</strong> (<em>bool</em><em>, </em><em>optional</em>) – A flag indicating whether to run in
+optimization mode. Defaults to False.</p></li>
+<li><p><strong>**kwargs</strong> – Additional keyword arguments that can override default
+parameters for the simulation.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>This function does not return a value; it executes the simulation
+based on the configured parameters.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>None</p>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>ValueError</strong> – If no experiment is provided for optimization when</p></li>
+<li><p><strong>optimize_mode</strong> – </p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="qlicS.console_resources.setup_loading_configur">
+<span class="sig-prename descclassname"><span class="pre">qlicS.console_resources.</span></span><span class="sig-name descname"><span class="pre">setup_loading_configur</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">loading_config_file</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#qlicS.console_resources.setup_loading_configur" title="Link to this definition">¶</a></dt>
+<dd><p>Loads the configuration from a specified .ini file.</p>
+<p>This function reads the configuration settings from the provided .ini file
+and raises errors if the file is not specified or if the format is incorrect.
+It ensures that the configuration is properly loaded for use in the simulation.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>loading_config_file</strong> (<em>str</em>) – The path to the .ini configuration file to be loaded.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The loaded configuration object.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>ConfigParser</p>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>FileNotFoundError</strong> – If the loading configuration file is not provided.</p></li>
+<li><p><strong>ValueError</strong> – If the provided file format is not .ini.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+<section id="qlics-exp-sequence-controller">
+<h2>qlicS.exp_sequence_controller<a class="headerlink" href="#qlics-exp-sequence-controller" title="Link to this heading">¶</a></h2>
+<dl class="py function" id="module-qlicS.exp_sequence_controller">
+<dt class="sig sig-object py" id="qlicS.exp_sequence_controller.append_iter">
+<span class="sig-prename descclassname"><span class="pre">qlicS.exp_sequence_controller.</span></span><span class="sig-name descname"><span class="pre">append_iter</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">s</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ion_groups</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#qlicS.exp_sequence_controller.append_iter" title="Link to this definition">¶</a></dt>
+<dd><p>Appends iteration commands to the simulation based on configuration settings.</p>
+<p>This function retrieves iteration-related parameters from the configuration
+and processes them to append the necessary commands for the simulation.
+It handles the mapping of scan objects and variables, updates the simulation
+state, and manages the removal of atoms based on their unique identifiers.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>s</strong> (<em>Simulation</em>) – The simulation object to which iteration commands will be appended.</p></li>
+<li><p><strong>ion_groups</strong> (<em>list</em>) – A list of ion groups involved in the iteration process.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>This function does not return a value; it modifies the simulation
+object directly.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>None</p>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>KeyError</strong> – If expected keys are not found in the configuration.</p></li>
+<li><p><strong>ValueError</strong> – If the configuration contains invalid data.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="qlicS.exp_sequence_controller.com_appending">
+<span class="sig-prename descclassname"><span class="pre">qlicS.exp_sequence_controller.</span></span><span class="sig-name descname"><span class="pre">com_appending</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">s</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">commands</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">command_mapping</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">type_poses</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ion_groups</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">is_iter</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">iter_step</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#qlicS.exp_sequence_controller.com_appending" title="Link to this definition">¶</a></dt>
+<dd><p>Appends commands to the simulation based on the provided command list.</p>
+<p>This function processes a list of commands and appends the corresponding
+simulation objects to the provided simulation instance. It handles various
+command types, including iteration commands, and manages the configuration
+of ion clouds, traps, cooling lasers, and other components based on the
+current state of the simulation.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>s</strong> (<em>Simulation</em>) – The simulation object to which commands will be appended.</p></li>
+<li><p><strong>commands</strong> (<em>list</em>) – A list of command strings to be processed.</p></li>
+<li><p><strong>command_mapping</strong> (<em>dict</em>) – A mapping of command names to their corresponding functions.</p></li>
+<li><p><strong>type_poses</strong> (<em>dict</em>) – A dictionary tracking the current position of each command type.</p></li>
+<li><p><strong>ion_groups</strong> (<em>list</em>) – A list of ion groups involved in the simulation.</p></li>
+<li><p><strong>is_iter</strong> (<em>bool</em>) – A flag indicating whether the commands are part of an iteration.</p></li>
+<li><p><strong>iter_step</strong> (<em>int</em><em>, </em><em>optional</em>) – The current iteration step, defaults to 0.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>This function does not return a value; it modifies the simulation
+object directly.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>None</p>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>ValueError</strong> – If a command is not recognized.</p></li>
+<li><p><strong>SyntaxError</strong> – If the command sequence is invalid based on the current state.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="qlicS.exp_sequence_controller.create_and_run_sim_gen">
+<span class="sig-prename descclassname"><span class="pre">qlicS.exp_sequence_controller.</span></span><span class="sig-name descname"><span class="pre">create_and_run_sim_gen</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#qlicS.exp_sequence_controller.create_and_run_sim_gen" title="Link to this definition">¶</a></dt>
+<dd><p>Creates and executes a simulation based on the configured parameters.</p>
+<p>This function initializes a simulation object and configures it based on
+the parameters defined in the global configuration. It processes the
+experimental sequence commands, executes the simulation, and writes the
+results to a CSV file, including scattering data and detection parameters.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>None</strong> – This function does not take any arguments.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A list of scattering data generated from the simulation.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>list</p>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>ValueError</strong> – If the configuration does not contain valid parameters for</p></li>
+<li><p><strong>execution.</strong> – </p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="qlicS.exp_sequence_controller.separate_word_and_int">
+<span class="sig-prename descclassname"><span class="pre">qlicS.exp_sequence_controller.</span></span><span class="sig-name descname"><span class="pre">separate_word_and_int</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">input_string</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#qlicS.exp_sequence_controller.separate_word_and_int" title="Link to this definition">¶</a></dt>
+<dd><p>Separates a string into a word and an optional integer suffix.</p>
+<p>This function takes an input string and uses a regular expression to extract
+the word part and an optional integer suffix that may be appended to the word.
+It returns the word and the integer as separate values, allowing for easy
+manipulation of the components.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>input_string</strong> (<em>str</em>) – The string to be separated into a word and an integer.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><dl class="simple">
+<dt>A tuple containing the word part (str) and the integer part (str or None).</dt><dd><p>If no integer part is present, the second element will be None.</p>
+</dd>
+</dl>
+</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>tuple</p>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>None</strong> – This function does not raise exceptions.</p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+<section id="module-qlicS.ion_creation">
+<span id="qlics-ion-creation"></span><h2>qlicS.ion_creation<a class="headerlink" href="#module-qlicS.ion_creation" title="Link to this heading">¶</a></h2>
+<dl class="py function">
+<dt class="sig sig-object py" id="qlicS.ion_creation.cloud_reset">
+<span class="sig-prename descclassname"><span class="pre">qlicS.ion_creation.</span></span><span class="sig-name descname"><span class="pre">cloud_reset</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">type_pos</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#qlicS.ion_creation.cloud_reset" title="Link to this definition">¶</a></dt>
+<dd><p>Resets the configuration of an ion cloud based on its type.</p>
+<p>This function retrieves the reset style for a specified ion cloud type
+from the configuration and calls the appropriate function to reset the
+cloud’s positions. Currently, it supports resetting clouds in a spherical
+distribution.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>type_pos</strong> (<em>str</em>) – The type or position of the ion cloud to be reset.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The result of the reset operation, which may include commands
+for repositioning the ions.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>dict</p>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>KeyError</strong> – If the specified cloud type does not exist in the configuration.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="qlicS.ion_creation.lammps_append_sph_cloud">
+<span class="sig-prename descclassname"><span class="pre">qlicS.ion_creation.</span></span><span class="sig-name descname"><span class="pre">lammps_append_sph_cloud</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">type_pos</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">uid</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#qlicS.ion_creation.lammps_append_sph_cloud" title="Link to this definition">¶</a></dt>
+<dd><p>Generates a spherical distribution of ion positions and prepares LAMMPS commands.</p>
+<p>This function creates a specified number of ion positions distributed
+uniformly within a sphere of a given radius and prepares the corresponding
+LAMMPS commands for adding these ions to a simulation. It retrieves the
+necessary parameters from the configuration and constructs the commands
+needed to append the ions to the simulation.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>type_pos</strong> (<em>str</em>) – The type or position of the ion cloud being created.</p></li>
+<li><p><strong>uid</strong> (<em>int</em>) – A unique identifier for the ions being created.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A dictionary containing the generated LAMMPS commands, the type of
+operation, and the mass and charge of the ions.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>dict</p>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>KeyError</strong> – If the required configuration parameters are not found.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="qlicS.ion_creation.pylion_cloud">
+<span class="sig-prename descclassname"><span class="pre">qlicS.ion_creation.</span></span><span class="sig-name descname"><span class="pre">pylion_cloud</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">type_pos</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">uid_override</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#qlicS.ion_creation.pylion_cloud" title="Link to this definition">¶</a></dt>
+<dd><p>Creates an ion cloud based on the specified type and configuration.</p>
+<p>This function generates an ion cloud using parameters defined in the
+configuration, such as species, radius, and count. It allows for an optional
+override of the unique identifier (UID) for the created ion cloud, enabling
+flexibility in managing multiple ion clouds within the simulation.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>type_pos</strong> (<em>str</em>) – The type or position of the ion cloud being created.</p></li>
+<li><p><strong>uid_override</strong> (<em>str</em><em>, </em><em>optional</em>) – An optional UID to override the default UID
+from the configuration. Defaults to None.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A dictionary representing the created ion cloud, including its
+properties and UID.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>dict</p>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>KeyError</strong> – If the required configuration parameters are not found.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="qlicS.ion_creation.recloud_spherical">
+<span class="sig-prename descclassname"><span class="pre">qlicS.ion_creation.</span></span><span class="sig-name descname"><span class="pre">recloud_spherical</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">type_pos</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#qlicS.ion_creation.recloud_spherical" title="Link to this definition">¶</a></dt>
+<dd><p>Generates new positions for ions in a spherical distribution.</p>
+<p>This function calculates new positions for a specified number of ions
+within a sphere of a given radius, based on the configuration settings
+for the specified ion cloud type. It constructs the necessary commands
+to reset the positions of these ions in the simulation.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>type_pos</strong> (<em>str</em>) – The type or position of the ion cloud being reset.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A dictionary containing the generated commands to reset the
+positions of the ions.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>dict</p>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>KeyError</strong> – If the required configuration parameters are not found.</p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+<section id="module-qlicS.laser_cooling_force">
+<span id="qlics-laser-cooling-force"></span><h2>qlicS.laser_cooling_force<a class="headerlink" href="#module-qlicS.laser_cooling_force" title="Link to this heading">¶</a></h2>
+<dl class="py function">
+<dt class="sig sig-object py" id="qlicS.laser_cooling_force.create_cooling_laser">
+<span class="sig-prename descclassname"><span class="pre">qlicS.laser_cooling_force.</span></span><span class="sig-name descname"><span class="pre">create_cooling_laser</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">uid</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cycle_info</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">gid</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">type_pos</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#qlicS.laser_cooling_force.create_cooling_laser" title="Link to this definition">¶</a></dt>
+<dd><p>Generates the configuration for a cooling laser in the simulation.</p>
+<p>This function constructs the necessary parameters and commands for a cooling
+laser based on the provided configuration and cycle information. It calculates
+various properties such as frequency, wave number, and forces, and prepares
+the commands to apply the cooling effect to the specified target species.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>uid</strong> (<em>str</em>) – A unique identifier for the cooling laser configuration.</p></li>
+<li><p><strong>cycle_info</strong> (<em>dict</em>) – A dictionary containing information about the absorption
+center and natural linewidth of the target ion.</p></li>
+<li><p><strong>gid</strong> (<em>int</em>) – The group ID for the species to which the cooling force will be applied.</p></li>
+<li><p><strong>type_pos</strong> (<em>str</em>) – The type or position of the cooling laser being configured.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A dictionary containing the UID, generated commands for the cooling
+laser, and any additional lines needed for the simulation.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>dict</p>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>KeyError</strong> – If the required configuration parameters are not found.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="qlicS.laser_cooling_force.get_F_0">
+<span class="sig-prename descclassname"><span class="pre">qlicS.laser_cooling_force.</span></span><span class="sig-name descname"><span class="pre">get_F_0</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">k</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sat_param</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">gamma</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#qlicS.laser_cooling_force.get_F_0" title="Link to this definition">¶</a></dt>
+<dd><p>Calculates the cooling force for laser cooling.</p>
+<p>This function computes the initial cooling force based on the provided
+wave vector, saturation parameter, and natural linewidth. It uses the
+constants defined in the configuration to perform the calculation,
+returning the result as a floating-point number.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>k</strong> (<em>float</em>) – The wave vector associated with the laser.</p></li>
+<li><p><strong>sat_param</strong> (<em>float</em>) – The saturation parameter for the laser.</p></li>
+<li><p><strong>gamma</strong> (<em>float</em>) – The natural linewidth of the transition.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The calculated cooling force.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>np.float64</p>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>KeyError</strong> – If the required constants are not found in the configuration.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="qlicS.laser_cooling_force.get_beta">
+<span class="sig-prename descclassname"><span class="pre">qlicS.laser_cooling_force.</span></span><span class="sig-name descname"><span class="pre">get_beta</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">k</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">s_0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">gamma</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">delta</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#qlicS.laser_cooling_force.get_beta" title="Link to this definition">¶</a></dt>
+<dd><p>Calculates the beta parameter for laser cooling.</p>
+<p>This function computes the beta parameter, which is used to describe the
+effectiveness of laser cooling based on the wave vector, saturation parameter,
+natural linewidth, and detuning. The calculation utilizes constants defined in
+the configuration to derive the result, returning it as a floating-point number.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>k</strong> (<em>float</em>) – The wave vector associated with the laser.</p></li>
+<li><p><strong>s_0</strong> (<em>float</em>) – The saturation parameter for the laser.</p></li>
+<li><p><strong>gamma</strong> (<em>float</em>) – The natural linewidth of the transition.</p></li>
+<li><p><strong>delta</strong> (<em>float</em>) – The detuning of the laser frequency from the atomic transition.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The calculated beta parameter.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>np.float64</p>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>KeyError</strong> – If the required constants are not found in the configuration.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="qlicS.laser_cooling_force.get_doppler_limit">
+<span class="sig-prename descclassname"><span class="pre">qlicS.laser_cooling_force.</span></span><span class="sig-name descname"><span class="pre">get_doppler_limit</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">gamma</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">delta</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#qlicS.laser_cooling_force.get_doppler_limit" title="Link to this definition">¶</a></dt>
+<dd><p>Calculates the Doppler limit for laser cooling.</p>
+<p>This function computes the Doppler limit, which defines the maximum cooling
+achievable due to the Doppler effect in laser cooling scenarios. It uses
+the natural linewidth and detuning to derive the limit, incorporating physical
+constants defined in the configuration.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>gamma</strong> (<em>float</em>) – The natural linewidth of the transition.</p></li>
+<li><p><strong>delta</strong> (<em>float</em>) – The detuning of the laser frequency from the atomic transition.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The calculated Doppler limit for the cooling process.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>float</p>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>KeyError</strong> – If the required constants are not found in the configuration.</p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+<section id="module-qlicS.mloop_controller">
+<span id="qlics-mloop-controller"></span><h2>qlicS.mloop_controller<a class="headerlink" href="#module-qlicS.mloop_controller" title="Link to this heading">¶</a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="qlicS.mloop_controller.CustomInterface">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">qlicS.mloop_controller.</span></span><span class="sig-name descname"><span class="pre">CustomInterface</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Any</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Any</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#qlicS.mloop_controller.CustomInterface" title="Link to this definition">¶</a></dt>
+<dd><p>Custom interface for managing experiments in the M-LOOP framework.</p>
+<p>This class extends the base interface to provide functionality for
+managing and executing experiments. It initializes with a specified
+experiment directory and a file path for formulae, allowing for
+dynamic retrieval of run information.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>experiment_dir</strong> (<em>str</em>) – The directory where the experiment data is stored.</p></li>
+<li><p><strong>formulae_filepath</strong> (<em>str</em>) – The file path to the formulae used for run information.</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="qlicS.mloop_controller.CustomInterface.get_next_cost_dict">
+<span class="sig-name descname"><span class="pre">get_next_cost_dict</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">params_dict</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#qlicS.mloop_controller.CustomInterface.get_next_cost_dict" title="Link to this definition">¶</a></dt>
+<dd><p>Retrieves the next cost dictionary based on</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py">
+<span class="sig-name descname"><span class="pre">the</span> <span class="pre">provided</span> <span class="pre">parameters,</span> <span class="pre">utilizing</span> <span class="pre">the</span> <span class="pre">run</span> <span class="pre">information</span> <span class="pre">function.</span></span></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="id0">
+<span class="sig-name descname"><span class="pre">get_next_cost_dict</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">params_dict</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#id0" title="Link to this definition">¶</a></dt>
+<dd><p>Calculates the next cost dictionary based on provided parameters.</p>
+<p>This method retrieves the parameters from the given dictionary and uses
+them to obtain the next cost for the simulation. It interacts with the
+run information function to gather necessary data for cost calculation.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>params_dict</strong> (<em>dict</em>) – A dictionary containing parameters for the simulation,
+specifically under the key “params”.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The next cost dictionary based on the current parameters.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>dict</p>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>KeyError</strong> – If the “params” key is not found in the provided dictionary.</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="qlicS.mloop_controller.get_function_from_file">
+<span class="sig-prename descclassname"><span class="pre">qlicS.mloop_controller.</span></span><span class="sig-name descname"><span class="pre">get_function_from_file</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">file_path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">function_name</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#qlicS.mloop_controller.get_function_from_file" title="Link to this definition">¶</a></dt>
+<dd><p>Loads a function from a specified file and returns it.</p>
+<p>This function dynamically imports a module from a given file path and retrieves
+a specified function by name. It allows for the execution of functions defined
+in external Python files, facilitating modular programming and code reuse.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>file_path</strong> (<em>str</em>) – The path to the Python file from which to load the function.</p></li>
+<li><p><strong>function_name</strong> (<em>str</em>) – The name of the function to retrieve from the module.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The function object retrieved from the specified module.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>function</p>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>AttributeError</strong> – If the specified function is not found in the module.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="qlicS.mloop_controller.mainmloop">
+<span class="sig-prename descclassname"><span class="pre">qlicS.mloop_controller.</span></span><span class="sig-name descname"><span class="pre">mainmloop</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">experiment_dir</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mloop_formulae_file</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#qlicS.mloop_controller.mainmloop" title="Link to this definition">¶</a></dt>
+<dd><p>Runs the M-LOOP optimization process for the specified experiment.</p>
+<p>This function initializes the M-LOOP framework by creating a custom interface
+and a controller based on the provided experiment directory and formulae file.
+It executes the optimization process to find the best parameters and handles
+visualization of the results.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>experiment_dir</strong> (<em>str</em>) – The directory where the experiment data is stored.</p></li>
+<li><p><strong>mloop_formulae_file</strong> (<em>str</em>) – The file path to the M-LOOP formulae used for optimization.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>This function does not return a value; it performs the optimization
+and visualizations directly.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>None</p>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>FileNotFoundError</strong> – If the specified formulae file does not exist.</p></li>
+<li><p><strong>ValueError</strong> – If the controller cannot be created or if there are issues</p></li>
+<li><p><strong>during the optimization process.</strong> – </p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+<section id="module-qlicS.remover">
+<span id="qlics-remover"></span><h2>qlicS.remover<a class="headerlink" href="#module-qlicS.remover" title="Link to this heading">¶</a></h2>
+<dl class="py function">
+<dt class="sig sig-object py" id="qlicS.remover.delete_atoms_by_uid">
+<span class="sig-prename descclassname"><span class="pre">qlicS.remover.</span></span><span class="sig-name descname"><span class="pre">delete_atoms_by_uid</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">s</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">uid</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#qlicS.remover.delete_atoms_by_uid" title="Link to this definition">¶</a></dt>
+<dd><p>Deletes a group of atoms from the simulation by their unique identifier (UID).</p>
+<p>This function constructs a command to delete a specified group of atoms identified
+by its UID and appends this command to the provided simulation object. It allows
+for the effective management of atom groups within the simulation environment.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>s</strong> (<em>Simulation</em>) – The simulation object to which the delete command will be appended.</p></li>
+<li><p><strong>uid</strong> (<em>str</em>) – The unique identifier of the atom group to be deleted.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>This function does not return a value; it modifies the simulation
+object directly.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="qlicS.remover.remove_by_uid">
+<span class="sig-prename descclassname"><span class="pre">qlicS.remover.</span></span><span class="sig-name descname"><span class="pre">remove_by_uid</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">s</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">uid</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#qlicS.remover.remove_by_uid" title="Link to this definition">¶</a></dt>
+<dd><p>Removes a simulation fix by its unique identifier (UID).</p>
+<p>This function constructs a command to unfix a specified simulation component
+identified by its UID and appends this command to the provided simulation
+object. It facilitates the management of simulation components by allowing
+for the removal of fixes during the simulation process.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>s</strong> (<em>Simulation</em>) – The simulation object to which the unfix command will be appended.</p></li>
+<li><p><strong>uid</strong> (<em>str</em>) – The unique identifier of the fix to be removed.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>This function does not return a value; it modifies the simulation
+object directly.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>None</p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+<section id="module-qlicS.resources">
+<span id="qlics-resources"></span><h2>qlicS.resources<a class="headerlink" href="#module-qlicS.resources" title="Link to this heading">¶</a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="qlicS.resources.PathStringValidator">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">qlicS.resources.</span></span><span class="sig-name descname"><span class="pre">PathStringValidator</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">message</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'Input</span> <span class="pre">is</span> <span class="pre">not</span> <span class="pre">a</span> <span class="pre">valid</span> <span class="pre">path'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">is_file</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">is_dir</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#qlicS.resources.PathStringValidator" title="Link to this definition">¶</a></dt>
+<dd><p>Validator to check if input is a valid file or directory path.</p>
+<p>This class extends the <cite>Validator</cite> from the <cite>prompt_toolkit</cite> to provide
+functionality for validating file and directory paths. It can be configured
+to check whether the input corresponds to an existing file or directory,
+and it provides an error message when validation fails.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>message</strong> (<em>str</em><em>, </em><em>optional</em>) – The error message to display when validation fails.
+Defaults to “Input is not a valid path”.</p></li>
+<li><p><strong>is_file</strong> (<em>bool</em><em>, </em><em>optional</em>) – If set to True, the validator checks if the input
+is a valid file path. Defaults to False.</p></li>
+<li><p><strong>is_dir</strong> (<em>bool</em><em>, </em><em>optional</em>) – If set to True, the validator checks if the input
+is a valid directory path. Defaults to False.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>ValidationError</strong> – If the input does not meet the specified validation criteria.</p>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="qlicS.resources.PathStringValidator.validate">
+<span class="sig-name descname"><span class="pre">validate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">document</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#qlicS.resources.PathStringValidator.validate" title="Link to this definition">¶</a></dt>
+<dd><p>Validates the input document to check if it corresponds to a valid file or directory path.</p>
+<p>This method processes the text from the input document, removing any surrounding
+quotes, and checks if the resulting path is a valid file or directory based on
+the configuration settings. If the validation fails, it raises a <cite>ValidationError</cite>
+with an appropriate error message.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>document</strong> (<em>Document</em>) – The input document containing the text to be validated.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>This function does not return a value; it raises an exception if validation fails.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>None</p>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>ValidationError</strong> – If the input path is not a valid file or directory.</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="module-qlicS.scattering">
+<span id="qlics-scattering"></span><h2>qlicS.scattering<a class="headerlink" href="#module-qlicS.scattering" title="Link to this heading">¶</a></h2>
+<dl class="py function">
+<dt class="sig sig-object py" id="qlicS.scattering.get_scattering">
+<span class="sig-prename descclassname"><span class="pre">qlicS.scattering.</span></span><span class="sig-name descname"><span class="pre">get_scattering</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#qlicS.scattering.get_scattering" title="Link to this definition">¶</a></dt>
+<dd><p>Retrieves the scattering results based on the detection sequence.</p>
+<p>This function collects the detection timesteps from the configuration and
+computes the scattering results for each defined interval. If the experimental
+sequence includes iteration commands, it applies corrections to the detection
+sequence before calculating the scattering results.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>None</strong> – This function does not take any arguments.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A list of results containing the start and stop times along with
+the corresponding scattering counts for each detection interval.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>list</p>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>KeyError</strong> – If the required keys are not found in the configuration.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="qlicS.scattering.illuminate">
+<span class="sig-prename descclassname"><span class="pre">qlicS.scattering.</span></span><span class="sig-name descname"><span class="pre">illuminate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">start_stop_pairs</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">laser_config</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#qlicS.scattering.illuminate" title="Link to this definition">¶</a></dt>
+<dd><p>Calculates the total photon count during the illumination of specified atoms.</p>
+<p>This function iterates over a range of timesteps and specified atoms to compute
+the total number of photons scattered by the target species under the influence
+of a laser. It utilizes the scattering rate and the velocities of the atoms to
+accumulate the photon count over the defined time interval.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>start_stop_pairs</strong> (<em>list</em>) – A list containing two elements that define the start
+and stop timesteps for the illumination process.</p></li>
+<li><p><strong>laser_config</strong> (<em>dict</em>) – A dictionary containing the configuration parameters for
+the laser, including target species and indices of scattered ions.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The total number of photons counted during the illumination.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>float</p>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>KeyError</strong> – If the required keys are not found in the provided laser configuration.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="qlicS.scattering.iter_correction">
+<span class="sig-prename descclassname"><span class="pre">qlicS.scattering.</span></span><span class="sig-name descname"><span class="pre">iter_correction</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">detection_seq</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#qlicS.scattering.iter_correction" title="Link to this definition">¶</a></dt>
+<dd><p>Adjusts the detection sequence based on iteration parameters.</p>
+<p>This function modifies the provided detection sequence by incorporating
+iteration information and adjusting the detection events according to the
+specified time sequences and iteration counts. It ensures that the detection
+events align correctly with the overall simulation timeline.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>detection_seq</strong> (<em>list</em>) – The original detection sequence to be corrected.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The updated detection sequence with corrected timing for iterations.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>list</p>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>KeyError</strong> – If the required keys are not found in the configuration.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="qlicS.scattering.scattering_rate">
+<span class="sig-prename descclassname"><span class="pre">qlicS.scattering.</span></span><span class="sig-name descname"><span class="pre">scattering_rate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">velocity</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">laser_config</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">species_info</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#qlicS.scattering.scattering_rate" title="Link to this definition">¶</a></dt>
+<dd><p>Calculates the scattering rate of an atom based on its velocity and laser parameters.</p>
+<p>This function computes the scattering rate using the atom’s velocity, the configuration
+of the laser, and the properties of the species involved. It takes into account the
+direction of the laser, saturation parameters, and the natural linewidth of the species
+to provide an accurate rate of scattering.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>velocity</strong> (<em>list</em>) – A list containing the velocity components of the atom [vx, vy, vz].</p></li>
+<li><p><strong>laser_config</strong> (<em>dict</em>) – A dictionary containing the configuration parameters of the laser,
+including direction and saturation parameter.</p></li>
+<li><p><strong>species_info</strong> (<em>dict</em>) – A dictionary containing information about the species, such as
+natural linewidth and absorption center.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The calculated scattering rate for the atom.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>float</p>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>KeyError</strong> – If the required keys are not found in the provided dictionaries.</p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+<section id="module-qlicS.sim_controller">
+<span id="qlics-sim-controller"></span><h2>qlicS.sim_controller<a class="headerlink" href="#module-qlicS.sim_controller" title="Link to this heading">¶</a></h2>
+<dl class="py function">
+<dt class="sig sig-object py" id="qlicS.sim_controller.pylion_dumping">
+<span class="sig-prename descclassname"><span class="pre">qlicS.sim_controller.</span></span><span class="sig-name descname"><span class="pre">pylion_dumping</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#qlicS.sim_controller.pylion_dumping" title="Link to this definition">¶</a></dt>
+<dd><p>Dumps the current positions and velocities of ions to a file.</p>
+<p>This function retrieves the directory for data dumps from the configuration
+and writes the positions and velocities of ions to a specified text file.
+It allows for the logging of simulation data at defined intervals, facilitating
+analysis and debugging.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>None</strong> – This function does not take any arguments.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>This function does not return a value; it performs a file write operation
+to save the ion data.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>None</p>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>KeyError</strong> – If the required configuration parameters are not found.</p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+<section id="module-qlicS.tickle_efield">
+<span id="qlics-tickle-efield"></span><h2>qlicS.tickle_efield<a class="headerlink" href="#module-qlicS.tickle_efield" title="Link to this heading">¶</a></h2>
+<dl class="py function">
+<dt class="sig sig-object py" id="qlicS.tickle_efield.create_tickle">
+<span class="sig-prename descclassname"><span class="pre">qlicS.tickle_efield.</span></span><span class="sig-name descname"><span class="pre">create_tickle</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">type_pos</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">uid</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#qlicS.tickle_efield.create_tickle" title="Link to this definition">¶</a></dt>
+<dd><p>Generates the configuration for a tickle electric field in the simulation.</p>
+<p>This function constructs the necessary parameters and commands for a tickle
+electric field based on the provided configuration and type position. It calculates
+the oscillating electric field components and prepares the commands to apply the
+tickle effect to the specified ions in the simulation.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>type_pos</strong> (<em>str</em>) – The type or position of the tickle electric field being configured.</p></li>
+<li><p><strong>uid</strong> (<em>str</em>) – A unique identifier for the tickle configuration.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A dictionary containing the UID and generated commands for the tickle
+electric field.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>dict</p>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>KeyError</strong> – If the required configuration parameters are not found.</p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+<section id="module-qlicS.time_controller">
+<span id="qlics-time-controller"></span><h2>qlicS.time_controller<a class="headerlink" href="#module-qlicS.time_controller" title="Link to this heading">¶</a></h2>
+<dl class="py function">
+<dt class="sig sig-object py" id="qlicS.time_controller.evolve">
+<span class="sig-prename descclassname"><span class="pre">qlicS.time_controller.</span></span><span class="sig-name descname"><span class="pre">evolve</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">add</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#qlicS.time_controller.evolve" title="Link to this definition">¶</a></dt>
+<dd><p>Advances the simulation by one timestep based on the current time sequence.</p>
+<p>This function retrieves the current time sequence and updates the simulation
+state by evolving it for the specified duration. It also updates the current
+timestep position in the configuration and writes the updated configuration to a file.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>add</strong> (<em>optional</em>) – Additional parameters to be passed to the evolution function.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A dictionary containing the commands for the updated timestep and
+the evolution code.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>dict</p>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>KeyError</strong> – If the required keys are not found in the configuration.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="qlicS.time_controller.get_current_dt">
+<span class="sig-prename descclassname"><span class="pre">qlicS.time_controller.</span></span><span class="sig-name descname"><span class="pre">get_current_dt</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#qlicS.time_controller.get_current_dt" title="Link to this definition">¶</a></dt>
+<dd><p>Retrieves the current timestep duration for the simulation.</p>
+<p>This function calculates the current timestep based on the simulation’s time
+sequence and the current position in that sequence. It also incorporates any
+additional iteration timesteps if they are defined in the configuration.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>None</strong> – This function does not take any arguments.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The duration of the current timestep for the simulation.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>float</p>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>KeyError</strong> – If the required keys are not found in the configuration.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="qlicS.time_controller.get_dt_given_timestep">
+<span class="sig-prename descclassname"><span class="pre">qlicS.time_controller.</span></span><span class="sig-name descname"><span class="pre">get_dt_given_timestep</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">timestep</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#qlicS.time_controller.get_dt_given_timestep" title="Link to this definition">¶</a></dt>
+<dd><p>Retrieves the duration associated with a specific timestep in the simulation.</p>
+<p>This function calculates the duration of the specified timestep by iterating
+through the time sequence defined in the configuration. It accounts for any
+corrections related to iteration timesteps and returns the corresponding duration
+if the timestep falls within the valid range.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>timestep</strong> (<em>float</em>) – The timestep for which to retrieve the corresponding duration.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The duration associated with the specified timestep.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>float</p>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>Exception</strong> – If the specified timestep is beyond the simulation duration.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="qlicS.time_controller.get_time_seq">
+<span class="sig-prename descclassname"><span class="pre">qlicS.time_controller.</span></span><span class="sig-name descname"><span class="pre">get_time_seq</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#qlicS.time_controller.get_time_seq" title="Link to this definition">¶</a></dt>
+<dd><p>Retrieves and processes the simulation time sequence.</p>
+<p>This function extracts the time sequence from the configuration and limits it
+based on the number of evolution commands present in the experimental sequence.
+It also applies any necessary corrections for iteration timesteps if defined in
+the configuration.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>None</strong> – This function does not take any arguments.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A list representing the processed time sequence for the simulation.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>list</p>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>KeyError</strong> – If the required keys are not found in the configuration.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="qlicS.time_controller.iter_correction">
+<span class="sig-prename descclassname"><span class="pre">qlicS.time_controller.</span></span><span class="sig-name descname"><span class="pre">iter_correction</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">time_sequence</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#qlicS.time_controller.iter_correction" title="Link to this definition">¶</a></dt>
+<dd><p>Adjusts the time sequence by appending iteration timesteps.</p>
+<p>This function modifies the provided time sequence by adding a specified number
+of iteration timesteps based on the configuration settings. It ensures that the
+time sequence accurately reflects the total duration of the simulation, including
+any iterations defined in the configuration.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>time_sequence</strong> (<em>list</em>) – The original time sequence to be corrected.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The updated time sequence with appended iteration timesteps.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>list</p>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>KeyError</strong> – If the required keys are not found in the configuration.</p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+<section id="module-qlicS.trap">
+<span id="qlics-trap"></span><h2>qlicS.trap<a class="headerlink" href="#module-qlicS.trap" title="Link to this heading">¶</a></h2>
+<dl class="py function">
+<dt class="sig sig-object py" id="qlicS.trap.gen_trap_lammps">
+<span class="sig-prename descclassname"><span class="pre">qlicS.trap.</span></span><span class="sig-name descname"><span class="pre">gen_trap_lammps</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">uid</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ions</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">type_pos</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#qlicS.trap.gen_trap_lammps" title="Link to this definition">¶</a></dt>
+<dd><p>Generates a LAMMPS command for a linear Paul trap.</p>
+<p>This function retrieves the parameters for a specified trap type from the
+configuration and constructs a command to create a linear Paul trap in
+the LAMMPS simulation. It allows for the specification of the trap’s
+characteristics and the ions that will be affected by the trap.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>uid</strong> (<em>str</em>) – A unique identifier for the trap being created.</p></li>
+<li><p><strong>ions</strong> (<em>list</em>) – A list of ions that will be affected by the trap.</p></li>
+<li><p><strong>type_pos</strong> (<em>str</em>) – The type or position of the trap being configured.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The result of the LAMMPS command for the linear Paul trap.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>object</p>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>KeyError</strong> – If the required trap parameters are not found in the configuration.</p>
 </dd>
 </dl>
 </dd></dl>

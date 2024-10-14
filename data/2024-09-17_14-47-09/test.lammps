@@ -1,0 +1,170 @@
+##################################################################
+# LAMMPS input file generated using pylion 0.5.3
+# simulation name: test
+#
+# pylion is written and maintained by Dimitris Trypogeorgos
+# and Elliot Bentine. Download it from
+# https://bitbucket.org/dtrypogeorgos/pylion
+#
+# If you find it useful please cite <paper>.
+##################################################################
+
+
+
+units si
+atom_style charge
+
+# Creating simulation box...
+boundary m m m
+region simulationDomain block -0.001  0.001 -0.001 0.001 -0.001 0.001 units box
+create_box 1 simulationDomain
+
+# Configure neighbour list...
+neighbor 1 nsq
+neigh_modify once yes
+
+# Configure pairwise interactions for long range Coulombics only...
+pair_style coul/cut 10
+pair_coeff * *
+
+# Placing individual ions...
+
+
+create_atoms 1 single -1.855370310843757e-05 -2.023581079724802e-05 -0.00014039534956676857 units box
+
+
+# Species...
+mass 1 1.4944851e-26
+set type 1 charge 1.6021764599999998e-19
+group 1 type 1
+
+
+
+# Configuring additional output to flush buffer during simulation...
+thermo 10000
+thermo_style custom step cpu temp
+thermo_modify flush no
+
+# Time integration...
+
+group nonRigidBody union all
+
+fix timeIntegrator nonRigidBody nve
+
+
+
+dump 10404243684 all custom 1 /Users/paulgrajzl/Documents/repos/qlicS/data/2024-09-17_14-47-09/positions.txt id x y z vx vy vz
+
+
+
+
+
+# Pseudopotential approximation for Linear Paul trap... (fixID=10000001)
+
+
+# SHO
+
+variable k_x10000001		equal 2.973789e-13
+
+variable k_y10000001		equal 2.973789e-13
+
+variable k_z10000001		equal 4.835556e-14
+
+variable fX10000001 atom "-v_k_x10000001 * x"
+
+variable fY10000001 atom "-v_k_y10000001 * y"
+
+variable fZ10000001 atom "-v_k_z10000001 * z"
+
+variable E10000001 atom "v_k_x10000001 * x * x /         2 + v_k_y10000001 * y * y / 2 + v_k_z10000001 * z * z / 2"
+
+fix 10000001 1 addforce         v_fX10000001 v_fY10000001 v_fZ10000001 energy v_E10000001
+
+
+
+
+variable coolx atom (9.269391837269081e-20-2.7034294221912685e-21*vx)*0.5000000000000001
+variable cooly atom (9.269391837269081e-20-2.7034294221912685e-21*vy)*0.5000000000000001
+variable coolz atom (9.269391837269081e-20-2.7034294221912685e-21*vz)*0.7071067811865476
+fix 569202603907002 1 addforce v_coolx v_cooly v_coolz
+
+variable targetT equal 0.0011864309468095074
+variable curr_temp equal temp
+
+
+
+
+variable E equal 0
+variable Ex atom (0.1*(100+0*(x-0)+0*(x-0)^2+0*(y-0)+0*(y-0)^2+0*(z-0)+0*(z-0)^2))*cos((2*3.141592653589793)*0.0071*step)
+variable B equal 0
+variable Ey atom (0.1*(0+0*(x-0)+0*(x-0)^2+0.0*(y-0)+0.0*(y-0)^2+0*(z-0)+0*(z-0)^2))*cos((2*3.141592653589793)*0.0071*step)
+variable C equal 0
+variable Ez atom (0.1*(0+0*(x-0)+0*(x-0)^2+0*(y-0)+0*(y-0)^2+0*(z-0)+0*(z-0)^2))*cos((2*3.141592653589793)*0.0071*step)
+fix 469202603907006 all efield v_Ex v_Ey v_Ez
+
+
+
+timestep 1e-08
+
+
+# Run simulation
+
+run 40000
+
+
+
+
+
+# Deleting a fix by uid
+
+unfix 469202603907006
+
+
+
+
+variable E equal 0
+variable Ex atom (0.1*(100+0*(x-0)+0*(x-0)^2+0*(y-0)+0*(y-0)^2+0*(z-0)+0*(z-0)^2))*cos((2*3.141592653589793)*0.00071*step)
+variable B equal 0
+variable Ey atom (0.1*(0+0*(x-0)+0*(x-0)^2+0.0*(y-0)+0.0*(y-0)^2+0*(z-0)+0*(z-0)^2))*cos((2*3.141592653589793)*0.00071*step)
+variable C equal 0
+variable Ez atom (0.1*(0+0*(x-0)+0*(x-0)^2+0*(y-0)+0*(y-0)^2+0*(z-0)+0*(z-0)^2))*cos((2*3.141592653589793)*0.00071*step)
+fix 469202603907007 all efield v_Ex v_Ey v_Ez
+
+
+
+timestep 1e-09
+
+
+# Run simulation
+
+run 150000
+
+
+
+
+
+# Deleting a fix by uid
+
+unfix 469202603907007
+
+
+
+
+variable E equal 0
+variable Ex atom (0.1*(100+0*(x-0)+0*(x-0)^2+0*(y-0)+0*(y-0)^2+0*(z-0)+0*(z-0)^2))*cos((2*3.141592653589793)*0.0142*step)
+variable B equal 0
+variable Ey atom (0.1*(0+0*(x-0)+0*(x-0)^2+0.0*(y-0)+0.0*(y-0)^2+0*(z-0)+0*(z-0)^2))*cos((2*3.141592653589793)*0.0142*step)
+variable C equal 0
+variable Ez atom (0.1*(0+0*(x-0)+0*(x-0)^2+0*(y-0)+0*(y-0)^2+0*(z-0)+0*(z-0)^2))*cos((2*3.141592653589793)*0.0142*step)
+fix 469202603907008 all efield v_Ex v_Ey v_Ez
+
+
+
+timestep 2e-08
+
+
+# Run simulation
+
+run 40000
+
+

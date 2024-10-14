@@ -28,7 +28,24 @@ from .resources import PathStringValidator
 @click.command()
 @click.version_option(version=__version__)
 def main():  # sourcery skip: use-named-expression
-    """qlicS: Quantum Logic Ion Control Simulator"""
+    """Main entry point for the Quantum Logic Ion Control Simulator (qlicS).
+
+    This function provides a command-line interface for users to interact with the 
+    Quantum Logic Ion Control Simulator. It allows users to create new experiments, 
+    run existing experiments, optimize experiments, and analyze completed experiments 
+    through a series of guided dialogues.
+
+    The user is prompted to select a mode of operation, which includes options to 
+    create a new experiment, run an experiment from a file, run a batch of experiments, 
+    optimize an experiment using M-LOOP, edit existing experiments, or analyze completed 
+    experiments. Depending on the selected mode, the function will guide the user through 
+    various configuration steps and collect necessary parameters.
+
+    Returns:
+        None: This function does not return a value; it interacts with the user 
+        through the command line and performs actions based on user input.
+    """
+
 
     # Whole user dialogue prepping the configuration before the setup sequence.
     # This will also include loading defaults or saved forms

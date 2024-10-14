@@ -15,6 +15,20 @@ loading_configur = ConfigParser()
 
 
 def followup_questions_creator():
+    """
+    Creates a mapping of follow-up questions for different simulation components.
+
+    This function generates a dictionary that contains lists of follow-up questions 
+    tailored for various components of the Quantum Logic Ion Control Simulator, such 
+    as ion clouds, traps, cooling lasers, and modulation settings. Each component has 
+    specific questions that guide the user in providing necessary parameters for the 
+    simulation setup.
+
+    Returns:
+        dict: A dictionary mapping component types (str) to their corresponding 
+        lists of follow-up questions (list).
+    """
+
     return {
         "dumping": None,  # TODO, realistically, dumping doesnt belong with these other functions
         "cloud": [
@@ -197,6 +211,30 @@ def followup_questions_creator():
 
 
 def run_from_file(optimize_mode=False, **kwargs):
+    """
+    Runs a simulation based on the configuration provided in a file.
+
+    This function initializes the simulation by loading configuration settings 
+    from a specified file or user input, setting up the necessary parameters 
+    for various components such as ion clouds, traps, and lasers. It also 
+    allows for optional optimization of the experiment based on provided 
+    arguments.
+
+    Args:
+        optimize_mode (bool, optional): A flag indicating whether to run in 
+            optimization mode. Defaults to False.
+        **kwargs: Additional keyword arguments that can override default 
+            parameters for the simulation.
+
+    Returns:
+        None: This function does not return a value; it executes the simulation 
+        based on the configured parameters.
+    
+    Raises:
+        ValueError: If no experiment is provided for optimization when 
+        `optimize_mode` is True.
+    """
+
     # TODO "optimize_mode" is being used in non-optimize cases.  Clean up this notation
     if not optimize_mode:
         config_file = config_file_dialogue()
@@ -223,6 +261,27 @@ def run_from_file(optimize_mode=False, **kwargs):
 
     # Helper function to update arguments with overrides from kwargs
     def get_overridden_args(defaults, prefix):
+        """
+        Combines default arguments with overridden values based on a prefix.
+
+        This function takes a dictionary of default arguments and a prefix, 
+        then checks for any keys in the provided keyword arguments that start 
+        with the specified prefix. It returns a new dictionary that merges the 
+        default arguments with any overridden values, allowing for flexible 
+        configuration of parameters.
+
+        Args:
+            defaults (dict): A dictionary of default argument values.
+            prefix (str): The prefix used to identify which arguments should be 
+                overridden.
+
+        Returns:
+            dict: A dictionary containing the combined default and overridden 
+            argument values.
+
+        Raises:
+            None: This function does not raise exceptions.
+        """
         overridden_args = {}
         for k, v in kwargs.items():
             if k.startswith(prefix):
@@ -419,6 +478,26 @@ def run_from_file(optimize_mode=False, **kwargs):
 
 
 def run_from_batch(**kwargs):
+    """
+    Executes simulations based on a batch of configuration files.
+
+    This function retrieves a list of `.ini` configuration files from a specified 
+    batch directory and runs simulations for each configuration file using the 
+    `run_from_file` function in optimization mode. It is designed to facilitate 
+    batch processing of experiments in the Quantum Logic Ion Control Simulator.
+
+    Args:
+        **kwargs: Additional keyword arguments that may be used for future 
+            enhancements related to batch optimization.
+
+    Returns:
+        None: This function does not return a value; it executes simulations 
+        based on the configurations found in the batch directory.
+
+    Raises:
+        ValueError: If the batch directory does not contain any `.ini` files.
+    """
+
     # TODO arguments are for the future implementation of an "optimize from batch" mode.  This optimize mode is different from the optimize_mode arg of run_from_file()
     # TODO maybe at some point should make the data naming more helpful
     b_parent = batch_config_dialogue()
@@ -433,6 +512,24 @@ def run_from_batch(**kwargs):
 
 
 def config_file_dialogue():
+    """
+    Prompts the user to enter a configuration file path.
+
+    This function uses an interactive prompt to request the user to provide 
+    the path to a configuration file with a `.ini` extension. It validates 
+    the input to ensure that it is a valid file path, allowing for proper 
+    configuration loading in the Quantum Logic Ion Control Simulator.
+
+    Args:
+        None: This function does not take any arguments.
+
+    Returns:
+        str: The path to the configuration file entered by the user.
+
+    Raises:
+        ValueError: If the input is not a valid file path.
+    """
+
     return inquirer.filepath(
         message="Enter a configuration (*.ini) file:",
         validate=PathStringValidator(
@@ -443,6 +540,24 @@ def config_file_dialogue():
 
 
 def batch_config_dialogue():
+    """
+    Prompts the user to enter a directory containing batch configuration files.
+
+    This function uses an interactive prompt to request the user to provide 
+    the path to a parent directory that contains `.ini` files for batch processing. 
+    It validates the input to ensure that it is a valid directory, facilitating 
+    the setup of batch configurations in the Quantum Logic Ion Control Simulator.
+
+    Args:
+        None: This function does not take any arguments.
+
+    Returns:
+        str: The path to the directory entered by the user.
+
+    Raises:
+        ValueError: If the input is not a valid directory.
+    """
+
     return inquirer.filepath(
         message="Enter the parent directory of .ini files to submit as a batch.  Be sure to prime the data folder.",
         validate=PathStringValidator(is_dir=True, message="Input is not a directory"),
@@ -451,6 +566,23 @@ def batch_config_dialogue():
 
 
 def mode_dialogue():
+    """
+    Prompts the user to select an operational mode for the simulator.
+
+    This function presents a list of available modes for the Quantum Logic Ion Control 
+    Simulator and allows the user to select one. The selected mode determines the 
+    subsequent actions and configurations for the simulation.
+
+    Args:
+        None: This function does not take any arguments.
+
+    Returns:
+        str: The mode selected by the user from the available options.
+
+    Raises:
+        ValueError: If the user input is invalid or not recognized.
+    """
+
     return inquirer.select(
         message="Select a mode",
         choices=[
@@ -467,6 +599,24 @@ def mode_dialogue():
 
 
 def setup_loading_configur(loading_config_file):
+    """
+    Loads the configuration from a specified .ini file.
+
+    This function reads the configuration settings from the provided .ini file 
+    and raises errors if the file is not specified or if the format is incorrect. 
+    It ensures that the configuration is properly loaded for use in the simulation.
+
+    Args:
+        loading_config_file (str): The path to the .ini configuration file to be loaded.
+
+    Returns:
+        ConfigParser: The loaded configuration object.
+
+    Raises:
+        FileNotFoundError: If the loading configuration file is not provided.
+        ValueError: If the provided file format is not .ini.
+    """
+
     if not loading_config_file or loading_config_file.strip() == "":
         raise FileNotFoundError("Loading configuration file not provided")
     if not loading_config_file.endswith(".ini"):
@@ -476,6 +626,27 @@ def setup_loading_configur(loading_config_file):
 
 
 def count_type_pos(loading_configur):
+    """
+    Counts the occurrences of command types in the experimental sequence.
+
+    This function analyzes the command sequence defined in the provided 
+    configuration and counts how many times each command type appears. 
+    It also checks for the presence of iteration commands and updates the 
+    counts accordingly, returning a dictionary that reflects the number of 
+    each command type used in the experiment.
+
+    Args:
+        loading_configur (ConfigParser): The configuration object containing 
+            the experimental sequence and iteration commands.
+
+    Returns:
+        dict: A dictionary mapping command types (str) to their respective 
+        counts (int).
+
+    Raises:
+        KeyError: If the expected keys are not found in the configuration.
+    """
+
     command_mapping = give_command_mapping()
     type_poses = {key: 0 for key in command_mapping}
     command_string = loading_configur.get("exp_seq", "com_list").split(",")
@@ -496,6 +667,26 @@ def count_type_pos(loading_configur):
 
 
 def get_sim_skeleton_inputs():
+    """
+    Retrieves simulation and detection parameters from the configuration.
+
+    This function extracts the simulation parameters and detection settings 
+    from the provided configuration. If the detection section is not present, 
+    it initializes default values, ensuring that all necessary parameters are 
+    available for the simulation skeleton.
+
+    Args:
+        None: This function does not take any arguments.
+
+    Returns:
+        tuple: A tuple containing two dictionaries:
+            - sim_params (dict): A dictionary of simulation parameters.
+            - detection_params (dict): A dictionary of detection parameters.
+
+    Raises:
+        KeyError: If expected keys are not found in the configuration.
+    """
+
     sim_params = loading_configur.items("sim_parameters")
     if loading_configur.has_section("detection"):
         detection_params = loading_configur.items("detection")
@@ -511,45 +702,252 @@ def get_sim_skeleton_inputs():
     return dict(sim_params), dict(detection_params)
 
 def get_ions_inputs():
+    """
+    Retrieves the ion configurations from the loading configuration.
+
+    This function extracts and returns the ion-related parameters defined in 
+    the loading configuration as a dictionary. It provides easy access to the 
+    properties of the ions used in the Quantum Logic Ion Control Simulator.
+
+    Args:
+        None: This function does not take any arguments.
+
+    Returns:
+        dict: A dictionary containing the ion configurations from the loading 
+        configuration.
+
+    Raises:
+        KeyError: If the "ions" section is not found in the loading configuration.
+    """
     return dict(loading_configur.items("ions"))
 
 def get_mass_change_inputs(type_pos):
     return dict(loading_configur.items(f"mass_change_{type_pos}"))
 
 def get_constants():
+    """
+    Retrieves the physical constants from the loading configuration.
+
+    This function extracts and returns the constants defined in the loading 
+    configuration as a dictionary. It provides easy access to the fundamental 
+    physical constants used throughout the Quantum Logic Ion Control Simulator.
+
+    Args:
+        None: This function does not take any arguments.
+
+    Returns:
+        dict: A dictionary containing the physical constants from the loading 
+        configuration.
+
+    Raises:
+        KeyError: If the "constants" section is not found in the loading configuration.
+    """
     return dict(loading_configur.items("constants"))
     # TODO maybe a check that all the necessary constant values are assigned
 
 def get_cloud_reset(type_pos):
+    """
+    Retrieves the reset configuration for a specified ion cloud type.
+
+    This function extracts and returns the parameters defined for resetting 
+    a specific ion cloud type from the loading configuration. It provides 
+    easy access to the reset settings necessary for managing ion clouds in 
+    the Quantum Logic Ion Control Simulator.
+
+    Args:
+        type_pos (str): The type or position of the ion cloud for which to 
+            retrieve the reset configuration.
+
+    Returns:
+        dict: A dictionary containing the reset parameters for the specified 
+        ion cloud type.
+
+    Raises:
+        KeyError: If the specified cloud reset configuration is not found 
+        in the loading configuration.
+    """
     return dict(loading_configur.items(f"cloud_reset_{type_pos}"))
 
 def get_modulation_inputs(type_pos):
+    """
+    Retrieves the modulation configuration for a specified type.
+
+    This function extracts and returns the parameters defined for a specific 
+    modulation type from the loading configuration. It provides easy access to 
+    the modulation settings necessary for managing the modulation process in 
+    the Quantum Logic Ion Control Simulator.
+
+    Args:
+        type_pos (str): The type or position of the modulation for which to 
+            retrieve the configuration.
+
+    Returns:
+        dict: A dictionary containing the modulation parameters for the specified 
+        type.
+
+    Raises:
+        KeyError: If the specified modulation configuration is not found 
+        in the loading configuration.
+    """
     return dict(loading_configur.items(f"modulation_{type_pos}"))
 
 def get_static_efield_inputs(type_pos):
+    """
+    Retrieves the static electric field configuration for a specified type.
+
+    This function extracts and returns the parameters defined for a specific 
+    static electric field type from the loading configuration. It provides easy 
+    access to the static electric field settings necessary for managing the 
+    electric field in the Quantum Logic Ion Control Simulator.
+
+    Args:
+        type_pos (str): The type or position of the static electric field for which 
+            to retrieve the configuration.
+
+    Returns:
+        dict: A dictionary containing the static electric field parameters for the 
+        specified type.
+
+    Raises:
+        KeyError: If the specified static electric field configuration is not found 
+        in the loading configuration.
+    """
     return dict(loading_configur.items(f"static_efield_{type_pos}"))
 
 def get_cloud_inputs(type_pos):
+    """
+    Retrieves the configuration for a specified ion cloud type.
+
+    This function extracts and returns the parameters defined for a specific 
+    ion cloud type from the loading configuration. It provides easy access to 
+    the ion cloud settings necessary for managing ion clouds in the Quantum 
+    Logic Ion Control Simulator.
+
+    Args:
+        type_pos (str): The type or position of the ion cloud for which to 
+            retrieve the configuration.
+
+    Returns:
+        dict: A dictionary containing the ion cloud parameters for the specified 
+        type.
+
+    Raises:
+        KeyError: If the specified ion cloud configuration is not found in 
+        the loading configuration.
+    """
     return dict(loading_configur.items(f"ion_cloud_{type_pos}"))
 
 def get_late_cloud_inputs(type_pos):
     return dict(loading_configur.items(f"late_cloud_{type_pos}"))
 
 def get_trap_inputs(type_pos):
+    """
+    Retrieves the configuration for a specified trap type.
+
+    This function extracts and returns the parameters defined for a specific 
+    trap type from the loading configuration. It provides easy access to the 
+    trap settings necessary for managing traps in the Quantum Logic Ion Control 
+    Simulator.
+
+    Args:
+        type_pos (str): The type or position of the trap for which to 
+            retrieve the configuration.
+
+    Returns:
+        dict: A dictionary containing the trap parameters for the specified 
+        type.
+
+    Raises:
+        KeyError: If the specified trap configuration is not found in 
+        the loading configuration.
+    """
     return dict(loading_configur.items(f"trap_{type_pos}"))
 
 
 def get_cooling_laser_inputs(type_pos):
+    """
+    Retrieves the configuration for a specified cooling laser type.
+
+    This function extracts and returns the parameters defined for a specific 
+    cooling laser type from the loading configuration. It provides easy access 
+    to the cooling laser settings necessary for managing cooling lasers in the 
+    Quantum Logic Ion Control Simulator.
+
+    Args:
+        type_pos (str): The type or position of the cooling laser for which to 
+            retrieve the configuration.
+
+    Returns:
+        dict: A dictionary containing the cooling laser parameters for the specified 
+        type.
+
+    Raises:
+        KeyError: If the specified cooling laser configuration is not found in 
+        the loading configuration.
+    """
     return dict(loading_configur.items(f"cooling_laser_{type_pos}"))
 
 
 def get_scattering_laser_inputs():
+    """
+    Retrieves the configuration for the scattering laser.
+
+    This function extracts and returns the parameters defined for the scattering 
+    laser from the loading configuration. It provides easy access to the scattering 
+    laser settings necessary for managing the laser in the Quantum Logic Ion Control 
+    Simulator.
+
+    Args:
+        None: This function does not take any arguments.
+
+    Returns:
+        dict: A dictionary containing the scattering laser parameters from the 
+        loading configuration.
+
+    Raises:
+        KeyError: If the "scattering_laser" section is not found in the loading configuration.
+    """
     return dict(loading_configur.items("scattering_laser"))
 
 
 def get_iter_inputs():
+    """
+    Retrieves the configuration for iteration parameters.
+
+    This function extracts and returns the parameters defined for iterations 
+    from the loading configuration. It provides easy access to the settings 
+    necessary for managing iteration behavior in the Quantum Logic Ion Control 
+    Simulator.
+
+    Args:
+        None: This function does not take any arguments.
+
+    Returns:
+        dict: A dictionary containing the iteration parameters from the loading 
+        configuration.
+
+    Raises:
+        KeyError: If the "iter" section is not found in the loading configuration.
+    """
     return dict(loading_configur.items("iter"))
 
 
 def get_exp_seq():
+    """
+    Retrieves the experimental sequence from the loading configuration.
+
+    This function accesses the loading configuration to obtain the list of 
+    commands that define the experimental sequence for the simulation. It 
+    provides a straightforward way to access the sequence of operations to be 
+    executed in the Quantum Logic Ion Control Simulator.
+
+    Args:
+        None: This function does not take any arguments.
+
+    Returns:
+        str: The experimental sequence command list retrieved from the loading configuration.
+
+    Raises:
+        KeyError: If the "exp_seq" section is not found in the loading configuration.
+    """
     return loading_configur.get("exp_seq", "com_list")

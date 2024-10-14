@@ -3,6 +3,24 @@ from numpy import pi
 from .config_controller import configur
 # TODO make tests of this
 def create_static_field(type_pos, uid):
+    """Generates the configuration for a static electric field in the simulation.
+
+    This function constructs the necessary parameters and commands for a static 
+    electric field based on the provided configuration and type position. It calculates 
+    the electric field components and prepares the commands to apply the static 
+    field effect to the specified region in the simulation.
+
+    Args:
+        type_pos (str): The type or position of the static electric field being configured.
+        uid (str): A unique identifier for the static field configuration.
+
+    Returns:
+        dict: A dictionary containing the UID and generated commands for the static 
+        electric field.
+
+    Raises:
+        KeyError: If the required configuration parameters are not found.
+    """
     # uid = eval(configur.get(f"static_efield_{type_pos}", "uid"))
     amp_coeff = eval(configur.get(f"static_efield_{type_pos}", "amp"))
 

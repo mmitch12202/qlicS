@@ -6,6 +6,26 @@ from .pylion import functions as pl_func
 
 # Spherical Cloud
 def pylion_cloud(type_pos, uid_override=None):
+    """
+    Creates an ion cloud based on the specified type and configuration.
+
+    This function generates an ion cloud using parameters defined in the 
+    configuration, such as species, radius, and count. It allows for an optional 
+    override of the unique identifier (UID) for the created ion cloud, enabling 
+    flexibility in managing multiple ion clouds within the simulation.
+
+    Args:
+        type_pos (str): The type or position of the ion cloud being created.
+        uid_override (str, optional): An optional UID to override the default UID 
+            from the configuration. Defaults to None.
+
+    Returns:
+        dict: A dictionary representing the created ion cloud, including its 
+        properties and UID.
+
+    Raises:
+        KeyError: If the required configuration parameters are not found.
+    """
     c = pl_func.createioncloud(
         eval(configur.get("ions", configur.get(f"ion_cloud_{type_pos}", "species")))[0],
         eval(configur.get(f"ion_cloud_{type_pos}", "radius")),
@@ -20,6 +40,27 @@ def pylion_cloud(type_pos, uid_override=None):
 
 # Pulling heavily from the pylion cloud func, but not tied to the jinja template (so we have control over when they are added)
 def lammps_append_sph_cloud(type_pos, uid):
+    """
+    Generates a spherical distribution of ion positions and prepares LAMMPS commands.
+
+    This function creates a specified number of ion positions distributed 
+    uniformly within a sphere of a given radius and prepares the corresponding 
+    LAMMPS commands for adding these ions to a simulation. It retrieves the 
+    necessary parameters from the configuration and constructs the commands 
+    needed to append the ions to the simulation.
+
+    Args:
+        type_pos (str): The type or position of the ion cloud being created.
+        uid (int): A unique identifier for the ions being created.
+
+    Returns:
+        dict: A dictionary containing the generated LAMMPS commands, the type of 
+        operation, and the mass and charge of the ions.
+
+    Raises:
+        KeyError: If the required configuration parameters are not found.
+    """
+
     positions = []
     species = eval(
         configur.get("ions", configur.get(f"late_cloud_{type_pos}", "species"))
@@ -56,6 +97,25 @@ def lammps_append_sph_cloud(type_pos, uid):
 
 
 def recloud_spherical(type_pos):
+    """
+    Generates new positions for ions in a spherical distribution.
+
+    This function calculates new positions for a specified number of ions 
+    within a sphere of a given radius, based on the configuration settings 
+    for the specified ion cloud type. It constructs the necessary commands 
+    to reset the positions of these ions in the simulation.
+
+    Args:
+        type_pos (str): The type or position of the ion cloud being reset.
+
+    Returns:
+        dict: A dictionary containing the generated commands to reset the 
+        positions of the ions.
+
+    Raises:
+        KeyError: If the required configuration parameters are not found.
+    """
+
     number = eval(configur.get(f"cloud_reset_{type_pos}", "count"))
     radius = eval(configur.get(f"cloud_reset_{type_pos}", "radius"))
     initial_atom_id = eval(configur.get(f"cloud_reset_{type_pos}", "initial_atom_id"))
@@ -78,6 +138,25 @@ def recloud_spherical(type_pos):
 
 
 def cloud_reset(type_pos):
+    """
+    Resets the configuration of an ion cloud based on its type.
+
+    This function retrieves the reset style for a specified ion cloud type 
+    from the configuration and calls the appropriate function to reset the 
+    cloud's positions. Currently, it supports resetting clouds in a spherical 
+    distribution.
+
+    Args:
+        type_pos (str): The type or position of the ion cloud to be reset.
+
+    Returns:
+        dict: The result of the reset operation, which may include commands 
+        for repositioning the ions.
+
+    Raises:
+        KeyError: If the specified cloud type does not exist in the configuration.
+    """
+
     style = configur.get(f"cloud_reset_{type_pos}", "style")
     if style == "sphere":
         return recloud_spherical(type_pos)

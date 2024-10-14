@@ -8,6 +8,18 @@ from .arbitrary_static_efield import create_static_field
 
 
 def give_command_mapping():
+    """Returns a mapping of command names to their corresponding functions.
+
+    This function provides a dictionary that associates specific command names used 
+    in the Quantum Logic Ion Control Simulator with their respective function 
+    implementations. This mapping facilitates the dynamic execution of commands 
+    based on user input or configuration.
+
+    Returns:
+        dict: A dictionary mapping command names (str) to their corresponding 
+        function implementations.
+    """
+
     return {
         "dumping": pylion_dumping,
         "cloud": pylion_cloud,

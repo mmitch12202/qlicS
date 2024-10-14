@@ -18,6 +18,24 @@ from .cl_console import run_from_file
 
 
 def get_function_from_file(file_path, function_name):
+    """
+    Loads a function from a specified file and returns it.
+
+    This function dynamically imports a module from a given file path and retrieves 
+    a specified function by name. It allows for the execution of functions defined 
+    in external Python files, facilitating modular programming and code reuse.
+
+    Args:
+        file_path (str): The path to the Python file from which to load the function.
+        function_name (str): The name of the function to retrieve from the module.
+
+    Returns:
+        function: The function object retrieved from the specified module.
+
+    Raises:
+        AttributeError: If the specified function is not found in the module.
+    """
+
     # Load the module from the file path
     spec = importlib.util.spec_from_file_location("module_name", file_path)
     module = importlib.util.module_from_spec(spec)
@@ -31,12 +49,47 @@ def get_function_from_file(file_path, function_name):
 
 
 class CustomInterface(mli.Interface):
+    """
+    Custom interface for managing experiments in the M-LOOP framework.
+
+    This class extends the base interface to provide functionality for 
+    managing and executing experiments. It initializes with a specified 
+    experiment directory and a file path for formulae, allowing for 
+    dynamic retrieval of run information.
+
+    Args:
+        experiment_dir (str): The directory where the experiment data is stored.
+        formulae_filepath (str): The file path to the formulae used for run information.
+
+    Methods:
+        get_next_cost_dict(params_dict): Retrieves the next cost dictionary based on 
+        the provided parameters, utilizing the run information function.
+    """
+
     def __init__(self, experiment_dir, formulae_filepath):
         super(CustomInterface, self).__init__()
         self.experiment_dir = experiment_dir
         self.get_run_info = get_function_from_file(formulae_filepath, "get_run_info")
 
     def get_next_cost_dict(self, params_dict):
+        """
+        Calculates the next cost dictionary based on provided parameters.
+
+        This method retrieves the parameters from the given dictionary and uses 
+        them to obtain the next cost for the simulation. It interacts with the 
+        run information function to gather necessary data for cost calculation.
+
+        Args:
+            params_dict (dict): A dictionary containing parameters for the simulation, 
+                specifically under the key "params".
+
+        Returns:
+            dict: The next cost dictionary based on the current parameters.
+
+        Raises:
+            KeyError: If the "params" key is not found in the provided dictionary.
+        """
+
         params = params_dict["params"]
 
         """ scat = run_from_file(
@@ -66,6 +119,28 @@ class CustomInterface(mli.Interface):
 
 
 def mainmloop(experiment_dir, mloop_formulae_file):
+    """
+    Runs the M-LOOP optimization process for the specified experiment.
+
+    This function initializes the M-LOOP framework by creating a custom interface 
+    and a controller based on the provided experiment directory and formulae file. 
+    It executes the optimization process to find the best parameters and handles 
+    visualization of the results.
+
+    Args:
+        experiment_dir (str): The directory where the experiment data is stored.
+        mloop_formulae_file (str): The file path to the M-LOOP formulae used for optimization.
+
+    Returns:
+        None: This function does not return a value; it performs the optimization 
+        and visualizations directly.
+
+    Raises:
+        FileNotFoundError: If the specified formulae file does not exist.
+        ValueError: If the controller cannot be created or if there are issues 
+        during the optimization process.
+    """
+
 
     # M-LOOP can be run with three commands
 
@@ -107,6 +182,21 @@ def mainmloop(experiment_dir, mloop_formulae_file):
     c_arch = controller.total_archive_filename
 
     def swap_controller_to_archive(input_string):
+        """
+        Replaces the last occurrence of 'controller' with 'learner' in a string.
+
+        This function searches for the last instance of the word "controller" in the 
+        provided input string and replaces it with "learner". If "controller" is not 
+        found, the original string is returned unchanged.
+
+        Args:
+            input_string (str): The string in which to replace the word.
+
+        Returns:
+            str: The modified string with the last occurrence of "controller" replaced 
+            by "learner", or the original string if "controller" is not found.
+        """
+
         # Find the last index of "controller" in the string
         last_index = input_string.rfind("controller")
 

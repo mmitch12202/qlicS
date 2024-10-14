@@ -5,6 +5,26 @@ import numpy as np
 
 
 def get_run_info(experiment_dir, params) -> dict:
+    def get_run_info(experiment_dir, params) -> dict:
+        """
+        Retrieves run information for a given experiment directory and parameters.
+
+        This function executes a run using specified parameters and calculates a cost based 
+        on the differences between a reference count and non-reference counts. It returns a 
+        dictionary containing the cost, uncertainty, and a flag indicating if an error occurred.
+
+        Args:
+            experiment_dir: The directory where the experiment data is located.
+            params: A list of parameters used for the run, where the first two elements 
+                    represent cloud counts.
+
+        Returns:
+            A dictionary with the following keys:
+                - cost: The calculated cost based on the run results.
+                - uncer: The uncertainty value, currently set to 0.
+                - bad: A boolean flag indicating if an error occurred during execution.
+        """
+
     try:
         scat = run_from_file(
         optimize_mode=True,
@@ -32,6 +52,23 @@ def get_run_info(experiment_dir, params) -> dict:
 
 # TODO probably a better way of dealing with this
 def return_controller(interface):
+    """
+    Creates and returns a controller object for the simulation.
+
+    This function initializes a controller using the specified interface and 
+    predefined parameters for a neural network. It sets various configuration 
+    options such as maximum duration, parameter names, and boundaries for the 
+    parameters, facilitating the control of the simulation process.
+
+    Args:
+        interface: The interface to be used for creating the controller.
+
+    Returns:
+        Controller: The created controller object configured with the specified parameters.
+
+    Raises:
+        ValueError: If the provided interface is invalid or if required parameters are missing.
+    """
     # For now just dont touch interface
     return mlc.create_controller(
         interface,

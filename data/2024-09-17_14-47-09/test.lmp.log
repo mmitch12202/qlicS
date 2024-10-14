@@ -1,0 +1,305 @@
+LAMMPS (29 Aug 2024)
+##################################################################
+# LAMMPS input file generated using pylion 0.5.3
+# simulation name: test
+#
+# pylion is written and maintained by Dimitris Trypogeorgos
+# and Elliot Bentine. Download it from
+# https://bitbucket.org/dtrypogeorgos/pylion
+#
+# If you find it useful please cite <paper>.
+##################################################################
+
+
+
+units si
+atom_style charge
+
+# Creating simulation box...
+boundary m m m
+region simulationDomain block -0.001  0.001 -0.001 0.001 -0.001 0.001 units box
+create_box 1 simulationDomain
+Created orthogonal box = (-0.001 -0.001 -0.001) to (0.001 0.001 0.001)
+  1 by 1 by 1 MPI processor grid
+
+# Configure neighbour list...
+neighbor 1 nsq
+neigh_modify once yes
+
+# Configure pairwise interactions for long range Coulombics only...
+pair_style coul/cut 10
+pair_coeff * *
+
+# Placing individual ions...
+
+
+create_atoms 1 single -1.855370310843757e-05 -2.023581079724802e-05 -0.00014039534956676857 units box
+Created 1 atoms
+  using box units in orthogonal box = (-0.001 -0.001 -0.001) to (0.001 0.001 0.001)
+  create_atoms CPU = 0.000 seconds
+
+
+# Species...
+mass 1 1.4944851e-26
+set type 1 charge 1.6021764599999998e-19
+Setting atom values ...
+  1 settings made for charge
+group 1 type 1
+1 atoms in group 1
+
+
+
+# Configuring additional output to flush buffer during simulation...
+thermo 10000
+thermo_style custom step cpu temp
+thermo_modify flush no
+
+# Time integration...
+
+group nonRigidBody union all
+1 atoms in group nonRigidBody
+
+fix timeIntegrator nonRigidBody nve
+
+
+
+dump 10404243684 all custom 1 /Users/paulgrajzl/Documents/repos/qlicS/data/2024-09-17_14-47-09/positions.txt id x y z vx vy vz
+
+
+
+
+
+# Pseudopotential approximation for Linear Paul trap... (fixID=10000001)
+
+
+# SHO
+
+variable k_x10000001		equal 2.973789e-13
+
+variable k_y10000001		equal 2.973789e-13
+
+variable k_z10000001		equal 4.835556e-14
+
+variable fX10000001 atom "-v_k_x10000001 * x"
+
+variable fY10000001 atom "-v_k_y10000001 * y"
+
+variable fZ10000001 atom "-v_k_z10000001 * z"
+
+variable E10000001 atom "v_k_x10000001 * x * x /         2 + v_k_y10000001 * y * y / 2 + v_k_z10000001 * z * z / 2"
+
+fix 10000001 1 addforce         v_fX10000001 v_fY10000001 v_fZ10000001 energy v_E10000001
+
+
+
+
+variable coolx atom (9.269391837269081e-20-2.7034294221912685e-21*vx)*0.5000000000000001
+variable cooly atom (9.269391837269081e-20-2.7034294221912685e-21*vy)*0.5000000000000001
+variable coolz atom (9.269391837269081e-20-2.7034294221912685e-21*vz)*0.7071067811865476
+fix 569202603907002 1 addforce v_coolx v_cooly v_coolz
+
+variable targetT equal 0.0011864309468095074
+variable curr_temp equal temp
+
+
+
+
+variable E equal 0
+variable Ex atom (0.1*(100+0*(x-0)+0*(x-0)^2+0*(y-0)+0*(y-0)^2+0*(z-0)+0*(z-0)^2))*cos((2*3.141592653589793)*0.0071*step)
+variable B equal 0
+variable Ey atom (0.1*(0+0*(x-0)+0*(x-0)^2+0.0*(y-0)+0.0*(y-0)^2+0*(z-0)+0*(z-0)^2))*cos((2*3.141592653589793)*0.0071*step)
+variable C equal 0
+variable Ez atom (0.1*(0+0*(x-0)+0*(x-0)^2+0*(y-0)+0*(y-0)^2+0*(z-0)+0*(z-0)^2))*cos((2*3.141592653589793)*0.0071*step)
+fix 469202603907006 all efield v_Ex v_Ey v_Ez
+
+
+
+timestep 1e-08
+
+
+# Run simulation
+
+run 40000
+Generated 0 of 0 mixed pair_coeff terms from geometric mixing rule
+Neighbor list info ...
+  update: every = 1 steps, delay = 0 steps, check = yes
+  max neighbors/atom: 2000, page size: 100000
+  master list distance cutoff = 11
+  ghost atom cutoff = 11
+  1 neighbor lists, perpetual/occasional/extra = 1 0 0
+  (1) pair coul/cut, perpetual
+      attributes: half, newton on
+      pair build: half/nsq/newton
+      stencil: none
+      bin: none
+WARNING: Proc sub-domain size < neighbor skin, could lead to lost atoms (src/domain.cpp:1202)
+Per MPI rank memory allocation (min/avg/max) = 0.4052 | 0.4052 | 0.4052 Mbytes
+   Step          CPU            Temp     
+         0   0              0            
+     10000   0.8178044      0            
+     20000   1.60616        0            
+     30000   2.3969315      0            
+     40000   3.1213291      0            
+Loop time of 3.12134 on 1 procs for 40000 steps with 1 atoms
+
+92.1% CPU use with 1 MPI tasks x no OpenMP threads
+
+MPI task timing breakdown:
+Section |  min time  |  avg time  |  max time  |%varavg| %total
+---------------------------------------------------------------
+Pair    | 0.0039713  | 0.0039713  | 0.0039713  |   0.0 |  0.13
+Neigh   | 0          | 0          | 0          |   0.0 |  0.00
+Comm    | 0.0053401  | 0.0053401  | 0.0053401  |   0.0 |  0.17
+Output  | 0.35683    | 0.35683    | 0.35683    |   0.0 | 11.43
+Modify  | 2.7437     | 2.7437     | 2.7437     |   0.0 | 87.90
+Other   |            | 0.01148    |            |       |  0.37
+
+Nlocal:              1 ave           1 max           1 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+Nghost:              0 ave           0 max           0 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+Neighs:              0 ave           0 max           0 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+
+Total # of neighbors = 0
+Ave neighs/atom = 0
+Neighbor list builds = 0
+Dangerous builds = 0
+
+
+
+
+
+# Deleting a fix by uid
+
+unfix 469202603907006
+
+
+
+
+variable E equal 0
+variable Ex atom (0.1*(100+0*(x-0)+0*(x-0)^2+0*(y-0)+0*(y-0)^2+0*(z-0)+0*(z-0)^2))*cos((2*3.141592653589793)*0.00071*step)
+variable B equal 0
+variable Ey atom (0.1*(0+0*(x-0)+0*(x-0)^2+0.0*(y-0)+0.0*(y-0)^2+0*(z-0)+0*(z-0)^2))*cos((2*3.141592653589793)*0.00071*step)
+variable C equal 0
+variable Ez atom (0.1*(0+0*(x-0)+0*(x-0)^2+0*(y-0)+0*(y-0)^2+0*(z-0)+0*(z-0)^2))*cos((2*3.141592653589793)*0.00071*step)
+fix 469202603907007 all efield v_Ex v_Ey v_Ez
+
+
+
+timestep 1e-09
+
+
+# Run simulation
+
+run 150000
+Generated 0 of 0 mixed pair_coeff terms from geometric mixing rule
+WARNING: Proc sub-domain size < neighbor skin, could lead to lost atoms (src/domain.cpp:1202)
+Per MPI rank memory allocation (min/avg/max) = 1.405 | 1.405 | 1.405 Mbytes
+   Step          CPU            Temp     
+     40000   0              0            
+     50000   0.74557522     0            
+     60000   1.5345373      0            
+     70000   2.3777236      0            
+     80000   3.1202683      0            
+     90000   3.8905854      0            
+    100000   4.6399335      0            
+    110000   5.4272401      0            
+    120000   6.2103249      0            
+    130000   7.006047       0            
+    140000   7.8094859      0            
+    150000   8.5727649      0            
+    160000   9.3638198      0            
+    170000   10.141801      0            
+    180000   10.944856      0            
+    190000   11.857577      0            
+Loop time of 11.8576 on 1 procs for 150000 steps with 1 atoms
+
+93.2% CPU use with 1 MPI tasks x no OpenMP threads
+
+MPI task timing breakdown:
+Section |  min time  |  avg time  |  max time  |%varavg| %total
+---------------------------------------------------------------
+Pair    | 0.018102   | 0.018102   | 0.018102   |   0.0 |  0.15
+Neigh   | 0          | 0          | 0          |   0.0 |  0.00
+Comm    | 0.020032   | 0.020032   | 0.020032   |   0.0 |  0.17
+Output  | 1.2805     | 1.2805     | 1.2805     |   0.0 | 10.80
+Modify  | 10.495     | 10.495     | 10.495     |   0.0 | 88.51
+Other   |            | 0.04362    |            |       |  0.37
+
+Nlocal:              1 ave           1 max           1 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+Nghost:              0 ave           0 max           0 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+Neighs:              0 ave           0 max           0 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+
+Total # of neighbors = 0
+Ave neighs/atom = 0
+Neighbor list builds = 0
+Dangerous builds = 0
+
+
+
+
+
+# Deleting a fix by uid
+
+unfix 469202603907007
+
+
+
+
+variable E equal 0
+variable Ex atom (0.1*(100+0*(x-0)+0*(x-0)^2+0*(y-0)+0*(y-0)^2+0*(z-0)+0*(z-0)^2))*cos((2*3.141592653589793)*0.0142*step)
+variable B equal 0
+variable Ey atom (0.1*(0+0*(x-0)+0*(x-0)^2+0.0*(y-0)+0.0*(y-0)^2+0*(z-0)+0*(z-0)^2))*cos((2*3.141592653589793)*0.0142*step)
+variable C equal 0
+variable Ez atom (0.1*(0+0*(x-0)+0*(x-0)^2+0*(y-0)+0*(y-0)^2+0*(z-0)+0*(z-0)^2))*cos((2*3.141592653589793)*0.0142*step)
+fix 469202603907008 all efield v_Ex v_Ey v_Ez
+
+
+
+timestep 2e-08
+
+
+# Run simulation
+
+run 40000
+Generated 0 of 0 mixed pair_coeff terms from geometric mixing rule
+WARNING: Proc sub-domain size < neighbor skin, could lead to lost atoms (src/domain.cpp:1202)
+Per MPI rank memory allocation (min/avg/max) = 1.405 | 1.405 | 1.405 Mbytes
+   Step          CPU            Temp     
+    190000   0              0            
+    200000   0.86920927     0            
+    210000   1.7415907      0            
+    220000   2.5539114      0            
+    230000   3.3000761      0            
+Loop time of 3.30009 on 1 procs for 40000 steps with 1 atoms
+
+93.0% CPU use with 1 MPI tasks x no OpenMP threads
+
+MPI task timing breakdown:
+Section |  min time  |  avg time  |  max time  |%varavg| %total
+---------------------------------------------------------------
+Pair    | 0.0051251  | 0.0051251  | 0.0051251  |   0.0 |  0.16
+Neigh   | 0          | 0          | 0          |   0.0 |  0.00
+Comm    | 0.0057827  | 0.0057827  | 0.0057827  |   0.0 |  0.18
+Output  | 0.3934     | 0.3934     | 0.3934     |   0.0 | 11.92
+Modify  | 2.8828     | 2.8828     | 2.8828     |   0.0 | 87.36
+Other   |            | 0.01298    |            |       |  0.39
+
+Nlocal:              1 ave           1 max           1 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+Nghost:              0 ave           0 max           0 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+Neighs:              0 ave           0 max           0 min
+Histogram: 1 0 0 0 0 0 0 0 0 0
+
+Total # of neighbors = 0
+Ave neighs/atom = 0
+Neighbor list builds = 0
+Dangerous builds = 0
+
+
+Total wall time: 0:00:18

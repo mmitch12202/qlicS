@@ -8,6 +8,28 @@ from .time_controller import get_dt_given_timestep
 
 
 def scattering_rate(velocity: list, laser_config: dict, species_info: dict) -> float:
+    """
+    Calculates the scattering rate of an atom based on its velocity and laser parameters.
+
+    This function computes the scattering rate using the atom's velocity, the configuration 
+    of the laser, and the properties of the species involved. It takes into account the 
+    direction of the laser, saturation parameters, and the natural linewidth of the species 
+    to provide an accurate rate of scattering.
+
+    Args:
+        velocity (list): A list containing the velocity components of the atom [vx, vy, vz].
+        laser_config (dict): A dictionary containing the configuration parameters of the laser, 
+            including direction and saturation parameter.
+        species_info (dict): A dictionary containing information about the species, such as 
+            natural linewidth and absorption center.
+
+    Returns:
+        float: The calculated scattering rate for the atom.
+
+    Raises:
+        KeyError: If the required keys are not found in the provided dictionaries.
+    """
+
     c = eval(configur.get("constants", "c"))
 
     this_atom_velocities_dot = (
@@ -41,6 +63,27 @@ def scattering_rate(velocity: list, laser_config: dict, species_info: dict) -> f
 
 # sum scattering over the time period, return # of photons
 def illuminate(start_stop_pairs: list, laser_config: dict) -> float:
+    """
+    Calculates the total photon count during the illumination of specified atoms.
+
+    This function iterates over a range of timesteps and specified atoms to compute 
+    the total number of photons scattered by the target species under the influence 
+    of a laser. It utilizes the scattering rate and the velocities of the atoms to 
+    accumulate the photon count over the defined time interval.
+
+    Args:
+        start_stop_pairs (list): A list containing two elements that define the start 
+            and stop timesteps for the illumination process.
+        laser_config (dict): A dictionary containing the configuration parameters for 
+            the laser, including target species and indices of scattered ions.
+
+    Returns:
+        float: The total number of photons counted during the illumination.
+
+    Raises:
+        KeyError: If the required keys are not found in the provided laser configuration.
+    """
+
     target_species = laser_config["target_species"]
     atom_range = eval(laser_config["scattered_ion_indices"])
     vels = velocities()
@@ -64,6 +107,25 @@ def illuminate(start_stop_pairs: list, laser_config: dict) -> float:
 # run illuminate in the sequence needed, return a list of lists
 # [[timestepstart, timestepstop, # of photons:]]
 def get_scattering() -> list:
+    """
+    Retrieves the scattering results based on the detection sequence.
+
+    This function collects the detection timesteps from the configuration and 
+    computes the scattering results for each defined interval. If the experimental 
+    sequence includes iteration commands, it applies corrections to the detection 
+    sequence before calculating the scattering results.
+
+    Args:
+        None: This function does not take any arguments.
+
+    Returns:
+        list: A list of results containing the start and stop times along with 
+        the corresponding scattering counts for each detection interval.
+
+    Raises:
+        KeyError: If the required keys are not found in the configuration.
+    """
+
     detection_seq = eval(configur.get("detection", "detection_timestep_seq"))
     if "iter" in configur.get("exp_seq", "com_list"):
         detection_seq = iter_correction(detection_seq)
@@ -78,6 +140,24 @@ def get_scattering() -> list:
 
 
 def iter_correction(detection_seq):
+    """
+    Adjusts the detection sequence based on iteration parameters.
+
+    This function modifies the provided detection sequence by incorporating 
+    iteration information and adjusting the detection events according to the 
+    specified time sequences and iteration counts. It ensures that the detection 
+    events align correctly with the overall simulation timeline.
+
+    Args:
+        detection_seq (list): The original detection sequence to be corrected.
+
+    Returns:
+        list: The updated detection sequence with corrected timing for iterations.
+
+    Raises:
+        KeyError: If the required keys are not found in the configuration.
+    """
+
     l_steps_per_iter = [i[1] for i in eval(configur.get("iter", "iter_timesequence"))]
     steps_per_iter = sum(l_steps_per_iter)
     iterations = eval(configur.get("iter", "scan_var_seq"))

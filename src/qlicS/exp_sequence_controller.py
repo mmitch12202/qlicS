@@ -21,6 +21,25 @@ from .arbitrary_static_efield import create_static_field
 # TODO at some point want evolve to follow the pattern of the rest and the if statement to not exist. But
 # doesn't limit us functionally now.
 def create_and_run_sim_gen():
+    """
+    Creates and executes a simulation based on the configured parameters.
+
+    This function initializes a simulation object and configures it based on 
+    the parameters defined in the global configuration. It processes the 
+    experimental sequence commands, executes the simulation, and writes the 
+    results to a CSV file, including scattering data and detection parameters.
+
+    Args:
+        None: This function does not take any arguments.
+
+    Returns:
+        list: A list of scattering data generated from the simulation.
+
+    Raises:
+        ValueError: If the configuration does not contain valid parameters for 
+        execution.
+    """
+
     s = pl.Simulation("test")
     if configur.has_option("sim_parameters", "gpu") and eval(
         configur.get("sim_parameters", "gpu")
@@ -85,6 +104,27 @@ def create_and_run_sim_gen():
 
 
 def append_iter(s, ion_groups):
+    """
+    Appends iteration commands to the simulation based on configuration settings.
+
+    This function retrieves iteration-related parameters from the configuration 
+    and processes them to append the necessary commands for the simulation. 
+    It handles the mapping of scan objects and variables, updates the simulation 
+    state, and manages the removal of atoms based on their unique identifiers.
+
+    Args:
+        s (Simulation): The simulation object to which iteration commands will be appended.
+        ion_groups (list): A list of ion groups involved in the iteration process.
+
+    Returns:
+        None: This function does not return a value; it modifies the simulation 
+        object directly.
+
+    Raises:
+        KeyError: If expected keys are not found in the configuration.
+        ValueError: If the configuration contains invalid data.
+    """
+
     config_dict = dict(configur.items("iter"))
     scan_objects = ast.literal_eval(config_dict["scan_objects"])
     scan_var = ast.literal_eval(config_dict["scan_var"])
@@ -133,6 +173,25 @@ def append_iter(s, ion_groups):
 
 
 def separate_word_and_int(input_string):
+    """
+    Separates a string into a word and an optional integer suffix.
+
+    This function takes an input string and uses a regular expression to extract 
+    the word part and an optional integer suffix that may be appended to the word. 
+    It returns the word and the integer as separate values, allowing for easy 
+    manipulation of the components.
+
+    Args:
+        input_string (str): The string to be separated into a word and an integer.
+
+    Returns:
+        tuple: A tuple containing the word part (str) and the integer part (str or None). 
+               If no integer part is present, the second element will be None.
+
+    Raises:
+        None: This function does not raise exceptions.
+    """
+
     if match := re.match(r"^(.*?)(_\d+)?$", input_string):
         word_part = match[1]
         int_part = match[2][1:] if match[2] else None
@@ -143,6 +202,33 @@ def separate_word_and_int(input_string):
 def com_appending(
     s, commands, command_mapping, type_poses, ion_groups, is_iter, iter_step=0
 ):
+    """
+    Appends commands to the simulation based on the provided command list.
+
+    This function processes a list of commands and appends the corresponding 
+    simulation objects to the provided simulation instance. It handles various 
+    command types, including iteration commands, and manages the configuration 
+    of ion clouds, traps, cooling lasers, and other components based on the 
+    current state of the simulation.
+
+    Args:
+        s (Simulation): The simulation object to which commands will be appended.
+        commands (list): A list of command strings to be processed.
+        command_mapping (dict): A mapping of command names to their corresponding functions.
+        type_poses (dict): A dictionary tracking the current position of each command type.
+        ion_groups (list): A list of ion groups involved in the simulation.
+        is_iter (bool): A flag indicating whether the commands are part of an iteration.
+        iter_step (int, optional): The current iteration step, defaults to 0.
+
+    Returns:
+        None: This function does not return a value; it modifies the simulation 
+        object directly.
+
+    Raises:
+        ValueError: If a command is not recognized.
+        SyntaxError: If the command sequence is invalid based on the current state.
+    """
+
     evolve_add = [None]
     i_object_num_record = {key: 0 for key in type_poses}
     for command in commands:

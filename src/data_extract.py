@@ -5,6 +5,21 @@ import pandas as pd
 
 
 def process_directory(directory):
+    """
+    Processes a specified directory to extract photon counts from configuration and CSV files.
+
+    This function reads subdirectories within the given directory, retrieves counts from 
+    configuration files, and collects corresponding photon counts from CSV files. It 
+    organizes the data and writes the results to an output CSV file.
+
+    Args:
+        directory: The path to the directory containing subdirectories with configuration 
+                   and CSV files.
+
+    Returns:
+        None: The function writes the processed data to an output CSV file named "output.csv".
+    """
+
     # Store counts and their respective photon counts
     data = {}
 
